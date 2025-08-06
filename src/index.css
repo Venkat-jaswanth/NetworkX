@@ -37,6 +37,10 @@
   margin-bottom: 1rem;
 }
 
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -60,6 +64,32 @@
 
 .rounded {
   border-radius: 0.25rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.border {
+  border-width: 1px;
+  border-color: #d1d5db;
+}
+
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+.block {
+  display: block;
+}
+
+.disabled\:opacity-50:disabled {
+  opacity: 0.5;
 }
 
 /* Basic button styles */

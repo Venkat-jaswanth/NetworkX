@@ -16,22 +16,22 @@ export type Database = {
     Tables: {
       db_user: {
         Row: {
-          created_at: string | null
+          created_at: string
           full_name: string
           id: string
-          role: Database["public"]["Enums"]["user_role"] | null
+          role: Database["public"]["Enums"]["user_role"]
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           full_name: string
           id: string
-          role?: Database["public"]["Enums"]["user_role"] | null
+          role: Database["public"]["Enums"]["user_role"]
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           full_name?: string
           id?: string
-          role?: Database["public"]["Enums"]["user_role"] | null
+          role?: Database["public"]["Enums"]["user_role"]
         }
         Relationships: []
       }

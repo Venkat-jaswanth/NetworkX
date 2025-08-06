@@ -1,5 +1,5 @@
 import { useAuth } from '@/hooks/useAuth';
-import Home from '@/pages/Home';
+import NetworkX from '@/components/NetworkX';
 import Login from '@/pages/Login';
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
 
   if (loading) return <div className="text-center p-4">Loading...</div>;
 
-  return user ? <Home /> : <Login />;
+  return user ? <NetworkX /> : <Login />;
 }
 
 export default App;
