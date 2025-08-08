@@ -1,0 +1,234 @@
+.home-landing-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #E8FFD7; /* Light background for contrast */
+    gap: 2rem;
+}
+.home-sections{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #24502c;
+    margin-top: 7rem;
+    width: 100%;
+    gap: 2rem;
+}
+.home-sec{
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: center;
+    background: linear-gradient(to right, #3e5f446b, #93da975b);
+    width: 90%;
+    font-size: 1.5rem;
+    height: fit-content;
+    padding: 2rem;
+    border-radius: 20px;
+}
+.sec-1{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+;
+}
+.home-landing-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2rem;
+}
+
+.home-sections {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #24502c;
+  margin-top: 7rem;
+  width: 100%;
+  gap: 2.5rem;
+}
+
+/* Card style for sections */
+.home-sec {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to right, #3e5f446b, #93da975b);
+  width: 90%;
+  font-size: 1.5rem;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.home-sec:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.sec-text {
+  flex: 1;
+  padding-right: 2rem;
+}
+
+.sec-text .tagline {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.sec-text h3 {
+  font-weight: 400;
+  line-height: 1.6;
+  margin-bottom: 0.8rem;
+}
+
+.sec-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sec-image img {
+  max-width: 75%;
+  height: auto;
+  border-radius: 16px;
+  /* box-shadow: 0px 4px 15px rgba(36, 80, 44, 0.2); */
+  transition: transform 0.3s ease;
+}
+
+.sec-image img:hover {
+  transform: scale(1.05);
+}
+.section-heading {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.feature-item {
+  text-align: center;
+  padding: 2rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.feature-item h4 {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+}
+
+.section-text {
+  font-size: 1.5rem;
+  line-height: 1.6;
+}
+
+.quote {
+  font-size: 1.5rem;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-google{
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-google {
+  background-color: #3e5f44a7;
+  color: #ffffff;
+}
+
+
+/* Keep existing colors and card style */
+.home-sec {
+  background: linear-gradient(to right, #3e5f446b, #93da975b);
+  width: 90%;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Add vertical stacking feel */
+.sec-2,
+.sec-3,
+.sec-4 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem; /* gap between stacked cards */
+}
+
+/* Section 2 features grid remains */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+  margin-top: 1.5rem;
+  width: 100%;
+} 
+
+/* Section 3 and 4 text centering */
+.sec-3,
+.sec-4 {
+  text-align: center;
+}
+
+/* Quote styling */
+.quote {
+  font-size: 1.4rem;
+  font-style: italic;
+  line-height: 1.6;
+  max-width: 800px;
+}
+
+/* Buttons stay in center */
+.cta-buttons {
+  margin-top: 1.5rem;
+}
+
+.bottom-home-landing {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #3E5F44;
+  color: #E8FFD7;
+  text-align: center;
+  padding: 1rem;
+  font-size: 1.2rem;
+}

@@ -1,0 +1,67 @@
+:root {
+  --login-container-bg-color-1: #3e5f4478; /* Primary color */
+  --login-container-bg-color-2: #93da9774; /* Secondary color */
+  --login-button-bg-color: #e8ffd7; /* Button background color */
+}
+
+.login-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  background: linear-gradient(
+    to right,
+    var(--login-container-bg-color-1),
+    var(--login-container-bg-color-2)
+  );
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  color: #24502c;
+  font-size: 1 rem;
+  gap: 1rem;
+}
+
+.login-button button {
+  background-color: var(--login-button-bg-color);
+  color: rgb(0, 0, 0);
+  padding: 12px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  transition: background-color 0.3s ease;
+}
+
+.login-button img {
+  margin-right: 8px;
+}
+.login-container {
+  position: fixed;
+  /* set in center of page */
+  width: 35vw;
+  height: 60vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-content: center;
+}
+
+.login-div-text{
+    padding: 2rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+.nowrap {
+  text-wrap: nowrap;
+}
