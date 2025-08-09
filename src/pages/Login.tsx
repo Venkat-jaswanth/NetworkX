@@ -20,7 +20,14 @@ export default function Login() {
         style={{ display: isLoginVisible ? "block" : "none" }}
       >
         <div className="login-div">
+          <div className="login-title"
+          style={{ 
+            textAlign: "center" ,
+            borderBottom: "2px solid",
+            width: "100%",
+          }}>
           <h1>Welcome to Kairo!!</h1>
+          </div>
           <div className="login-div-text">
             <div style={{
               display: "flex",
