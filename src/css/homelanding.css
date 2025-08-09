@@ -1,46 +1,18 @@
-.home-landing-content{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    background-color: #E8FFD7; /* Light background for contrast */
-    gap: 2rem;
+/* === General Layout & Theming === */
+:root {
+  --login-container-bg-color-1: #3e5f4478;
+  --login-container-bg-color-2: #93da9774;
+  --login-button-bg-color: #e8ffd7;
 }
-.home-sections{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #24502c;
-    margin-top: 7rem;
-    width: 100%;
-    gap: 2rem;
-}
-.home-sec{
-    display: flex;
-    flex-direction: column;
-    /* align-items: center; */
-    justify-content: center;
-    background: linear-gradient(to right, #3e5f446b, #93da975b);
-    width: 90%;
-    font-size: 1.5rem;
-    height: fit-content;
-    padding: 2rem;
-    border-radius: 20px;
-}
-.sec-1{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-;
-}
+
 .home-landing-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  background-color: #e8ffd7;
   gap: 2rem;
+  transition: filter 0.3s ease-in-out; /* Smooth blur transition */
 }
 
 .home-sections {
@@ -52,9 +24,11 @@
   margin-top: 7rem;
   width: 100%;
   gap: 2.5rem;
+  padding: 0 1rem; /* Add horizontal padding for smaller screens */
+  box-sizing: border-box;
 }
 
-/* Card style for sections */
+/* === Section Card Styling === */
 .home-sec {
   display: flex;
   flex-direction: row;
@@ -62,11 +36,12 @@
   justify-content: space-between;
   background: linear-gradient(to right, #3e5f446b, #93da975b);
   width: 90%;
-  font-size: 1.5rem;
+  max-width: 1200px; /* Set a max-width for very large screens */
   padding: 2.5rem;
   border-radius: 20px;
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
 }
 
 .home-sec:hover {
@@ -74,9 +49,12 @@
   box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.12);
 }
 
+/* Specific section layouts */
 .sec-text {
   flex: 1;
   padding-right: 2rem;
+  font-size: 1.5rem;
+  line-height: 1.6;
 }
 
 .sec-text .tagline {
@@ -104,23 +82,31 @@
   max-width: 75%;
   height: auto;
   border-radius: 16px;
-  /* box-shadow: 0px 4px 15px rgba(36, 80, 44, 0.2); */
   transition: transform 0.3s ease;
 }
 
 .sec-image img:hover {
   transform: scale(1.05);
 }
+
+.sec-2, .sec-3, .sec-4 {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
 .section-heading {
   font-size: 1.8rem;
   margin-bottom: 1rem;
 }
 
+/* === Features Grid (Section 2) === */
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 2rem;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
+  width: 100%;
 }
 
 .feature-item {
@@ -141,15 +127,12 @@
   font-size: 1.2rem;
 }
 
-.section-text {
-  font-size: 1.5rem;
-  line-height: 1.6;
-}
-
+/* === Quote & CTA (Section 4) === */
 .quote {
   font-size: 1.5rem;
   font-style: italic;
-  text-align: center;
+  line-height: 1.6;
+  max-width: 800px;
   margin-bottom: 1.5rem;
 }
 
@@ -158,70 +141,26 @@
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
+  margin-top: 1.5rem;
 }
 
-.btn-google{
+.btn-google {
   padding: 0.8rem 1.5rem;
   font-size: 1rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-}
-
-.btn-google {
   background-color: #3e5f44a7;
   color: #ffffff;
-}
-
-
-/* Keep existing colors and card style */
-.home-sec {
-  background: linear-gradient(to right, #3e5f446b, #93da975b);
-  width: 90%;
-  padding: 2.5rem;
-  border-radius: 20px;
-  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Add vertical stacking feel */
-.sec-2,
-.sec-3,
-.sec-4 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 2rem; /* gap between stacked cards */
+.btn-google:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 8px 15px rgba(62, 95, 68, 0.3);
 }
 
-/* Section 2 features grid remains */
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 2rem;
-  margin-top: 1.5rem;
-  width: 100%;
-} 
-
-/* Section 3 and 4 text centering */
-.sec-3,
-.sec-4 {
-  text-align: center;
-}
-
-/* Quote styling */
-.quote {
-  font-size: 1.4rem;
-  font-style: italic;
-  line-height: 1.6;
-  max-width: 800px;
-}
-
-/* Buttons stay in center */
-.cta-buttons {
-  margin-top: 1.5rem;
-}
-
+/* === Footer === */
 .bottom-home-landing {
   display: flex;
   flex-direction: column;
@@ -229,51 +168,94 @@
   background-color: #3E5F44;
   color: #E8FFD7;
   text-align: center;
-  padding: 1rem;
+  padding: 2rem 1rem;
   font-size: 1.2rem;
+  box-sizing: border-box;
 }
 
-/* === Animation Keyframes === */
+/* === Login Modal === */
+.login-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 35vw;
+  max-width: 550px; /* Max width for large screens */
+  min-width: 300px; /* Min width for small screens */
+  height: auto;     /* Let content determine height */
+  max-height: 90vh; /* Prevent overflow on short screens */
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+
+.login-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: linear-gradient(to right, var(--login-container-bg-color-1), var(--login-container-bg-color-2));
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #24502c;
+  gap: 1rem;
+  padding: 2rem;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.login-div-text {
+  padding: 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.login-button button {
+  background-color: var(--login-button-bg-color);
+  color: rgb(0, 0, 0);
+  padding: 12px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  transition: background-color 0.3s ease;
+  border: none;
+}
+
+.login-button img {
+  margin-right: 8px;
+}
+
+/* === Animations (Unchanged) === */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+ from { opacity: 0; transform: translateY(30px); }
+ to { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+ from { opacity: 0; }
+ to { opacity: 1; }
 }
-
 @keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+ from { opacity: 0; transform: translateX(-50px); }
+ to { opacity: 1; transform: translateX(0); }
 }
-
 @keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+ from { opacity: 0; transform: translateX(50px); }
+ to { opacity: 1; transform: translateX(0); }
+}
+@keyframes jiggle {
+ 0%, 100% { transform: rotate(0); }
+ 25% { transform: rotate(-5deg); }
+ 75% { transform: rotate(5deg); }
 }
 
-/* === Animation Setup === */
-/* Hide elements until they are visible */
 .animate-fade-in,
 .animate-fade-in-up,
 .animate-slide-in-left,
@@ -281,56 +263,106 @@
   opacity: 0;
 }
 
-/* === Trigger Animations === */
-/* General fade-in for titles and text */
-.is-visible .animate-fade-in {
-  animation: fadeIn 1s ease-out forwards;
-}
-
-/* Fade-in and up for feature items and paragraphs */
-.is-visible .animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out forwards;
-}
-
-/* Staggered animation for the feature items in Section 2 */
+.is-visible .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
+.is-visible .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+.is-visible .animate-slide-in-left { animation: slideInLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+.is-visible .animate-slide-in-right { animation: slideInRight 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
 .is-visible .feature-item:nth-child(1) { animation-delay: 0.1s; }
 .is-visible .feature-item:nth-child(2) { animation-delay: 0.2s; }
 .is-visible .feature-item:nth-child(3) { animation-delay: 0.3s; }
 .is-visible .feature-item:nth-child(4) { animation-delay: 0.4s; }
 
-/* Slide-in for Section 1 */
-.is-visible .animate-slide-in-left {
-  animation: slideInLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+/* === RESPONSIVE DESIGN === */
+
+/* For Tablets and Smaller Laptops (<= 1024px) */
+@media (max-width: 1024px) {
+  .home-sec {
+    padding: 2rem;
+  }
+  .sec-text {
+    font-size: 1.3rem;
+  }
+  .quote {
+    font-size: 1.3rem;
+  }
+  .login-container {
+    width: 60vw; /* Make login modal wider on tablets */
+  }
 }
 
-.is-visible .animate-slide-in-right {
-  animation: slideInRight 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
+/* For Mobile Phones (<= 768px) */
+@media (max-width: 768px) {
+  .home-sections {
+    margin-top: 5rem;
+    gap: 1.5rem;
+  }
 
-/* === Enhanced Hover Effects (Optional but Recommended) === */
-.btn-google {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.btn-google:hover {
-  transform: translateY(-3px);
-  box-shadow: 0px 8px 15px rgba(62, 95, 68, 0.3);
-}
+  .home-sec {
+    width: 95%; /* Use more of the screen width */
+    padding: 1.5rem;
+  }
+  
+  /* Stack section 1 content on mobile */
+  .sec-1 {
+    flex-direction: column;
+    gap: 2rem;
+  }
 
-.feature-item .fa-handshake,
-.feature-item .fa-comments,
-.feature-item .fa-question-circle,
-.feature-item .fa-book {
-    transition: transform 0.3s ease;
-}
+  .sec-text {
+    padding-right: 0;
+    text-align: center;
+    font-size: 1.1rem;
+  }
+  
+  .sec-text .tagline {
+    font-size: 1.2rem;
+  }
 
-.feature-item:hover .fa-handshake { transform: rotate(-15deg) scale(1.1); }
-.feature-item:hover .fa-comments { transform: scale(1.1) translateY(-5px); }
-.feature-item:hover .fa-question-circle { animation: jiggle 0.5s; }
-.feature-item:hover .fa-book { transform: rotate(10deg) scale(1.1); }
+  .sec-image img {
+    max-width: 85%;
+  }
 
+  .section-heading {
+    font-size: 1.5rem;
+  }
 
-@keyframes jiggle {
-  0%, 100% { transform: rotate(0); }
-  25% { transform: rotate(-5deg); }
-  75% { transform: rotate(5deg); }
+  .features-grid {
+    gap: 1rem;
+  }
+  
+  .feature-item {
+    padding: 1.5rem;
+  }
+  
+  .feature-item h4 {
+    font-size: 1.1rem;
+  }
+  
+  .feature-item p {
+    font-size: 0.9rem;
+  }
+
+  .quote {
+    font-size: 1.1rem;
+  }
+
+  .bottom-home-landing {
+    font-size: 1rem;
+    padding: 1.5rem 1rem;
+  }
+
+  /* Adjust login modal for mobile */
+  .login-container {
+    width: 90vw; /* Make login modal fill most of the screen */
+  }
+
+  .login-div-text {
+    font-size: 1.2rem;
+    padding: 0.5rem;
+  }
+
+  .login-button button {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
 }
