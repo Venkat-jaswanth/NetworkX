@@ -232,3 +232,105 @@
   padding: 1rem;
   font-size: 1.2rem;
 }
+
+/* === Animation Keyframes === */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* === Animation Setup === */
+/* Hide elements until they are visible */
+.animate-fade-in,
+.animate-fade-in-up,
+.animate-slide-in-left,
+.animate-slide-in-right {
+  opacity: 0;
+}
+
+/* === Trigger Animations === */
+/* General fade-in for titles and text */
+.is-visible .animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+/* Fade-in and up for feature items and paragraphs */
+.is-visible .animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Staggered animation for the feature items in Section 2 */
+.is-visible .feature-item:nth-child(1) { animation-delay: 0.1s; }
+.is-visible .feature-item:nth-child(2) { animation-delay: 0.2s; }
+.is-visible .feature-item:nth-child(3) { animation-delay: 0.3s; }
+.is-visible .feature-item:nth-child(4) { animation-delay: 0.4s; }
+
+/* Slide-in for Section 1 */
+.is-visible .animate-slide-in-left {
+  animation: slideInLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.is-visible .animate-slide-in-right {
+  animation: slideInRight 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* === Enhanced Hover Effects (Optional but Recommended) === */
+.btn-google {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-google:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 8px 15px rgba(62, 95, 68, 0.3);
+}
+
+.feature-item .fa-handshake,
+.feature-item .fa-comments,
+.feature-item .fa-question-circle,
+.feature-item .fa-book {
+    transition: transform 0.3s ease;
+}
+
+.feature-item:hover .fa-handshake { transform: rotate(-15deg) scale(1.1); }
+.feature-item:hover .fa-comments { transform: scale(1.1) translateY(-5px); }
+.feature-item:hover .fa-question-circle { animation: jiggle 0.5s; }
+.feature-item:hover .fa-book { transform: rotate(10deg) scale(1.1); }
+
+
+@keyframes jiggle {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
