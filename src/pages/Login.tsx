@@ -2,7 +2,7 @@ import { signInWithGoogle } from "@/services/authService";
 import HomeLanding from "./HomeLanding";
 import { useState } from "react";
 import TopBar from "@/components/TopBar";
-import "@/css/HomeLanding.css";
+import "@/css/homelanding.css";
 import img from "@/assets/imgs/undraw_workspace_s6wf.svg"; // Assuming you have a login image
 export default function Login() {
   const [isLoginVisible, setLoginVisible] = useState(false);
