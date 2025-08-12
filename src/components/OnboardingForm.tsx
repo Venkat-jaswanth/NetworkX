@@ -9,7 +9,7 @@ interface OnboardingFormProps {
 
 export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
   const [fullName, setFullName] = useState('');
-  const [role, setRole] = useState<'student' | 'professional'>('student');
+  const [role, setRole] = useState<'Student' | 'Professional'>('Student');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,6 +24,8 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
         id: user.id,
         full_name: fullName,
         role: role,
+        bio: '',
+        skills: [],
       };
 
       await createDbUser(newUser);
@@ -56,11 +58,11 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
           <select
             id="role"
             value={role}
-            onChange={(e) => setRole(e.target.value as 'student' | 'professional')}
+            onChange={(e) => setRole(e.target.value as 'Student' | 'Professional')}
             className="w-full px-3 py-2 border rounded"
           >
-            <option value="student">Student</option>
-            <option value="professional">Professional</option>
+            <option value="Student">Student</option>
+            <option value="Professional">Professional</option>
           </select>
         </div>
         <button

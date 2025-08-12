@@ -1,0 +1,177 @@
+-- This script creates the complete database schema for the NetworkX project.
+-- It is written in PostgreSQL syntax.
+
+-- =================================================================
+-- Section 1: Core User, Profile & Social Tables
+-- =================================================================
+
+-- Users Table: Stores the core identity of every user.
+CREATE TABLE "Users" (
+    "id" SERIAL PRIMARY KEY,
+    "full_name" VARCHAR(255) NOT NULL,
+    "profile_picture_url" TEXT,
+    "bio" TEXT,
+    "role" VARCHAR(50) NOT NULL CHECK ("role" IN ('Student', 'Professional')),
+    "skills" JSONB, -- Stores skills as a JSON array, e.g., ["React", "Node.js"]
+    "is_mentor" BOOLEAN DEFAULT FALSE,
+    "is_seeking_mentor" BOOLEAN DEFAULT FALSE,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+
+    CHECK ("is_mentor" = FALSE OR "is_seeking_mentor" = FALSE)
+);
+
+-- WorkExperience Table: Provides a structured history of a user's professional roles.
+CREATE TABLE "WorkExperience" (
+    "id" SERIAL PRIMARY KEY,
+    "user_id" INTEGER NOT NULL REFERENCES "Users"("id") ON DELETE CASCADE,
+    "company_name" VARCHAR(255) NOT NULL,
+    "job_title" VARCHAR(255) NOT NULL,
+    "start_date" DATE NOT NULL,
+    "end_date" DATE -- NULL indicates this is the user's current position.
+);
+
+-- Education Table: Provides a structured history of a user's academic background.
+CREATE TABLE "Education" (
+    "id" SERIAL PRIMARY KEY,
+    "user_id" INTEGER NOT NULL REFERENCES "Users"("id") ON DELETE CASCADE,
+    "institution_name" VARCHAR(255) NOT NULL,
+    "degree" VARCHAR(255) NOT NULL,
+    "field_of_study" VARCHAR(255) NOT NULL,
+    "graduation_year" INTEGER NOT NULL
+);
+
+-- Follows Table: A join table to manage the many-to-many follower/following relationships.
+CREATE TABLE "Follows" (
+    "follower_id" INTEGER NOT NULL REFERENCES "Users"("id") ON DELETE CASCADE,
+    "following_id" INTEGER NOT NULL REFERENCES "Users"("id") ON DELETE CASCADE,
+    PRIMARY KEY ("follower_id", "following_id")
+);
+
+-- Messages Table: Stores direct messages between users.
+CREATE TABLE "Messages" (
+    "id" SERIAL PRIMARY KEY,
+    "sender_id" INTEGER NOT NULL REFERENCES "Users"("id") ON DELETE CASCADE,
+    "receiver_id" INTEGER NOT NULL REFERENCES "Users"("id") ON DELETE CASCADE,
+    "body" TEXT NOT NULL,
+    "read_at" TIMESTAMPTZ, -- NULL if the message has not been read yet.
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- =================================================================
+-- Section 2: Content, Experience & Resource Tables
+-- =================================================================
+
+-- GeneralPosts Table: For the general feed where users can share updates.
+CREATE TABLE "GeneralPosts" (
+    "id" SERIAL PRIMARY KEY,
+    "author_id" INTEGER NOT NULL REFERENCES "Users"("id") ON DELETE CASCADE,
+    "body" TEXT NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- InterviewPosts Table: Stores each interview experience shared by a user.
+CREATE TABLE "InterviewPosts" (
+    "id" SERIAL PRIMARY KEY,
+    "author_id" INTEGER NOT NULL REFERENCES "Users"("id") ON DELETE CASCADE,
+    "is_anonymous" BOOLEAN NOT NULL DEFAULT FALSE,
+    "company_name" VARCHAR(255) NOT NULL,
+    "role" VARCHAR(255) NOT NULL,
+    "cracked" BOOLEAN NOT NULL,
+    "description" TEXT NOT NULL,
+    "mistakes_made" TEXT,
+    "peer_suggestions" TEXT,
+    "tags" JSONB, -- Stores tags as a JSON array, e.g., ["System Design", "L5"]
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Questions Table: For the Q&A Forum.
+CREATE TABLE "Questions" (
+    "id" SERIAL PRIMARY KEY,
+    "author_id" INTEGER NOT NULL REFERENCES "Users"("id") ON DELETE CASCADE,
+    "is_anonymous" BOOLEAN NOT NULL DEFAULT FALSE,
+    "title" VARCHAR(255) NOT NULL,
+    "body" TEXT NOT NULL,
+    "tags" JSONB, -- Stores tags as a JSON array, e.g., ["DSA", "Career Advice"]
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Answers Table: Replies to questions in the Q&A Forum.
+CREATE TABLE "Answers" (
+    "id" SERIAL PRIMARY KEY,
+    "question_id" INTEGER NOT NULL REFERENCES "Questions"("id") ON DELETE CASCADE,
+    "author_id" INTEGER NOT NULL REFERENCES "Users"("id") ON DELETE CASCADE,
+    "is_anonymous" BOOLEAN NOT NULL DEFAULT FALSE,
+    "body" TEXT NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Attachments Table: A polymorphic table to handle all file uploads.
+CREATE TABLE "Attachments" (
+    "id" SERIAL PRIMARY KEY,
+    "file_url" TEXT NOT NULL,
+    "file_type" VARCHAR(50) NOT NULL CHECK ("file_type" IN ('image', 'pdf')),
+    "attachable_id" INTEGER NOT NULL, -- The ID of the item this file is attached to.
+    "attachable_type" VARCHAR(50) NOT NULL -- The type of item, e.g., 'general_post' or 'question'.
+);
+
+-- ResourceTopics Table: Defines the topics for the Resource Hub.
+CREATE TABLE "ResourceTopics" (
+    "id" SERIAL PRIMARY KEY,
+    "creator_id" INTEGER NOT NULL REFERENCES "Users"("id"),
+    "name" VARCHAR(255) NOT NULL UNIQUE,
+    "description" TEXT NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Resources Table: Stores the actual resources linked within a topic.
+CREATE TABLE "Resources" (
+    "id" SERIAL PRIMARY KEY,
+    "topic_id" INTEGER NOT NULL REFERENCES "ResourceTopics"("id") ON DELETE CASCADE,
+    "author_id" INTEGER NOT NULL REFERENCES "Users"("id"),
+    "title" VARCHAR(255) NOT NULL,
+    "url" TEXT NOT NULL,
+    "resource_type" VARCHAR(50) NOT NULL CHECK ("resource_type" IN ('Article', 'Video', 'GitHub Repo', 'Course')),
+    "description" TEXT,
+    "upvotes" INTEGER NOT NULL DEFAULT 0,
+    "downvotes" INTEGER NOT NULL DEFAULT 0,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- =================================================================
+-- Section 3: Mock Interview & Review Table
+-- =================================================================
+
+-- MockInterviewBookings Table: The transactional table for every mock interview session.
+CREATE TABLE "MockInterviewBookings" (
+    "id" SERIAL PRIMARY KEY,
+    "mentee_id" INTEGER NOT NULL REFERENCES "Users"("id"),
+    "mentor_id" INTEGER NOT NULL REFERENCES "Users"("id"),
+    "scheduled_time" TIMESTAMPTZ NOT NULL,
+    "status" VARCHAR(50) NOT NULL CHECK ("status" IN ('Confirmed', 'Completed', 'Cancelled', 'Reschedule Requested')),
+    "google_meet_link" TEXT,
+    "rating_clarity" INTEGER CHECK ("rating_clarity" BETWEEN 1 AND 5),
+    "rating_actionability" INTEGER CHECK ("rating_actionability" BETWEEN 1 AND 5),
+    "rating_technical" INTEGER CHECK ("rating_technical" BETWEEN 1 AND 5),
+    "mentee_review_of_mentor" TEXT,
+    "mentor_review_of_mentee" TEXT
+);
+
+-- =================================================================
+-- Section 4: Indexes for Performance
+-- =================================================================
+
+-- Adding indexes to frequently queried foreign key columns will improve read performance.
+CREATE INDEX idx_workexperience_user_id ON "WorkExperience"("user_id");
+CREATE INDEX idx_education_user_id ON "Education"("user_id");
+CREATE INDEX idx_messages_sender_id ON "Messages"("sender_id");
+CREATE INDEX idx_messages_receiver_id ON "Messages"("receiver_id");
+CREATE INDEX idx_interviewposts_author_id ON "InterviewPosts"("author_id");
+CREATE INDEX idx_questions_author_id ON "Questions"("author_id");
+CREATE INDEX idx_answers_question_id ON "Answers"("question_id");
+CREATE INDEX idx_resources_topic_id ON "Resources"("topic_id");
+CREATE INDEX idx_bookings_mentee_id ON "MockInterviewBookings"("mentee_id");
+CREATE INDEX idx_bookings_mentor_id ON "MockInterviewBookings"("mentor_id");
+
+-- Index for the polymorphic attachments table
+CREATE INDEX idx_attachments_polymorphic ON "Attachments"("attachable_id", "attachable_type");
+

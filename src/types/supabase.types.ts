@@ -16,24 +16,109 @@ export type Database = {
     Tables: {
       db_user: {
         Row: {
+          bio: string
           created_at: string
           full_name: string
           id: string
+          is_mentor: boolean | null
+          is_seeking_mentor: boolean | null
+          profile_picture_url: string | null
           role: Database["public"]["Enums"]["user_role"]
+          skills: Json
         }
         Insert: {
+          bio: string
           created_at?: string
           full_name: string
           id: string
+          is_mentor?: boolean | null
+          is_seeking_mentor?: boolean | null
+          profile_picture_url?: string | null
           role: Database["public"]["Enums"]["user_role"]
+          skills: Json
         }
         Update: {
+          bio?: string
           created_at?: string
           full_name?: string
           id?: string
+          is_mentor?: boolean | null
+          is_seeking_mentor?: boolean | null
+          profile_picture_url?: string | null
           role?: Database["public"]["Enums"]["user_role"]
+          skills?: Json
         }
         Relationships: []
+      }
+      Education: {
+        Row: {
+          degree: string
+          field_of_study: string
+          graduation_year: number
+          id: number
+          institution_name: string
+          user_id: string
+        }
+        Insert: {
+          degree: string
+          field_of_study: string
+          graduation_year: number
+          id?: number
+          institution_name: string
+          user_id: string
+        }
+        Update: {
+          degree?: string
+          field_of_study?: string
+          graduation_year?: number
+          id?: number
+          institution_name?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Education_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "db_user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      WorkExperience: {
+        Row: {
+          company_name: string
+          end_date: string | null
+          id: number
+          job_title: string
+          start_date: string
+          user_id: string
+        }
+        Insert: {
+          company_name: string
+          end_date?: string | null
+          id?: number
+          job_title: string
+          start_date: string
+          user_id: string
+        }
+        Update: {
+          company_name?: string
+          end_date?: string | null
+          id?: number
+          job_title?: string
+          start_date?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "WorkExperience_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "db_user"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -43,7 +128,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      user_role: "student" | "professional"
+      user_role: "Student" | "Professional"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -171,7 +256,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      user_role: ["student", "professional"],
+      user_role: ["Student", "Professional"],
     },
   },
 } as const
