@@ -1,5 +1,5 @@
 import { signInWithGoogle } from "@/services/authService";
-import "@/css/HomeLanding.css";
+import "@/css/homelanding.css";
 import homeSec1Img from "@/assets/imgs/home-sec-1.png";
 import {
   FaComments,
