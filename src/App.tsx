@@ -2,7 +2,7 @@ import { useAuth } from '@/hooks/useAuth';
 import NetworkX from '@/components/NetworkX';
 import Login from '@/pages/Login';
 import Loader from '@/components/Loader';
-import { CgEnter } from 'react-icons/cg';
+
 function App() {
   const { user, loading } = useAuth();
 
@@ -11,7 +11,8 @@ function App() {
       style={{
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        height: '100vh',
       }}
     >
       <div className="text-center p-4" style={{ height: '50px' }}>

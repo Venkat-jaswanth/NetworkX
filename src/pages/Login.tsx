@@ -14,7 +14,7 @@ export default function Login() {
   return (
     <>
       <TopBar toggleLogin={toggleLogin} isLoginVisible={isLoginVisible} />
-      <HomeLanding isLoginVisible={isLoginVisible} />
+      <HomeLanding isLoginVisible={isLoginVisible} setIsLoginVisible={setLoginVisible} />
       <div
         className="login-container "
         style={{ display: isLoginVisible ? "block" : "none" }}

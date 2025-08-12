@@ -1,4 +1,3 @@
-import React from "react";
 import { signInWithGoogle } from "@/services/authService";
 import "@/css/HomeLanding.css";
 import homeSec1Img from "@/assets/imgs/home-sec-1.png";
@@ -12,14 +11,15 @@ import { useIntersectionObserver } from "@/hooks/useIntersectionObserver"; // Im
 
 interface HomeLandingProps {
   isLoginVisible: boolean;
+  setIsLoginVisible: (visible: boolean) => void;
 }
-
-const HomeLanding = ({ isLoginVisible }: HomeLandingProps) => {
+const HomeLanding = ({ isLoginVisible, setIsLoginVisible } : HomeLandingProps) => {
   // Setup observers for each section
   const [sec1Ref, isSec1Visible] = useIntersectionObserver({ threshold: 0.3 });
   const [sec2Ref, isSec2Visible] = useIntersectionObserver({ threshold: 0.5 });
   const [sec3Ref, isSec3Visible] = useIntersectionObserver({ threshold: 0.7 });
   const [sec4Ref, isSec4Visible] = useIntersectionObserver({ threshold: 0.9 });
+
 
   return (
     <div style={{ position: "relative" }}>
@@ -27,13 +27,12 @@ const HomeLanding = ({ isLoginVisible }: HomeLandingProps) => {
         className="home-landing-content"
         style={{
           filter: isLoginVisible ? "blur(8px)" : "none",
-          transition: "filter 1s",
-            // Prevent cursor interaction when login is visible
-            pointerEvents: isLoginVisible ? "none" : "auto",
+          transition: "filter 1s"
           }}
           onClick={(e) => {
           if (isLoginVisible) {
-
+            // need to change is login visible state
+            setIsLoginVisible(false);
             e.stopPropagation();
           }
         }}
