@@ -1,12 +1,16 @@
 import { supabase } from "@/lib/supabase";
 import type { Message } from "@/types/User.types";
+import { getUser } from "./authService";
 
 // Send a message
-export async function sendMessage(senderId: string, receiverId: string, body: string): Promise<Message> {
+export async function sendMessage(receiverId: string, body: string): Promise<Message> {
+  const user = await getUser();
+  if (!user) throw new Error('User not authenticated');
+
   const { data, error } = await supabase
     .from('Messages')
     .insert({
-      sender_id: senderId,
+      sender_id: user.id,
       receiver_id: receiverId,
       body: body
     })
@@ -17,36 +21,45 @@ export async function sendMessage(senderId: string, receiverId: string, body: st
   return data;
 }
 
-// Get conversation between two users
-export async function getConversation(userId1: string, userId2: string): Promise<Message[]> {
+// Get conversation between current user and another user
+export async function getConversation(otherUserId: string): Promise<Message[]> {
+  const user = await getUser();
+  if (!user) throw new Error('User not authenticated');
+
   const { data, error } = await supabase
     .from('Messages')
     .select('*')
-    .or(`and(sender_id.eq.${userId1},receiver_id.eq.${userId2}),and(sender_id.eq.${userId2},receiver_id.eq.${userId1})`)
+    .or(`and(sender_id.eq.${user.id},receiver_id.eq.${otherUserId}),and(sender_id.eq.${otherUserId},receiver_id.eq.${user.id})`)
     .order('created_at', { ascending: true });
   
   if (error) throw error;
   return data || [];
 }
 
-// Get all conversations for a user
-export async function getUserConversations(userId: string): Promise<Message[]> {
+// Get all conversations for current user
+export async function getUserConversations(): Promise<Message[]> {
+  const user = await getUser();
+  if (!user) throw new Error('User not authenticated');
+
   const { data, error } = await supabase
     .from('Messages')
     .select('*')
-    .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
+    .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
     .order('created_at', { ascending: false });
   
   if (error) throw error;
   return data || [];
 }
 
-// Get unread messages for a user
-export async function getUnreadMessages(userId: string): Promise<Message[]> {
+// Get unread messages for current user
+export async function getUnreadMessages(): Promise<Message[]> {
+  const user = await getUser();
+  if (!user) throw new Error('User not authenticated');
+
   const { data, error } = await supabase
     .from('Messages')
     .select('*')
-    .eq('receiver_id', userId)
+    .eq('receiver_id', user.id)
     .is('read_at', null)
     .order('created_at', { ascending: false });
   
@@ -54,71 +67,89 @@ export async function getUnreadMessages(userId: string): Promise<Message[]> {
   return data || [];
 }
 
-// Mark message as read
+// Mark message as read (only if current user is receiver)
 export async function markMessageAsRead(messageId: number): Promise<void> {
+  const user = await getUser();
+  if (!user) throw new Error('User not authenticated');
+
   const { error } = await supabase
     .from('Messages')
     .update({ read_at: new Date().toISOString() })
-    .eq('id', messageId);
+    .eq('id', messageId)
+    .eq('receiver_id', user.id);
   
   if (error) throw error;
 }
 
 // Mark all messages from a sender as read
-export async function markConversationAsRead(userId: string, senderId: string): Promise<void> {
+export async function markConversationAsRead(senderId: string): Promise<void> {
+  const user = await getUser();
+  if (!user) throw new Error('User not authenticated');
+
   const { error } = await supabase
     .from('Messages')
     .update({ read_at: new Date().toISOString() })
-    .eq('receiver_id', userId)
+    .eq('receiver_id', user.id)
     .eq('sender_id', senderId)
     .is('read_at', null);
   
   if (error) throw error;
 }
 
-// Delete a message (only sender can delete)
-export async function deleteMessage(messageId: number, senderId: string): Promise<void> {
+// Delete a message (only if current user is sender)
+export async function deleteMessage(messageId: number): Promise<void> {
+  const user = await getUser();
+  if (!user) throw new Error('User not authenticated');
+
   const { error } = await supabase
     .from('Messages')
     .delete()
     .eq('id', messageId)
-    .eq('sender_id', senderId);
+    .eq('sender_id', user.id);
   
   if (error) throw error;
 }
 
-// Get message by ID
+// Get message by ID (only if current user is sender or receiver)
 export async function getMessage(messageId: number): Promise<Message> {
+  const user = await getUser();
+  if (!user) throw new Error('User not authenticated');
+
   const { data, error } = await supabase
     .from('Messages')
     .select('*')
     .eq('id', messageId)
+    .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
     .single();
   
   if (error) throw error;
   return data;
 }
 
-// Get unread message count for a user
-export async function getUnreadMessageCount(userId: string): Promise<number> {
+// Get unread message count for current user
+export async function getUnreadMessageCount(): Promise<number> {
+  const user = await getUser();
+  if (!user) throw new Error('User not authenticated');
+
   const { count, error } = await supabase
     .from('Messages')
     .select('*', { count: 'exact', head: true })
-    .eq('receiver_id', userId)
+    .eq('receiver_id', user.id)
     .is('read_at', null);
   
   if (error) throw error;
   return count || 0;
 }
 
-// Get recent conversations (last message from each conversation)
-export async function getRecentConversations(userId: string, limit: number = 10): Promise<Message[]> {
-  // This is a simplified version - in a real app, you might want to use a more complex query
-  // to get the actual last message from each conversation
+// Get recent conversations for current user
+export async function getRecentConversations(limit: number = 10): Promise<Message[]> {
+  const user = await getUser();
+  if (!user) throw new Error('User not authenticated');
+
   const { data, error } = await supabase
     .from('Messages')
     .select('*')
-    .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
+    .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
     .order('created_at', { ascending: false })
     .limit(limit);
   
