@@ -5,7 +5,7 @@ interface TopBarProps {
   isLoginVisible: boolean;
 }
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const TopBar = ({ toggleLogin, isLoginVisible }: TopBarProps) => {
   const [show, setShow] = useState(true);
