@@ -1,12 +1,13 @@
 import { useOnboarding } from '@/hooks/useOnboarding';
 import Home from '@/pages/Home';
 import OnboardingForm from './components/OnboardingForm';
+import Loader from './components/Loader';
 
 export default function NetworkX() {
   const { hasCompletedOnboarding, loading } = useOnboarding();
 
   if (loading) {
-    return <div className="text-center p-4"></div>;
+    return <Loader />;
   }
 
   if (!hasCompletedOnboarding) {
