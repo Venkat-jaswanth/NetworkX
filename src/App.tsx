@@ -6,20 +6,7 @@ import Loader from '@/components/Loader';
 function App() {
   const { user, loading } = useAuth();
 
-  if (loading) return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-      }}
-    >
-      <div className="text-center p-4" style={{ height: '50px' }}>
-        <Loader />
-      </div>
-    </div>
-  );
+  if (loading) return <Loader />;
 
   return user ? <NetworkX /> : <Login />;
 }
