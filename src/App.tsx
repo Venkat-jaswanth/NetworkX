@@ -1,6 +1,6 @@
 import { useAuth } from '@/hooks/useAuth';
-import NetworkX from '@/components/NetworkX';
-import Login from '@/pages/Login';
+import NetworkX from '@/NetworkX';
+import Login from '@/Login';
 import Loader from '@/components/Loader';
 
 function App() {

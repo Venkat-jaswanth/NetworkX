@@ -1,5 +1,5 @@
 import { signInWithGoogle } from "@/services/authService";
-import HomeLanding from "./HomeLanding";
+import HomeLanding from "./pages/HomeLanding";
 import { useState } from "react";
 import TopBar from "@/components/TopBar";
 import "@/css/homelanding.css";

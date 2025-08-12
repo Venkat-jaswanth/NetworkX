@@ -1,6 +1,6 @@
 import { useOnboarding } from '@/hooks/useOnboarding';
 import Home from '@/pages/Home';
-import OnboardingForm from './OnboardingForm';
+import OnboardingForm from './components/OnboardingForm';
 
 export default function NetworkX() {
   const { hasCompletedOnboarding, loading } = useOnboarding();

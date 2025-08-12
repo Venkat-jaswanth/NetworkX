@@ -1,10 +1,19 @@
 import { supabase } from "@/lib/supabase";
-import type { InsertDbUser } from "@/types/dbUser.types";
+import type { InsertDbUser, InsertEducation, InsertWorkExperience } from "@/types/dbUser.types";
 import type { DbUser } from "@/types/dbUser.types";
 
-export async function createDbUser(user: InsertDbUser) {
+export async function createDbUser(user: InsertDbUser, education?: InsertEducation, workExperience?: InsertWorkExperience) {
   const { error } = await supabase.from('db_user').insert(user);
   if (error) throw error;
+
+  if (education) {
+    const { error: educationError } = await supabase.from('Education').insert(education);
+    if (educationError) throw educationError;
+  }
+  if (workExperience) {
+    const { error: workExperienceError } = await supabase.from('WorkExperience').insert(workExperience);
+    if (workExperienceError) throw workExperienceError;
+  }
 }
 
 export async function getDbUser(id: string): Promise<DbUser> {
