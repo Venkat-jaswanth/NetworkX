@@ -6,7 +6,7 @@ export default function NetworkX() {
   const { hasCompletedOnboarding, loading } = useOnboarding();
 
   if (loading) {
-    return <div className="text-center p-4">Loading...</div>;
+    return <div className="text-center p-4"></div>;
   }
 
   if (!hasCompletedOnboarding) {

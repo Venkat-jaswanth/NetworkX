@@ -17,15 +17,26 @@ interface HomeLandingProps {
 const HomeLanding = ({ isLoginVisible }: HomeLandingProps) => {
   // Setup observers for each section
   const [sec1Ref, isSec1Visible] = useIntersectionObserver({ threshold: 0.3 });
-  const [sec2Ref, isSec2Visible] = useIntersectionObserver({ threshold: 0.3 });
-  const [sec3Ref, isSec3Visible] = useIntersectionObserver({ threshold: 0.3 });
-  const [sec4Ref, isSec4Visible] = useIntersectionObserver({ threshold: 0.3 });
+  const [sec2Ref, isSec2Visible] = useIntersectionObserver({ threshold: 0.5 });
+  const [sec3Ref, isSec3Visible] = useIntersectionObserver({ threshold: 0.7 });
+  const [sec4Ref, isSec4Visible] = useIntersectionObserver({ threshold: 0.9 });
 
   return (
     <div style={{ position: "relative" }}>
       <div
         className="home-landing-content"
-        style={{ filter: isLoginVisible ? "blur(10px)" : "none" }}
+        style={{
+          filter: isLoginVisible ? "blur(8px)" : "none",
+          transition: "filter 1s",
+            // Prevent cursor interaction when login is visible
+            pointerEvents: isLoginVisible ? "none" : "auto",
+          }}
+          onClick={(e) => {
+          if (isLoginVisible) {
+
+            e.stopPropagation();
+          }
+        }}
       >
         <div className="home-sections">
           {/* Section 1 */}

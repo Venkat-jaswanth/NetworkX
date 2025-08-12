@@ -1,11 +1,24 @@
 import { useAuth } from '@/hooks/useAuth';
 import NetworkX from '@/components/NetworkX';
 import Login from '@/pages/Login';
-
+import Loader from '@/components/Loader';
+import { CgEnter } from 'react-icons/cg';
 function App() {
   const { user, loading } = useAuth();
 
-  if (loading) return <div className="text-center p-4">Loading...</div>;
+  if (loading) return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
+    >
+      <div className="text-center p-4" style={{ height: '50px' }}>
+        <Loader />
+      </div>
+    </div>
+  );
 
   return user ? <NetworkX /> : <Login />;
 }
