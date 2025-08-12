@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createDbUser } from '@/services/dbUserService';
 import { getUser } from '@/services/authService';
-import type { InsertDbUser, InsertEducation, InsertWorkExperience } from '@/types/dbUser.types';
+import type { InsertDbUser, InsertEducation, InsertWorkExperience } from '@/types/User.types';
 import { FaUser, FaGraduationCap, FaBriefcase, FaArrowLeft, FaArrowRight, FaCheck } from 'react-icons/fa';
 import '@/css/onboarding.css';
 

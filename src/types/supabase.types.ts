@@ -14,7 +14,117 @@ export type Database = {
   }
   public: {
     Tables: {
-      db_user: {
+      Education: {
+        Row: {
+          degree: string
+          field_of_study: string
+          graduation_year: number
+          id: string
+          institution_name: string
+          user_id: string
+        }
+        Insert: {
+          degree: string
+          field_of_study: string
+          graduation_year: number
+          id?: string
+          institution_name: string
+          user_id: string
+        }
+        Update: {
+          degree?: string
+          field_of_study?: string
+          graduation_year?: number
+          id?: string
+          institution_name?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Education_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Follows: {
+        Row: {
+          created_at: string
+          follower_id: string
+          following_id: string
+        }
+        Insert: {
+          created_at?: string
+          follower_id: string
+          following_id: string
+        }
+        Update: {
+          created_at?: string
+          follower_id?: string
+          following_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Follows_follower_id_fkey"
+            columns: ["follower_id"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Follows_following_id_fkey"
+            columns: ["following_id"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Messages: {
+        Row: {
+          body: string
+          created_at: string
+          id: number
+          read_at: string | null
+          receiver_id: string
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: number
+          read_at?: string | null
+          receiver_id: string
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: number
+          read_at?: string | null
+          receiver_id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Messages_receiver_id_fkey"
+            columns: ["receiver_id"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Users: {
         Row: {
           bio: string
           created_at: string
@@ -50,46 +160,11 @@ export type Database = {
         }
         Relationships: []
       }
-      Education: {
-        Row: {
-          degree: string
-          field_of_study: string
-          graduation_year: number
-          id: number
-          institution_name: string
-          user_id: string
-        }
-        Insert: {
-          degree: string
-          field_of_study: string
-          graduation_year: number
-          id?: number
-          institution_name: string
-          user_id: string
-        }
-        Update: {
-          degree?: string
-          field_of_study?: string
-          graduation_year?: number
-          id?: number
-          institution_name?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "Education_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "db_user"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       WorkExperience: {
         Row: {
           company_name: string
           end_date: string | null
-          id: number
+          id: string
           job_title: string
           start_date: string
           user_id: string
@@ -97,7 +172,7 @@ export type Database = {
         Insert: {
           company_name: string
           end_date?: string | null
-          id?: number
+          id?: string
           job_title: string
           start_date: string
           user_id: string
@@ -105,7 +180,7 @@ export type Database = {
         Update: {
           company_name?: string
           end_date?: string | null
-          id?: number
+          id?: string
           job_title?: string
           start_date?: string
           user_id?: string
@@ -115,7 +190,7 @@ export type Database = {
             foreignKeyName: "WorkExperience_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "db_user"
+            referencedRelation: "Users"
             referencedColumns: ["id"]
           },
         ]
