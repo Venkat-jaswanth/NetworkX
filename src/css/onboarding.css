@@ -13,7 +13,7 @@
   --c-bg-input: rgba(0, 0, 0, 0.2);
   --c-bg-light-gray: rgba(0, 0, 0, 0.15); /* Replaced original for dark theme */
   --c-bg-secondary-hover: rgba(255, 255, 255, 0.1);
-  --c-bg-danger-hover: rgba(255, 81, 47, 0.2);
+  --c-bg-danger-hover: rgba(253, 104, 74, 0.507);
 
   /* --- TEXT COLORS --- */
   --c-text-primary: #ffffff;
@@ -423,6 +423,9 @@
     flex-direction: row;
     justify-content: flex-start;
   }
+  .skills-input-container {
+    flex-direction: column;
+  }
 
   .step-icon {
     margin-right: 1rem;
@@ -438,4 +441,23 @@
     width: 100%;
     justify-content: center;
   }
+}
+
+.sign-out-onboarding {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+.sign-out-onboarding button{
+  background: var(--c-danger);
+  color: var(--c-text-on-danger);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.sign-out-onboarding button:hover {
+  background: var(--c-bg-danger-hover);
 }

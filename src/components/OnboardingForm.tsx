@@ -4,6 +4,7 @@ import { getUser } from '@/services/authService';
 import type { InsertDbUser, InsertEducation, InsertWorkExperience } from '@/types/User.types';
 import { FaUser, FaGraduationCap, FaBriefcase, FaArrowLeft, FaArrowRight, FaCheck } from 'react-icons/fa';
 import '@/css/onboarding.css';
+import { signOut } from '@/services/authService';
 
 interface OnboardingFormProps {
   onComplete: () => void;
@@ -485,6 +486,14 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
             )}
           </button>
         </div>
+      </div>
+      <div className="sign-out-onboarding">
+        <button
+          type="button"
+          onClick={signOut}
+        >
+          Sign Out
+        </button>
       </div>
     </div>
   );
