@@ -1,3 +1,71 @@
+:root {
+  /* ========================================= */
+  /* 🎨 COLOR PALETTE 🎨             */
+  /* ========================================= */
+  
+  /* --- Primary & Accent Colors --- */
+  --c-primary: #A06CD5;                   /* Main accent color for active elements, buttons, text */
+  --c-primary-dark: #EA698B;              /* Darker shade of primary, used in gradients */
+  --c-primary-hover: #E5B3FE;             /* Hover state for primary-colored elements */
+  --c-success: #D55D92;                   /* Color for completed steps or success states */
+  --c-danger: #dc2626;                    /* Color for danger actions, like remove button hover */
+  
+  /* --- Text Colors --- */
+  --c-text-headings: #973AA8;             /* For main titles like .step-title */
+  --c-text-body: #973AA8;                 /* For most body text and labels */
+  --c-text-subtle: #6b7280;               /* For less important text like subtitles and descriptions */
+  --c-text-disabled: #ffffff;             /* For disabled states and helper text */
+  --c-text-inverted: #ffffff;              /* Text color on dark or colored backgrounds */
+  --c-success-label: #D55D92;              /* Text color for success labels */
+  --step-label-active: #973AA8;            /* Text color for active step labels */
+  --step-icon-focused :linear-gradient(-180deg, var(--c-primary), var(--c-primary-dark));
+  --c-btn-primary:var(--step-icon-focused); /* Primary button background */
+  --c-btn-primary-hover:linear-gradient(135deg, var(--c-primary-hover), var(--c-primary-dark));
+
+  /* --- Background & Surface Colors --- */
+  --c-bg-body: #f0f4f8;                   /* Fallback body background, though gradient is used */
+  --c-bg-content: #ffffff75;                 /* Background for the main content card */
+  --c-bg-light-gray: #f9fafb;             /* Very light gray for elements like .skip-option */
+  --c-bg-mid-gray:var(--step-icon-focused); /* Primary button background */               /* Medium gray for elements like skill tags and secondary buttons */
+  --c-bg-danger-hover: #fee2e2;            /* Background for remove button on hover */
+  
+  /* --- Border & Separator Colors --- */
+  --c-border-primary: linear-gradient(135deg, #e5b3fe6a, var(--c-primary-dark));            /* Main border color for inputs and containers */
+  --c-border-focused: var(--c-primary);    /* Border color for inputs on focus */
+
+  /* ========================================= */
+  /* 🎨 GRADIENTS 🎨                 */
+  /* ========================================= */
+
+  /* --- Page Background Gradient --- */
+  --gradient-page-bg: linear-gradient(135deg, var(--c-primary) 0%, var(--c-primary-dark) 100%);
+  
+  /* --- Page Overlay Gradient --- */
+  --gradient-page-overlay: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+
+  /* --- Text & UI Gradients --- */
+  --gradient-header-text: var(--step-icon-focused);
+  --gradient-progress-bar: linear-gradient(90deg, var(--c-primary), var(--c-primary-dark));
+  --gradient-primary-button: var(--step-icon-focused); /* Primary button background */
+
+  /* ========================================= */
+  /* 📐 SIZING & SHADOWS 📐              */
+  /* ========================================= */
+  
+  /* --- Border Radii --- */
+  --radius-small: 2px;                   /* For small elements like progress bar */
+  --radius-medium: 10px;                 /* Standard radius for buttons, inputs */
+  --radius-large: 20px;                  /* For larger containers like the main content card */
+  --radius-full: 50%;                    /* For circular elements like icons */
+
+  /* --- Box Shadows --- */
+  --shadow-content-card: 0 20px 40px #A06CD5;
+  --shadow-button-hover: 0 10px 20px #A06CD5;
+  --shadow-input-focus: 0 0 0 3px #A06CD5;
+}
+
+
+
 .onboarding-container {
   min-height: 100vh;
   position: relative;
@@ -14,7 +82,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-page-bg);
   z-index: -1;
 }
 
@@ -24,13 +92,14 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  background: var(--gradient-page-overlay);
 }
 
 .onboarding-content {
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  background: var(--c-bg-content);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-content-card);
   max-width: 800px;
   width: 100%;
   padding: 3rem;
@@ -45,7 +114,7 @@
 .onboarding-title {
   font-size: 2.5rem;
   font-weight: bold;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: var(--gradient-header-text);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -53,7 +122,7 @@
 }
 
 .onboarding-subtitle {
-  color: #6b7280;
+  color: var(--c-text-subtle);
   font-size: 1.1rem;
 }
 
@@ -78,51 +147,56 @@
 .step-icon {
   width: 50px;
   height: 50px;
-  border-radius: 50%;
-  background: #e5e7eb;
+  border-radius: var(--radius-full);
+  background: var(--c-border-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #9ca3af;
+  color: var(--c-text-disabled);
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
   transition: all 0.3s ease;
 }
 
 .progress-step.active .step-icon {
-  background: #667eea;
-  color: white;
+  background: var(--step-icon-focused);
+  color: var(--c-text-inverted);
   transform: scale(1.1);
 }
 
 .progress-step.completed .step-icon {
-  background: #10b981;
-  color: white;
+  background: var(--c-success);
+  color: var(--c-text-inverted);
 }
-
+.progress-step.completed .step-label {
+  color: var(--c-success-label);
+  font-weight: 600;
+}
 .step-label {
-  font-size: 0.9rem;
-  color: #6b7280;
+  font-size: 1.2rem;
+  color: var(--c-text-subtle);
   font-weight: 500;
 }
 
 .progress-step.active .step-label {
-  color: #667eea;
+  color: var(--c-primary);
+  color: var(--step-label-active);
+  
   font-weight: 600;
 }
 
 .progress-bar {
   height: 4px;
-  background: #e5e7eb;
-  border-radius: 2px;
+  background: var(--c-border-primary);
+  border-radius: var(--radius-small);
   position: relative;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  border-radius: 2px;
+  background: var(--gradient-progress-bar);
+  border-radius: var(--radius-small);
   transition: width 0.5s ease;
 }
 
@@ -137,12 +211,12 @@
 .step-title {
   font-size: 1.8rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--c-text-headings);
   margin-bottom: 0.5rem;
 }
 
 .step-description {
-  color: #6b7280;
+  color: var(--c-text-subtle);
   margin-bottom: 2rem;
   font-size: 1rem;
 }
@@ -164,18 +238,18 @@
 
 .form-group label {
   font-weight: 500;
-  color: #374151;
+  color: var(--c-text-body);
   margin-bottom: 0.5rem;
-  font-size: 0.95rem;
+  font-size: 1.2rem;
 }
 
 .form-input, .form-select, .form-textarea {
   padding: 0.75rem 1rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 10px;
+  border: 2px solid var(--c-border-primary);
+  border-radius: var(--radius-medium);
   font-size: 1rem;
   transition: all 0.3s ease;
-  background: white;
+  background: var(--c-bg-content);
 }
 
 .form-select {
@@ -190,8 +264,8 @@
 
 .form-input:focus, .form-select:focus, .form-textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--c-border-focused);
+  box-shadow: var(--shadow-input-focus);
 }
 
 .form-textarea {
@@ -207,17 +281,17 @@
 
 .add-skill-btn {
   padding: 0.75rem 1.5rem;
-  background: #667eea;
-  color: white;
+  background: var(--c-btn-primary);
+  color: var(--c-text-inverted);
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-medium);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .add-skill-btn:hover {
-  background: #5a67d8;
+  background: var(--c-btn-primary-hover);
   transform: translateY(-1px);
 }
 
@@ -229,20 +303,20 @@
 }
 
 .skill-tag {
-  background: #f3f4f6;
+  background: var(--c-bg-mid-gray);
   padding: 0.5rem 1rem;
-  border-radius: 20px;
+  border-radius: var(--radius-large);
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 0.9rem;
-  color: #374151;
+  color: var(--c-text-inverted);
 }
 
 .remove-skill-btn {
   background: none;
   border: none;
-  color: #9ca3af;
+  color: var(--c-text-disabled);
   cursor: pointer;
   font-size: 1.2rem;
   padding: 0;
@@ -251,26 +325,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   transition: all 0.2s ease;
 }
 
 .remove-skill-btn:hover {
-  background: #fee2e2;
-  color: #dc2626;
+  background: var(--c-bg-danger-hover);
+  color: var(--c-danger);
 }
 
 .helper-text {
-  font-size: 0.85rem;
-  color: #9ca3af;
-  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: var(--c-text-body);
+  margin-top: 0.1rem;
 }
 
 .skip-option {
   margin-bottom: 2rem;
   padding: 1rem;
-  background: #f9fafb;
-  border-radius: 10px;
+  background: var(--c-bg-light-gray);
+  border-radius: var(--radius-medium);
 }
 
 .checkbox-label {
@@ -279,13 +353,13 @@
   gap: 0.5rem;
   cursor: pointer;
   font-size: 0.95rem;
-  color: #374151;
+  color: var(--c-text-body);
 }
 
 .checkbox-label input[type="checkbox"] {
   width: 18px;
   height: 18px;
-  accent-color: #667eea;
+  accent-color: var(--c-primary);
 }
 
 .navigation-container {
@@ -293,7 +367,7 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 2rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--c-border-primary);
 }
 
 .nav-btn {
@@ -301,7 +375,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 2rem;
-  border-radius: 10px;
+  border-radius: var(--radius-medium);
   font-weight: 500;
   font-size: 1rem;
   cursor: pointer;
@@ -310,24 +384,25 @@
 }
 
 .nav-btn.primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
+  background: var(--gradient-primary-button);
+  color: var(--c-text-inverted);
 }
 
 .nav-btn.primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: var(--shadow-button-hover);
 }
 
 .nav-btn.secondary {
-  background: #f3f4f6;
-  color: #374151;
-  border: 2px solid #e5e7eb;
+  background: var(--c-bg-mid-gray);
+  color: var(--c-text-inverted);
+  border: 2px solid var(--c-border-primary);
 }
 
 .nav-btn.secondary:hover {
-  background: #e5e7eb;
+  background: var(--c-border-primary);
   transform: translateY(-1px);
+
 }
 
 .nav-btn:disabled {
@@ -388,4 +463,4 @@
     width: 100%;
     justify-content: center;
   }
-} 
+}
