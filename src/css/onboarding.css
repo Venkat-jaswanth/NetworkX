@@ -1,67 +1,39 @@
 :root {
   /* ========================================= */
-  /* 🎨 COLOR PALETTE 🎨             */
+  /* ☄️ COSMIC FUSION THEME ☄️                */
   /* ========================================= */
   
-  /* --- Primary & Accent Colors --- */
-  --c-primary: #A06CD5;                   /* Main accent color for active elements, buttons, text */
-  --c-primary-dark: #EA698B;              /* Darker shade of primary, used in gradients */
-  --c-primary-hover: #E5B3FE;             /* Hover state for primary-colored elements */
-  --c-success: #D55D92;                   /* Color for completed steps or success states */
-  --c-danger: #dc2626;                    /* Color for danger actions, like remove button hover */
-  
-  /* --- Text Colors --- */
-  --c-text-headings: #973AA8;             /* For main titles like .step-title */
-  --c-text-body: #973AA8;                 /* For most body text and labels */
-  --c-text-subtle: #6b7280;               /* For less important text like subtitles and descriptions */
-  --c-text-disabled: #ffffff;             /* For disabled states and helper text */
-  --c-text-inverted: #ffffff;              /* Text color on dark or colored backgrounds */
-  --c-success-label: #D55D92;              /* Text color for success labels */
-  --step-label-active: #973AA8;            /* Text color for active step labels */
-  --step-icon-focused :linear-gradient(-180deg, var(--c-primary), var(--c-primary-dark));
-  --c-btn-primary:var(--step-icon-focused); /* Primary button background */
-  --c-btn-primary-hover:linear-gradient(135deg, var(--c-primary-hover), var(--c-primary-dark));
+  /* --- GRADIENTS --- */
+  --gradient-page-bg: linear-gradient(135deg, #1f005c, #3d1e6d, #5c2a9d, #9c1de7);
+  --gradient-accent: linear-gradient(90deg, #ff512f, #dd2476);
+  --gradient-accent-hover: linear-gradient(90deg, #ff795e, #e84c90);
 
-  /* --- Background & Surface Colors --- */
-  --c-bg-body: #f0f4f8;                   /* Fallback body background, though gradient is used */
-  --c-bg-content: #ffffff75;                 /* Background for the main content card */
-  --c-bg-light-gray: #f9fafb;             /* Very light gray for elements like .skip-option */
-  --c-bg-mid-gray:var(--step-icon-focused); /* Primary button background */               /* Medium gray for elements like skill tags and secondary buttons */
-  --c-bg-danger-hover: #fee2e2;            /* Background for remove button on hover */
-  
-  /* --- Border & Separator Colors --- */
-  --c-border-primary: linear-gradient(135deg, #e5b3fe6a, var(--c-primary-dark));            /* Main border color for inputs and containers */
-  --c-border-focused: var(--c-primary);    /* Border color for inputs on focus */
+  /* --- SURFACES & BACKGROUNDS --- */
+  --c-bg-content-glass: rgba(0, 0, 0, 0.25);
+  --c-bg-input: rgba(0, 0, 0, 0.2);
+  --c-bg-light-gray: rgba(0, 0, 0, 0.15); /* Replaced original for dark theme */
+  --c-bg-secondary-hover: rgba(255, 255, 255, 0.1);
+  --c-bg-danger-hover: rgba(255, 81, 47, 0.2);
 
-  /* ========================================= */
-  /* 🎨 GRADIENTS 🎨                 */
-  /* ========================================= */
+  /* --- TEXT COLORS --- */
+  --c-text-primary: #ffffff;
+  --c-text-secondary: #e0e0e0;
+  --c-text-subtle: #bebebe;
+  --c-text-on-accent: #ffffff;
 
-  /* --- Page Background Gradient --- */
-  --gradient-page-bg: linear-gradient(135deg, var(--c-primary) 0%, var(--c-primary-dark) 100%);
-  
-  /* --- Page Overlay Gradient --- */
-  --gradient-page-overlay: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  /* --- BORDERS & SEPARATORS --- */
+  --c-border: rgba(255, 255, 255, 0.2);
+  --c-border-focus: #ff512f;
+  --c-border-secondary: rgba(255, 255, 255, 0.3);
 
-  /* --- Text & UI Gradients --- */
-  --gradient-header-text: var(--step-icon-focused);
-  --gradient-progress-bar: linear-gradient(90deg, var(--c-primary), var(--c-primary-dark));
-  --gradient-primary-button: var(--step-icon-focused); /* Primary button background */
+  /* --- UI ACCENTS --- */
+  --c-success: #00ff7f;
+  --c-danger: #ff512f;
 
-  /* ========================================= */
-  /* 📐 SIZING & SHADOWS 📐              */
-  /* ========================================= */
-  
-  /* --- Border Radii --- */
-  --radius-small: 2px;                   /* For small elements like progress bar */
-  --radius-medium: 10px;                 /* Standard radius for buttons, inputs */
-  --radius-large: 20px;                  /* For larger containers like the main content card */
-  --radius-full: 50%;                    /* For circular elements like icons */
-
-  /* --- Box Shadows --- */
-  --shadow-content-card: 0 20px 40px #A06CD5;
-  --shadow-button-hover: 0 10px 20px #A06CD5;
-  --shadow-input-focus: 0 0 0 3px #A06CD5;
+  /* --- SHADOWS (FOR GLOW EFFECTS) --- */
+  --shadow-glow: 0 0 12px rgba(221, 36, 118, 0.6);
+  --shadow-glow-hover: 0 0 20px rgba(221, 36, 118, 0.8);
+  --shadow-content-card: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -74,31 +46,28 @@
   justify-content: center;
   padding: 2rem;
   overflow-x: hidden;
+  background: var(--gradient-page-bg); /* THEME CHANGE */
 }
 
 .onboarding-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--gradient-page-bg);
-  z-index: -1;
+  /* This element can be hidden as the container now has the background */
+  display: none;
 }
 
 .gradient-overlay {
+  /* This element is also not needed for the new theme */  position: absolute;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--gradient-page-overlay);
-}
+  display: none;}
 
 .onboarding-content {
-  background: var(--c-bg-content);
+  background: var(--c-bg-content-glass); /* THEME CHANGE */
   backdrop-filter: blur(10px);
-  border-radius: var(--radius-large);
+  border-radius: 20px; /* Kept original value */
+  border: 1px solid var(--c-border); /* THEME CHANGE */
   box-shadow: var(--shadow-content-card);
   max-width: 800px;
   width: 100%;
@@ -114,7 +83,7 @@
 .onboarding-title {
   font-size: 2.5rem;
   font-weight: bold;
-  background: var(--gradient-header-text);
+  background: var(--gradient-accent); /* THEME CHANGE */
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -122,7 +91,7 @@
 }
 
 .onboarding-subtitle {
-  color: var(--c-text-subtle);
+  color: var(--c-text-secondary); /* THEME CHANGE */
   font-size: 1.1rem;
 }
 
@@ -147,56 +116,58 @@
 .step-icon {
   width: 50px;
   height: 50px;
-  border-radius: var(--radius-full);
-  background: var(--c-border-primary);
+  border-radius: 50%;
+  background: var(--c-bg-input); /* THEME CHANGE */
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--c-text-disabled);
+  color: var(--c-text-subtle); /* THEME CHANGE */
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
   transition: all 0.3s ease;
+  border: 1px solid var(--c-border); /* THEME CHANGE */
 }
 
 .progress-step.active .step-icon {
-  background: var(--step-icon-focused);
-  color: var(--c-text-inverted);
+  background: var(--gradient-accent); /* THEME CHANGE */
+  color: var(--c-text-on-accent); /* THEME CHANGE */
   transform: scale(1.1);
+  border: none;
+  box-shadow: var(--shadow-glow); /* THEME CHANGE */
 }
 
 .progress-step.completed .step-icon {
-  background: var(--c-success);
-  color: var(--c-text-inverted);
+  background: var(--c-success); /* THEME CHANGE */
+  color: #1f005c; /* THEME CHANGE */
+  border: none;
 }
 .progress-step.completed .step-label {
-  color: var(--c-success-label);
+  color: var(--c-success); /* THEME CHANGE */
   font-weight: 600;
 }
 .step-label {
   font-size: 1.2rem;
-  color: var(--c-text-subtle);
+  color: var(--c-text-secondary); /* THEME CHANGE */
   font-weight: 500;
 }
 
 .progress-step.active .step-label {
-  color: var(--c-primary);
-  color: var(--step-label-active);
-  
+  color: var(--c-text-primary); /* THEME CHANGE */
   font-weight: 600;
 }
 
 .progress-bar {
   height: 4px;
-  background: var(--c-border-primary);
-  border-radius: var(--radius-small);
+  background: var(--c-border); /* THEME CHANGE */
+  border-radius: 2px;
   position: relative;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: var(--gradient-progress-bar);
-  border-radius: var(--radius-small);
+  background: var(--gradient-accent); /* THEME CHANGE */
+  border-radius: 2px;
   transition: width 0.5s ease;
 }
 
@@ -211,12 +182,12 @@
 .step-title {
   font-size: 1.8rem;
   font-weight: 600;
-  color: var(--c-text-headings);
+  color: var(--c-text-primary); /* THEME CHANGE */
   margin-bottom: 0.5rem;
 }
 
 .step-description {
-  color: var(--c-text-subtle);
+  color: var(--c-text-secondary); /* THEME CHANGE */
   margin-bottom: 2rem;
   font-size: 1rem;
 }
@@ -226,34 +197,34 @@
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
 }
-
 .form-group {
   display: flex;
   flex-direction: column;
 }
-
 .form-group.full-width {
   grid-column: 1 / -1;
 }
 
 .form-group label {
   font-weight: 500;
-  color: var(--c-text-body);
+  color: var(--c-text-secondary); /* THEME CHANGE */
   margin-bottom: 0.5rem;
   font-size: 1.2rem;
 }
 
 .form-input, .form-select, .form-textarea {
   padding: 0.75rem 1rem;
-  border: 2px solid var(--c-border-primary);
-  border-radius: var(--radius-medium);
+  border: 2px solid var(--c-border); /* THEME CHANGE */
+  border-radius: 10px;
   font-size: 1rem;
   transition: all 0.3s ease;
-  background: var(--c-bg-content);
+  background: var(--c-bg-input); /* THEME CHANGE */
+  color: var(--c-text-primary); /* THEME CHANGE */
 }
 
 .form-select {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  /* SVG icon color inverted for dark mode */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23e0e0e0' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
   background-position: right 0.2rem center;
   background-repeat: no-repeat;
   background-size: 1.5em 1.5em;
@@ -264,8 +235,8 @@
 
 .form-input:focus, .form-select:focus, .form-textarea:focus {
   outline: none;
-  border-color: var(--c-border-focused);
-  box-shadow: var(--shadow-input-focus);
+  border-color: var(--c-border-focus); /* THEME CHANGE */
+  box-shadow: var(--shadow-glow); /* THEME CHANGE */
 }
 
 .form-textarea {
@@ -281,18 +252,19 @@
 
 .add-skill-btn {
   padding: 0.75rem 1.5rem;
-  background: var(--c-btn-primary);
-  color: var(--c-text-inverted);
+  background: var(--gradient-accent); /* THEME CHANGE */
+  color: var(--c-text-on-accent); /* THEME CHANGE */
   border: none;
-  border-radius: var(--radius-medium);
+  border-radius: 10px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .add-skill-btn:hover {
-  background: var(--c-btn-primary-hover);
+  background: var(--gradient-accent-hover); /* THEME CHANGE */
   transform: translateY(-1px);
+  box-shadow: var(--shadow-glow-hover); /* THEME CHANGE */
 }
 
 .skills-container {
@@ -303,20 +275,21 @@
 }
 
 .skill-tag {
-  background: var(--c-bg-mid-gray);
+  background: var(--c-bg-input); /* THEME CHANGE */
+  border: 1px solid var(--c-border); /* THEME CHANGE */
   padding: 0.5rem 1rem;
-  border-radius: var(--radius-large);
+  border-radius: 20px;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 0.9rem;
-  color: var(--c-text-inverted);
+  color: var(--c-text-secondary); /* THEME CHANGE */
 }
 
 .remove-skill-btn {
   background: none;
   border: none;
-  color: var(--c-text-disabled);
+  color: var(--c-text-subtle); /* THEME CHANGE */
   cursor: pointer;
   font-size: 1.2rem;
   padding: 0;
@@ -325,26 +298,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-full);
+  border-radius: 50%;
   transition: all 0.2s ease;
 }
 
 .remove-skill-btn:hover {
-  background: var(--c-bg-danger-hover);
-  color: var(--c-danger);
+  background: var(--c-bg-danger-hover); /* THEME CHANGE */
+  color: var(--c-danger); /* THEME CHANGE */
 }
 
 .helper-text {
   font-size: 1rem;
-  color: var(--c-text-body);
+  color: var(--c-text-secondary); /* THEME CHANGE */
   margin-top: 0.1rem;
 }
 
 .skip-option {
   margin-bottom: 2rem;
   padding: 1rem;
-  background: var(--c-bg-light-gray);
-  border-radius: var(--radius-medium);
+  background: var(--c-bg-light-gray); /* THEME CHANGE */
+  border-radius: 10px;
 }
 
 .checkbox-label {
@@ -353,13 +326,13 @@
   gap: 0.5rem;
   cursor: pointer;
   font-size: 0.95rem;
-  color: var(--c-text-body);
+  color: var(--c-text-secondary); /* THEME CHANGE */
 }
 
 .checkbox-label input[type="checkbox"] {
   width: 18px;
   height: 18px;
-  accent-color: var(--c-primary);
+  accent-color: var(--c-border-focus); /* THEME CHANGE */
 }
 
 .navigation-container {
@@ -367,7 +340,7 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 2rem;
-  border-top: 1px solid var(--c-border-primary);
+  border-top: 1px solid var(--c-border); /* THEME CHANGE */
 }
 
 .nav-btn {
@@ -375,7 +348,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 2rem;
-  border-radius: var(--radius-medium);
+  border-radius: 10px;
   font-weight: 500;
   font-size: 1rem;
   cursor: pointer;
@@ -384,25 +357,26 @@
 }
 
 .nav-btn.primary {
-  background: var(--gradient-primary-button);
-  color: var(--c-text-inverted);
+  background: var(--gradient-accent); /* THEME CHANGE */
+  color: var(--c-text-on-accent); /* THEME CHANGE */
 }
 
 .nav-btn.primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-button-hover);
+  box-shadow: var(--shadow-glow-hover); /* THEME CHANGE */
+  background: var(--gradient-accent-hover); /* THEME CHANGE */
 }
 
 .nav-btn.secondary {
-  background: var(--c-bg-mid-gray);
-  color: var(--c-text-inverted);
-  border: 2px solid var(--c-border-primary);
+  background: transparent; /* THEME CHANGE */
+  color: var(--c-text-secondary); /* THEME CHANGE */
+  border: 2px solid var(--c-border-secondary); /* THEME CHANGE */
 }
 
 .nav-btn.secondary:hover {
-  background: var(--c-border-primary);
+  background: var(--c-bg-secondary-hover); /* THEME CHANGE */
+  border-color: var(--c-text-secondary); /* THEME CHANGE */
   transform: translateY(-1px);
-
 }
 
 .nav-btn:disabled {
@@ -429,6 +403,7 @@
   }
 }
 
+/* NO CHANGES to responsive layout */
 @media (max-width: 768px) {
   .onboarding-content {
     padding: 2rem 1.5rem;
