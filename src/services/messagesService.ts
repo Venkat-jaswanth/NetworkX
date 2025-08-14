@@ -1,11 +1,10 @@
 import { supabase } from "@/lib/supabase";
-import type { Message } from "@/types/User.types";
-import { getUser } from "./authService";
+import type { Message } from "@/types/app.types";
+import { getAuthUser } from "./authService";
 
 // Send a message
 export async function sendMessage(receiverId: string, body: string): Promise<Message> {
-  const user = await getUser();
-  if (!user) throw new Error('User not authenticated');
+  const user = await getAuthUser();
 
   const { data, error } = await supabase
     .from('Messages')
@@ -23,8 +22,7 @@ export async function sendMessage(receiverId: string, body: string): Promise<Mes
 
 // Get conversation between current user and another user
 export async function getConversation(otherUserId: string): Promise<Message[]> {
-  const user = await getUser();
-  if (!user) throw new Error('User not authenticated');
+  const user = await getAuthUser();
 
   const { data, error } = await supabase
     .from('Messages')
@@ -37,9 +35,8 @@ export async function getConversation(otherUserId: string): Promise<Message[]> {
 }
 
 // Get all conversations for current user
-export async function getUserConversations(): Promise<Message[]> {
-  const user = await getUser();
-  if (!user) throw new Error('User not authenticated');
+export async function getAuthUserConversations(): Promise<Message[]> {
+  const user = await getAuthUser();
 
   const { data, error } = await supabase
     .from('Messages')
@@ -53,8 +50,7 @@ export async function getUserConversations(): Promise<Message[]> {
 
 // Get unread messages for current user
 export async function getUnreadMessages(): Promise<Message[]> {
-  const user = await getUser();
-  if (!user) throw new Error('User not authenticated');
+  const user = await getAuthUser();
 
   const { data, error } = await supabase
     .from('Messages')
@@ -69,7 +65,7 @@ export async function getUnreadMessages(): Promise<Message[]> {
 
 // Mark message as read (only if current user is receiver)
 export async function markMessageAsRead(messageId: number): Promise<void> {
-  const user = await getUser();
+  const user = await getAuthUser();
   if (!user) throw new Error('User not authenticated');
 
   const { error } = await supabase
@@ -83,8 +79,7 @@ export async function markMessageAsRead(messageId: number): Promise<void> {
 
 // Mark all messages from a sender as read
 export async function markConversationAsRead(senderId: string): Promise<void> {
-  const user = await getUser();
-  if (!user) throw new Error('User not authenticated');
+  const user = await getAuthUser();
 
   const { error } = await supabase
     .from('Messages')
@@ -98,8 +93,7 @@ export async function markConversationAsRead(senderId: string): Promise<void> {
 
 // Delete a message (only if current user is sender)
 export async function deleteMessage(messageId: number): Promise<void> {
-  const user = await getUser();
-  if (!user) throw new Error('User not authenticated');
+  const user = await getAuthUser();
 
   const { error } = await supabase
     .from('Messages')
@@ -112,8 +106,7 @@ export async function deleteMessage(messageId: number): Promise<void> {
 
 // Get message by ID (only if current user is sender or receiver)
 export async function getMessage(messageId: number): Promise<Message> {
-  const user = await getUser();
-  if (!user) throw new Error('User not authenticated');
+  const user = await getAuthUser();
 
   const { data, error } = await supabase
     .from('Messages')
@@ -128,8 +121,7 @@ export async function getMessage(messageId: number): Promise<Message> {
 
 // Get unread message count for current user
 export async function getUnreadMessageCount(): Promise<number> {
-  const user = await getUser();
-  if (!user) throw new Error('User not authenticated');
+  const user = await getAuthUser();
 
   const { count, error } = await supabase
     .from('Messages')
@@ -143,8 +135,7 @@ export async function getUnreadMessageCount(): Promise<number> {
 
 // Get recent conversations for current user
 export async function getRecentConversations(limit: number = 10): Promise<Message[]> {
-  const user = await getUser();
-  if (!user) throw new Error('User not authenticated');
+  const user = await getAuthUser();
 
   const { data, error } = await supabase
     .from('Messages')

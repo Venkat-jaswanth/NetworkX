@@ -15,7 +15,7 @@ export async function signOut() {
   if (error) throw error;
 }
 
-export async function getUser() {
+export async function getAuthUser() {
   const { data, error } = await supabase.auth.getUser();
   if (error) throw error;
   return data.user;

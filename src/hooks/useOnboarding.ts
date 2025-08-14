@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getUser } from '@/services/authService';
-import { dbUserExists } from '@/services/dbUserService';
+import { getAuthUser } from '@/services/authService';
+import { dbUserExists } from '@/services/userService';
 
 export const useOnboarding = () => {
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
@@ -8,7 +8,7 @@ export const useOnboarding = () => {
 
   useEffect(() => {
     const checkOnboarding = async () => {
-        const user = await getUser();
+        const user = await getAuthUser();
         const exists = await dbUserExists(user.id);
         setHasCompletedOnboarding(exists);
         setLoading(false);

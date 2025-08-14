@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase";
-import type { InsertDbUser, InsertEducation, InsertWorkExperience } from "@/types/User.types";
-import type { DbUser } from "@/types/User.types";
+import type { InsertDbUser, InsertEducation, InsertWorkExperience, AppUser, DbUser } from "@/types/app.types";
+import { getAuthUser } from "./authService";
 
 export async function createDbUser(user: InsertDbUser, education?: InsertEducation, workExperience?: InsertWorkExperience) {
   const { error } = await supabase.from('Users').insert(user);
@@ -16,12 +16,6 @@ export async function createDbUser(user: InsertDbUser, education?: InsertEducati
   }
 }
 
-export async function getDbUser(id: string): Promise<DbUser> {
-  const { data: dbUser, error } = await supabase.from('Users').select('*').eq('id', id).single();
-  if (error) throw error;
-  return dbUser;
-}
-
 export async function dbUserExists(id: string): Promise<boolean> {
   const { data: dbUser, error } = await supabase.from('Users').select('*').eq('id', id).single();
   if (error) {
@@ -33,4 +27,12 @@ export async function dbUserExists(id: string): Promise<boolean> {
   }
   console.log('User found');
   return dbUser !== null;
+}
+
+export async function getAppUser(): Promise<AppUser> {
+  const authUser = await getAuthUser();
+  const { data, error } = await supabase.from('Users').select('*').eq('id', authUser?.id).single();
+  if (error) throw error;
+  const dbUser = data as DbUser;
+  return { ...authUser, ...dbUser };
 }

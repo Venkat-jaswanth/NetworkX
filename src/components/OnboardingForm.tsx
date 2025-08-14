@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { createDbUser } from '@/services/dbUserService';
-import { getUser } from '@/services/authService';
-import type { InsertDbUser, InsertEducation, InsertWorkExperience } from '@/types/User.types';
+import { createDbUser } from '@/services/userService';
+import type { InsertDbUser, InsertEducation, InsertWorkExperience } from '@/types/app.types';
 import { FaUser, FaGraduationCap, FaBriefcase, FaArrowLeft, FaArrowRight, FaCheck } from 'react-icons/fa';
 import '@/css/onboarding.css';
-import { signOut } from '@/services/authService';
+import { getAuthUser, signOut } from '@/services/authService';
 
 interface OnboardingFormProps {
   onComplete: () => void;
@@ -119,7 +118,7 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
     setLoading(true);
 
     try {
-      const user = await getUser();
+      const user = await getAuthUser();
       if (!user) throw new Error('No authenticated user found');
 
       const newUser: InsertDbUser = {

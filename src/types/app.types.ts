@@ -1,10 +1,14 @@
+import type { User } from '@supabase/supabase-js'
 import type { Database } from './supabase.types'
+
 
 export type userRole = Database['public']['Enums']['user_role']
 
 export type DbUser = Database['public']['Tables']['Users']['Row']
 export type InsertDbUser = Database['public']['Tables']['Users']['Insert']
 export type UpdateDbUser = Database['public']['Tables']['Users']['Update']
+
+export type AppUser = DbUser & User
 
 export type Education = Database['public']['Tables']['Education']['Row']
 export type InsertEducation = Database['public']['Tables']['Education']['Insert']
