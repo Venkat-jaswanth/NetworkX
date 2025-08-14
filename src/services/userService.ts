@@ -16,8 +16,9 @@ export async function createDbUser(user: InsertDbUser, education?: InsertEducati
   }
 }
 
-export async function dbUserExists(id: string): Promise<boolean> {
-  const { data: dbUser, error } = await supabase.from('Users').select('*').eq('id', id).single();
+export async function dbUserExists(): Promise<boolean> {
+  const authUser = await getAuthUser();
+  const { data: dbUser, error } = await supabase.from('Users').select('*').eq('id', authUser?.id).single();
   if (error) {
     if (error.code === 'PGRST116') {
       console.log('User not found error');

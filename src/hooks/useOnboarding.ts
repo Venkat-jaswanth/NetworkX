@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { getAuthUser } from '@/services/authService';
 import { dbUserExists } from '@/services/userService';
 
 export const useOnboarding = () => {
@@ -8,8 +7,7 @@ export const useOnboarding = () => {
 
   useEffect(() => {
     const checkOnboarding = async () => {
-        const user = await getAuthUser();
-        const exists = await dbUserExists(user.id);
+        const exists = await dbUserExists();
         setHasCompletedOnboarding(exists);
         setLoading(false);
     };
