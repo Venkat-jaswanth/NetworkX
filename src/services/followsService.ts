@@ -5,7 +5,6 @@ import { getAuthUser } from "./authService";
 // Follow a user (authenticated - current user follows someone)
 export async function followUser(followingId: string): Promise<void> {
   const user = await getAuthUser();
-  if (!user) throw new Error('User not authenticated');
 
   const { error } = await supabase
     .from('Follows')
@@ -20,7 +19,6 @@ export async function followUser(followingId: string): Promise<void> {
 // Unfollow a user (authenticated - current user unfollows someone)
 export async function unfollowUser(followingId: string): Promise<void> {
   const user = await getAuthUser();
-  if (!user) throw new Error('User not authenticated');
 
   const { error } = await supabase
     .from('Follows')
@@ -34,7 +32,6 @@ export async function unfollowUser(followingId: string): Promise<void> {
 // Check if current user is following another user (authenticated)
 export async function isFollowing(followingId: string): Promise<boolean> {
   const user = await getAuthUser();
-  if (!user) throw new Error('User not authenticated');
 
   const { data, error } = await supabase
     .from('Follows')
@@ -56,7 +53,6 @@ export async function isFollowing(followingId: string): Promise<boolean> {
 // Get mutual followers between current user and another user (authenticated)
 export async function getMutualFollowers(otherUserId: string): Promise<Follow[]> {
   const user = await getAuthUser();
-  if (!user) throw new Error('User not authenticated');
 
   const { data, error } = await supabase
     .from('Follows')
