@@ -26,7 +26,7 @@ export default function Login() {
             borderBottom: "2px solid",
             width: "100%",
           }}>
-          <h1>Welcome to Kairo!!</h1>
+          <h1>Welcome to LocusX!!</h1>
           </div>
           <div className="login-div-text">
             <div style={{
