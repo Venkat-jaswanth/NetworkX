@@ -31,7 +31,7 @@ const TopBar = ({ toggleLogin, isLoginVisible }: TopBarProps) => {
         className="brand-name"
         onClick={isLoginVisible ? toggleLogin : undefined}
       >
-        <h2>LocusX</h2>
+        <h2>NetworkX</h2>
       </div>
       <button onClick={toggleLogin}>
         {isLoginVisible ? "Back To Home" : "Sign up"}

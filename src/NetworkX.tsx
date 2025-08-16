@@ -3,7 +3,7 @@ import Home from '@/pages/Home';
 import OnboardingForm from './components/OnboardingForm';
 import Loader from './components/Loader';
 
-export default function LocusX() {
+export default function NetworkX() {
   const { hasCompletedOnboarding, loading } = useOnboarding();
 
   if (loading) {
