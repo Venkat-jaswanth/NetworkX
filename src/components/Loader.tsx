@@ -109,11 +109,14 @@ const StyledWrapper = styled.div`
   --gradient-accent: linear-gradient(90deg, #ff512f, #dd2476);
   --c-border: rgba(255, 255, 255, 0.2);
   --c-glow: rgba(221, 36, 118, 0.8);
-  --c-hamster-main: #f9d2b8; /* A lighter, cosmic-dust color */
-  --c-hamster-shadow: #e3a587;
-  --c-hamster-ear: #d18a70;
-  --c-hamster-eye: #fff;
-  --c-hamster-nose: #ff512f;
+
+  /* -- COSMIC HAMSTER PALETTE (New) -- */
+  --c-hamster-main:   #e0e6f1; /* Cool, starlight white for the body */
+  --c-hamster-shadow: #b3bcdc; /* A slightly deeper, shadowy stardust */
+  --c-hamster-ear:    #a48bff; /* A vibrant, nebula-purple for the ears */
+  --c-hamster-eye:    #ff512f; /* A glowing, alien-green for a high-contrast eye */
+  --c-hamster-nose:   #ff512f; /* The fiery orange accent to tie into the wheel */
+
 
   /* === COMPONENT STYLES === */
   display: flex;
