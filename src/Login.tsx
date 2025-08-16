@@ -26,7 +26,7 @@ export default function Login() {
             borderBottom: "2px solid",
             width: "100%",
           }}>
-          <h1>Welcome to <NetworkX></NetworkX>!!</h1>
+          <h1>Welcome to NetworkX!!</h1>x
           </div>
           <div className="login-div-text">
             <div style={{
