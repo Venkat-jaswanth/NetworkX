@@ -6,6 +6,7 @@ import {
   FaHandshake,
   FaQuestionCircle,
   FaBook,
+  FaLightbulb,
 } from "react-icons/fa";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver"; // Import the hook
 
@@ -69,36 +70,63 @@ const HomeLanding = ({ isLoginVisible, setIsLoginVisible } : HomeLandingProps) =
             <h2 className="section-heading animate-fade-in">What You’ll Find</h2>
             <div className="features-grid">
               <div className="feature-item animate-fade-in-up">
+                <div>
                 <FaComments size={40} />
                 <h4>Authentic Stories</h4>
+                </div>
+                <div>
                 <p>
                   Read unfiltered interview accounts from people who’ve been in
                   your seat - the good, the bad, and the awkward.
                 </p>
+                </div>
               </div>
               <div className="feature-item animate-fade-in-up">
+                <div>
                 <FaHandshake size={40} />
                 <h4>Mock Interview Marketplace</h4>
+                </div>
+                <div>
                 <p>
                   Practice with real professionals. Get direct, constructive
                   feedback that boosts confidence.
                 </p>
+                </div>
               </div>
               <div className="feature-item animate-fade-in-up">
+                <div>
                 <FaQuestionCircle size={40} />
                 <h4>Candid Q&A</h4>
+                </div>
+                <div>
                 <p>
                   Ask the questions you can’t ask anywhere else. Learn from a
                   community that wants to see you succeed.
                 </p>
+                </div>
               </div>
               <div className="feature-item animate-fade-in-up">
+                <div>
                 <FaBook size={40} />
                 <h4>Curated Resources</h4>
+                </div>
+                <div>
                 <p>
                   A living library of articles, videos, and tools - all
                   organized to make your prep smarter.
                 </p>
+                </div>
+              </div>
+              <div className="feature-item animate-fade-in-up">
+                <div>
+                <FaLightbulb size={40} />
+                <h4>Opportunities at a Single Place</h4>
+                </div>
+                <div>
+                <p>
+                  A curated list of job openings, internships, and hackathons verified by users and uploaded by users.
+                </p>
+                </div>
               </div>
             </div>
           </div>
