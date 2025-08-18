@@ -7,6 +7,7 @@ import {
   FaQuestionCircle,
   FaBook,
   FaLightbulb,
+  FaMapSigns
 } from "react-icons/fa";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver"; // Import the hook
 
@@ -126,6 +127,16 @@ const HomeLanding = ({ isLoginVisible, setIsLoginVisible } : HomeLandingProps) =
                 <p>
                   A curated list of job openings, internships, and hackathons verified by users and uploaded by users.
                 </p>
+                </div>
+              </div>
+              <div className="feature-item animate-fade-in-up">
+                <div>
+                <FaMapSigns size={40} />
+                <h4>Ever Road Map which you need to succeed</h4>
+                </div>
+                <div>
+                <p>
+Practical advice, proven strategies, and curated resources to guide your journey.                </p>
                 </div>
               </div>
             </div>
