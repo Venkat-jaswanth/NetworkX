@@ -17,10 +17,10 @@ interface HomeLandingProps {
 }
 const HomeLanding = ({ isLoginVisible, setIsLoginVisible } : HomeLandingProps) => {
   // Setup observers for each section
-  const [sec1Ref, isSec1Visible] = useIntersectionObserver({ threshold: 0.3 });
-  const [sec2Ref, isSec2Visible] = useIntersectionObserver({ threshold: 0.5 });
-  const [sec3Ref, isSec3Visible] = useIntersectionObserver({ threshold: 0.7 });
-  const [sec4Ref, isSec4Visible] = useIntersectionObserver({ threshold: 0.9 });
+  const [sec1Ref, isSec1Visible] = useIntersectionObserver({ threshold: 0.1 });
+  const [sec2Ref, isSec2Visible] = useIntersectionObserver({ threshold: 0.3 });
+  const [sec3Ref, isSec3Visible] = useIntersectionObserver({ threshold: 0.6 });
+  const [sec4Ref, isSec4Visible] = useIntersectionObserver({ threshold: 0.7 });
 
 
   return (
@@ -190,10 +190,10 @@ Practical advice, proven strategies, and curated resources to guide your journey
             gap: "1rem",
           }}
         >
-          <h2>Kairo</h2>
+          <h2>NetworkX</h2>
           <p>- Your one-stop solution for all your career needs.</p>
-          <p>© 2025 Kairo. All rights reserved.</p>
-          <p>Made with ❤️ by the Kairo Team</p>
+          <p>© 2025 NetworkX. All rights reserved.</p>
+          <p>Made with ❤️ by the NetworkX Team</p>
         </div>
       </div>
     </div>

@@ -211,6 +211,9 @@
   margin-bottom: 0.5rem;
   font-size: 1.2rem;
 }
+.form-select option {
+  background-color: var(--c-border-focus);
+}
 
 .form-input, .form-select, .form-textarea {
   padding: 0.75rem 1rem;

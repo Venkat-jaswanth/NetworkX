@@ -26,7 +26,13 @@ export default function Login() {
             borderBottom: "2px solid",
             width: "100%",
           }}>
-          <h1>Welcome to NetworkX!!</h1>x
+          <h1>Welcome to <span style={{
+            fontFamily: "'Blanka', sans-serif"
+          }}>Network</span>
+          <span style={{
+            fontFamily: "'Blanka', sans-serif",
+            color:"var(--c-border-focus)"
+          }}>X</span>!!</h1>
           </div>
           <div className="login-div-text">
             <div style={{

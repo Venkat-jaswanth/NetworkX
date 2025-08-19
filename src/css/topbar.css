@@ -53,8 +53,17 @@
 }
 
 .brand-name {
-  font-size: 1.5rem;
   color: var(--c-text-primary); /* THEME CHANGE */
-  font-family: 'Georgia', serif;
+  font-family: 'Blanka', serif;
   cursor: pointer; /* Add pointer cursor */
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.brand-name h2{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
 }

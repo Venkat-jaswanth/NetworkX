@@ -27,11 +27,20 @@ const TopBar = ({ toggleLogin, isLoginVisible }: TopBarProps) => {
 
   return (
     <div className={`top-bar${show ? "" : " top-bar--hidden"}`}>
+      <div className="brand-name-container">
       <div
         className="brand-name"
         onClick={isLoginVisible ? toggleLogin : undefined}
       >
-        <h2>NetworkX</h2>
+        
+        <span style={{
+            fontFamily: "'Blanka', sans-serif"
+          }}>Network</span>
+          <span style={{
+            fontFamily: "'Blanka', sans-serif",
+            color:"var(--c-border-focus"
+          }}>X</span>
+      </div>
       </div>
       <button onClick={toggleLogin}>
         {isLoginVisible ? "Back To Home" : "Sign up"}

@@ -1,7 +1,13 @@
 /* === Cosmic Fusion Theming Variables === */
 :root {
   /* --- GRADIENTS --- */
-  --gradient-page-bg: linear-gradient(135deg, #1f005c, #3d1e6d, #5c2a9d, #9c1de7);
+  --gradient-page-bg: linear-gradient(
+    135deg,
+    #1f005c,
+    #3d1e6d,
+    #5c2a9d,
+    #9c1de7
+  );
   --gradient-accent: linear-gradient(90deg, #ff512f, #dd2476);
   --gradient-accent-hover: linear-gradient(90deg, #ff795e, #e84c90);
 
@@ -115,7 +121,9 @@
   transform: scale(1.05);
 }
 
-.sec-2, .sec-3, .sec-4 {
+.sec-2,
+.sec-3,
+.sec-4 {
   flex-direction: column;
   align-items: center;
   text-align: center;
@@ -129,10 +137,10 @@
 /* === Features Grid (Section 2) === */
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 2rem;
   margin-top: 1.5rem;
-  width: 100%;
+  width: 90%;
 }
 
 .feature-item {
@@ -217,14 +225,14 @@
   box-sizing: border-box;
 }
 
-.bottom-home-landing h2, .bottom-home-landing p {
-    margin: 0.2rem 0; /* Add some spacing for readability */
+.bottom-home-landing h2,
+.bottom-home-landing p {
+  margin: 0.2rem 0; /* Add some spacing for readability */
 }
 
 .bottom-home-landing h2 {
   color: var(--c-text-primary); /* THEME CHANGE */
 }
-
 
 /* === Login Modal === */
 .login-container {
@@ -287,7 +295,7 @@
   align-items: center;
   font-size: 1.2rem;
   font-weight: bold;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  font-family: "Cascadia Code", "Times New Roman", Times, serif;
   transition: all 0.3s ease; /* THEME CHANGE */
   border: none;
 }
@@ -298,27 +306,48 @@
   background: var(--gradient-accent-hover); /* THEME CHANGE */
 }
 
-
 .login-button img {
   margin-right: 8px;
 }
 
 /* === Animations (Unchanged) === */
 @keyframes fadeInUp {
- from { opacity: 0; transform: translateY(30px); }
- to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 @keyframes fadeIn {
- from { opacity: 0; }
- to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 @keyframes slideInLeft {
- from { opacity: 0; transform: translateX(-50px); }
- to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 @keyframes slideInRight {
- from { opacity: 0; transform: translateX(50px); }
- to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .animate-fade-in,
@@ -328,15 +357,36 @@
   opacity: 0;
 }
 
-.is-visible .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
-.is-visible .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
-.is-visible .animate-slide-in-left { animation: slideInLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
-.is-visible .animate-slide-in-right { animation: slideInRight 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
-.is-visible .feature-item:nth-child(1) { animation-delay: 0.1s; }
-.is-visible .feature-item:nth-child(2) { animation-delay: 0.2s; }
-.is-visible .feature-item:nth-child(3) { animation-delay: 0.3s; }
-.is-visible .feature-item:nth-child(4) { animation-delay: 0.4s; }
-.is-visible .feature-item:nth-child(5) { animation-delay: 0.5s; }
+.is-visible .animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+.is-visible .animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+.is-visible .animate-slide-in-left {
+  animation: slideInLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+.is-visible .animate-slide-in-right {
+  animation: slideInRight 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+.is-visible .feature-item:nth-child(1) {
+  animation-delay: 0.0s;
+}
+.is-visible .feature-item:nth-child(2) {
+  animation-delay: 0.0s;
+}
+.is-visible .feature-item:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.is-visible .feature-item:nth-child(4) {
+  animation-delay: 0.25s;
+}
+.is-visible .feature-item:nth-child(5) {
+  animation-delay: 0.3s;
+}
+.is-visible .feature-item:nth-child(6) {
+  animation-delay: 0.35s;
+}
 
 /* === RESPONSIVE DESIGN (Unchanged) === */
 
@@ -378,7 +428,7 @@
     text-align: center;
     font-size: 1.1rem;
   }
-  
+
   .sec-text .tagline {
     font-size: 1.2rem;
   }
@@ -394,15 +444,15 @@
   .features-grid {
     gap: 1rem;
   }
-  
+
   .feature-item {
     padding: 1.5rem;
   }
-  
+
   .feature-item h4 {
     font-size: 1.1rem;
   }
-  
+
   .feature-item p {
     font-size: 0.9rem;
   }
@@ -428,5 +478,11 @@
   .login-button button {
     font-size: 1rem;
     padding: 10px 20px;
+  }
+}
+
+@media (max-width: 420px) {
+  .feature-item {
+    margin: 0rem 1rem;
   }
 }

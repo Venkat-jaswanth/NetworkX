@@ -1,4 +1,6 @@
 /* Basic utility classes for the components */
+@import url('https://fonts.cdnfonts.com/css/blanka');
+@import url('https://fonts.googleapis.com/css2?family=Anta&family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 *{
   box-sizing: border-box;
   margin: 0;
