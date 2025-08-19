@@ -96,6 +96,10 @@ CREATE POLICY "Users can update their own profile" ON "public"."db_user" FOR UPD
 CREATE POLICY "Users can view their own data" ON "public"."db_user" FOR SELECT USING (("auth"."uid"() = "id"));
 
 
+DROP POLICY "Users can view their own data" ON "public"."db_user";
+CREATE POLICY "Authenticated users can view users data" ON "public"."db_user" USING (auth.uid() IS NOT NULL);
+
+
 
 ALTER TABLE "public"."db_user" ENABLE ROW LEVEL SECURITY;
 

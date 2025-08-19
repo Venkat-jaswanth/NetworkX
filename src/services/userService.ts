@@ -2,6 +2,13 @@ import { supabase } from "@/lib/supabase";
 import type { InsertDbUser, InsertEducation, InsertWorkExperience, AppUser, DbUser } from "@/types/app.types";
 import { getAuthUser } from "./authService";
 
+export interface UserSearchResult {
+  id: string;
+  full_name: string;
+  profile_picture_url: string | null;
+  email?: string;
+}
+
 export async function createDbUser(user: InsertDbUser, education?: InsertEducation, workExperience?: InsertWorkExperience) {
   const { error } = await supabase.from('Users').insert(user);
   if (error) throw error;
@@ -36,4 +43,49 @@ export async function getAppUser(): Promise<AppUser> {
   if (error) throw error;
   const dbUser = data as DbUser;
   return { ...authUser, ...dbUser };
+}
+
+// Search users by name or email
+export async function searchUsers(query: string, limit: number = 20): Promise<UserSearchResult[]> {
+  if (!query.trim()) return [];
+  
+  const { data, error } = await supabase
+    .from('Users')
+    .select('id, full_name, profile_picture_url')
+    .or(`full_name.ilike.%${query}%,email.ilike.%${query}%`)
+    .limit(limit);
+  
+  if (error) throw error;
+  return data || [];
+}
+
+// Get search suggestions (for real-time search)
+export async function getSearchSuggestions(query: string, limit: number = 5): Promise<UserSearchResult[]> {
+  if (!query.trim() || query.length < 2) return [];
+  
+  const { data, error } = await supabase
+    .from('Users')
+    .select('id, full_name, profile_picture_url')
+    .or(`full_name.ilike.%${query}%,email.ilike.%${query}%`)
+    .limit(limit);
+  
+  if (error) throw error;
+  return data || [];
+}
+
+// Get user by ID
+export async function getUserById(userId: string): Promise<UserSearchResult | null> {
+  const { data, error } = await supabase
+    .from('Users')
+    .select('id, full_name, profile_picture_url')
+    .eq('id', userId)
+    .single();
+  
+  if (error) {
+    if (error.code === 'PGRST116') {
+      return null; // User not found
+    }
+    throw error;
+  }
+  return data;
 }

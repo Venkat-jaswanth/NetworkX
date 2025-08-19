@@ -1,106 +1,42 @@
-import { useOnboarding } from '@/hooks/useOnboarding';
-import OnboardingForm from './components/OnboardingForm';
-import Loader from './components/Loader';
-import { useState, useEffect } from 'react';
-import Home from '@/pages/Home';
-import Profile from '@/pages/Profile';
+import { useEffect, useState } from 'react';
+import { getAuthUser } from '@/services/authService';
+import { getFollowers, getFollowerCount, getFollowing, getFollowingCount, followUser, unfollowUser, isFollowing } from '@/services/followsService';
+import { getAppUser, searchUsers, getSearchSuggestions, type UserSearchResult } from '@/services/userService';
 import DMPanel from '@/components/DMPanel';
-import { FaHome, FaUser, FaSearch, FaComments, FaSignOutAlt } from 'react-icons/fa';
-import { signOut } from '@/services/authService';
-import { searchUsers, getSearchSuggestions, type UserSearchResult } from '@/services/userService';
-import '@/css/networkx.css';
+import '@/css/profile.css';
 
-type Page = 'home' | 'profile' | 'search' | 'messages';
-
-export default function NetworkX() {
-  const { hasCompletedOnboarding, loading } = useOnboarding();
-  const [currentPage, setCurrentPage] = useState<Page>('home');
-
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (!hasCompletedOnboarding) {
-    return <OnboardingForm onComplete={() => window.location.reload()} />;
-  }
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home':
-        return <Home />;
-      case 'profile':
-        return <Profile />;
-      case 'search':
-        return <SearchPage />;
-      case 'messages':
-        return <MessagesPage />;
-      default:
-        return <Home />;
-    }
-  };
-
-  return (
-    <div className="networkx-container">
-      {/* Navbar */}
-      <nav className="navbar">
-        <div className="navbar-brand">
-          <h1>NetworkX</h1>
-        </div>
-        <div className="navbar-nav">
-          <button 
-            className={`nav-item ${currentPage === 'home' ? 'active' : ''}`}
-            onClick={() => setCurrentPage('home')}
-          >
-            <FaHome />
-            <span>Home</span>
-          </button>
-          <button 
-            className={`nav-item ${currentPage === 'profile' ? 'active' : ''}`}
-            onClick={() => setCurrentPage('profile')}
-          >
-            <FaUser />
-            <span>Profile</span>
-          </button>
-          <button 
-            className={`nav-item ${currentPage === 'search' ? 'active' : ''}`}
-            onClick={() => setCurrentPage('search')}
-          >
-            <FaSearch />
-            <span>Search</span>
-          </button>
-          <button 
-            className={`nav-item ${currentPage === 'messages' ? 'active' : ''}`}
-            onClick={() => setCurrentPage('messages')}
-          >
-            <FaComments />
-            <span>Messages</span>
-          </button>
-        </div>
-        <div className="navbar-actions">
-          <button className="nav-item sign-out" onClick={signOut}>
-            <FaSignOutAlt />
-            <span>Sign Out</span>
-          </button>
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <main className="main-content">
-        {renderPage()}
-      </main>
-    </div>
-  );
-}
-
-// Search Page Component
-function SearchPage() {
+export default function Profile() {
+  const [user, setUser] = useState<any>(null);
+  const [followers, setFollowers] = useState<string[]>([]);
+  const [following, setFollowing] = useState<string[]>([]);
+  const [followerCount, setFollowerCount] = useState<number>(0);
+  const [followingCount, setFollowingCount] = useState<number>(0);
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<UserSearchResult[]>([]);
   const [suggestions, setSuggestions] = useState<UserSearchResult[]>([]);
   const [loadingSearch, setLoadingSearch] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [busy, setBusy] = useState<string>('');
   const [dmOpenFor, setDmOpenFor] = useState<string | undefined>();
+  const [busy, setBusy] = useState<string>('');
+
+  useEffect(() => {
+    (async () => {
+      const au = await getAuthUser();
+      const appUser = await getAppUser();
+      setUser(appUser);
+      
+      const [flw, flwg, flwCnt, flwgCnt] = await Promise.all([
+        getFollowers(au.id),
+        getFollowing(au.id),
+        getFollowerCount(au.id),
+        getFollowingCount(au.id),
+      ]);
+      setFollowers(flw.map(f => f.follower_id));
+      setFollowing(flwg.map(f => f.following_id));
+      setFollowerCount(flwCnt);
+      setFollowingCount(flwgCnt);
+    })();
+  }, []);
 
   // Debounced search suggestions
   useEffect(() => {
@@ -123,6 +59,23 @@ function SearchPage() {
     return () => clearTimeout(timeoutId);
   }, [search]);
 
+  const handleFollowToggle = async (userId: string) => {
+    setBusy(userId);
+    try {
+      const currentlyFollowing = await isFollowing(userId);
+      if (currentlyFollowing) {
+        await unfollowUser(userId);
+        setFollowing(prev => prev.filter(id => id !== userId));
+        setFollowerCount(prev => prev); // unchanged
+      } else {
+        await followUser(userId);
+        setFollowing(prev => [userId, ...prev]);
+      }
+    } finally {
+      setBusy('');
+    }
+  };
+
   const searchUsersHandler = async () => {
     setLoadingSearch(true);
     setShowSuggestions(false);
@@ -134,21 +87,6 @@ function SearchPage() {
       setResults([]);
     } finally {
       setLoadingSearch(false);
-    }
-  };
-
-  const handleFollowToggle = async (userId: string) => {
-    setBusy(userId);
-    try {
-      const { followUser, unfollowUser, isFollowing } = await import('@/services/followsService');
-      const currentlyFollowing = await isFollowing(userId);
-      if (currentlyFollowing) {
-        await unfollowUser(userId);
-      } else {
-        await followUser(userId);
-      }
-    } finally {
-      setBusy('');
     }
   };
 
@@ -172,11 +110,56 @@ function SearchPage() {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1>Search Users</h1>
-        <p>Find and connect with other professionals</p>
+        <h1>Your Profile</h1>
+        <p>Manage your connections and profile</p>
+      </div>
+
+      <div className="profile-grid">
+        <div className="profile-card">
+          <div className="card-header">
+            <h3>Profile Overview</h3>
+          </div>
+          <div className="profile-summary">
+            <div className="profile-avatar">
+              <div className="avatar-placeholder">{user?.full_name?.charAt(0)}</div>
+            </div>
+            <div className="profile-details">
+              <h4>{user?.full_name}</h4>
+              <p className="role-badge">{user?.role}</p>
+              <p className="bio-text">{user?.bio}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="profile-card">
+          <div className="card-header">
+            <h3>Your Connections</h3>
+          </div>
+          <div className="connections-grid">
+            <div className="connection-section">
+              <h4>Followers ({followerCount})</h4>
+              <div className="connection-list">
+                {followers.map(id => (
+                  <span key={id} className="connection-tag">{id}</span>
+                ))}
+              </div>
+            </div>
+            <div className="connection-section">
+              <h4>Following ({followingCount})</h4>
+              <div className="connection-list">
+                {following.map(id => (
+                  <span key={id} className="connection-tag">{id}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="search-section">
+        <div className="card-header">
+          <h3>Search Users</h3>
+        </div>
         <div className="search-input-container">
           <div className="search-input-wrapper">
             <input
@@ -215,26 +198,26 @@ function SearchPage() {
         </div>
 
         <div className="search-results">
-          {results.map(user => (
-            <div key={user.id} className="user-card">
+          {results.map(u => (
+            <div key={u.id} className="user-card">
               <div className="user-avatar">
-                <div className="avatar-placeholder">{user.full_name.charAt(0)}</div>
+                <div className="avatar-placeholder">{u.full_name.charAt(0)}</div>
               </div>
               <div className="user-info">
-                <h3>{user.full_name}</h3>
-                <p className="user-id">{user.id}</p>
+                <h4>{u.full_name}</h4>
+                <p className="user-id">{u.id}</p>
               </div>
               <div className="user-actions">
                 <button 
                   className="action-btn secondary" 
-                  disabled={busy === user.id} 
-                  onClick={() => handleFollowToggle(user.id)}
+                  disabled={busy === u.id} 
+                  onClick={() => handleFollowToggle(u.id)}
                 >
-                  {busy === user.id ? '...' : 'Follow'}
+                  {busy === u.id ? '...' : 'Follow'}
                 </button>
                 <button 
                   className="action-btn primary" 
-                  onClick={() => setDmOpenFor(user.id)}
+                  onClick={() => setDmOpenFor(u.id)}
                 >
                   Message
                 </button>
@@ -258,19 +241,3 @@ function SearchPage() {
     </div>
   );
 }
-
-// Messages Page Component
-function MessagesPage() {
-  return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>Messages</h1>
-        <p>Connect with your network</p>
-      </div>
-      
-      <div className="messages-section">
-        <DMPanel />
-      </div>
-    </div>
-  );
-} 
