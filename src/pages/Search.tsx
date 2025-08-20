@@ -218,9 +218,17 @@ export default function Search() {
                         onClick={() => handleSuggestionClick(suggestion)}
                       >
                         <div className="suggestion-avatar">
-                          <div className="avatar-placeholder small">
-                            {suggestion.full_name.charAt(0)}
-                          </div>
+                          {suggestion.profile_picture_url ? (
+                            <img 
+                              src={suggestion.profile_picture_url} 
+                              alt={suggestion.full_name}
+                              className="suggestion-avatar-img"
+                            />
+                          ) : (
+                            <div className="avatar-placeholder small">
+                              {suggestion.full_name.charAt(0)}
+                            </div>
+                          )}
                         </div>
                         <div className="suggestion-info">
                           <div className="suggestion-name">{suggestion.full_name}</div>
@@ -271,9 +279,17 @@ export default function Search() {
                   return (
                     <>
                       <div className="dm-avatar">
-                        <div className="avatar-placeholder">
-                          {user?.full_name.charAt(0)}
-                        </div>
+                        {user?.profile_picture_url ? (
+                          <img 
+                            src={user.profile_picture_url} 
+                            alt={user.full_name}
+                            className="dm-avatar-img"
+                          />
+                        ) : (
+                          <div className="avatar-placeholder">
+                            {user?.full_name.charAt(0)}
+                          </div>
+                        )}
                       </div>
                       <div className="dm-user-details">
                         <h4>{user?.full_name}</h4>
@@ -343,7 +359,15 @@ function UserCard({
   return (
     <div className="user-card" onClick={handleCardClick}>
       <div className="user-avatar">
-        <div className="avatar-placeholder">{user.full_name.charAt(0)}</div>
+        {user.profile_picture_url ? (
+          <img 
+            src={user.profile_picture_url} 
+            alt={user.full_name}
+            className="user-avatar-img"
+          />
+        ) : (
+          <div className="avatar-placeholder">{user.full_name.charAt(0)}</div>
+        )}
       </div>
       <div className="user-info">
         <h3>{user.full_name}</h3>
