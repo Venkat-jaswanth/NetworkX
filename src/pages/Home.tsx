@@ -3,6 +3,7 @@ import { getAuthUser } from '@/services/authService';
 import { getAppUser } from '@/services/userService';
 import { getFollowerCount, getFollowingCount } from '@/services/followsService';
 import '@/css/home.css';
+import Loader from '@/components/Loader';
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
@@ -34,7 +35,7 @@ export default function Home() {
   if (loading) {
     return (
       <div className="page-container">
-        <div className="loading-spinner">Loading...</div>
+        <Loader />
       </div>
     );
   }

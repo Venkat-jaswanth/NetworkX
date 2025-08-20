@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useMessages } from '@/hooks/useMessages';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { useMessages } from '@/hooks/useMessages';
 import { FaSearch, FaPaperPlane, FaEllipsisV, FaUser } from 'react-icons/fa';
 import '@/css/messages.css';
 import Loader from '@/components/Loader';

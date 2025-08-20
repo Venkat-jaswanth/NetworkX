@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { createDbUser } from '@/services/userService';
+import { FaUser, FaGraduationCap, FaBriefcase, FaArrowRight, FaArrowLeft, FaCheck } from 'react-icons/fa';
 import type { InsertDbUser, InsertEducation, InsertWorkExperience } from '@/types/app.types';
-import { FaUser, FaGraduationCap, FaBriefcase, FaArrowLeft, FaArrowRight, FaCheck } from 'react-icons/fa';
+import { storeGoogleProfilePicture } from '@/services/storageService';
 import '@/css/onboarding.css';
 import { getAuthUser, signOut } from '@/services/authService';
 
@@ -121,13 +122,19 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
       const user = await getAuthUser();
       if (!user) throw new Error('No authenticated user found');
 
+      // Store Google profile picture in Supabase Storage first
+      let profilePictureUrl = null;
+      if (user.user_metadata.picture) {
+        profilePictureUrl = await storeGoogleProfilePicture(user.user_metadata.picture, user.id);
+      }
+
       const newUser: InsertDbUser = {
         id: user.id,
         full_name: fullName,
         role: role,
         bio: bio,
         skills: skills,
-        profile_picture_url: user.user_metadata.picture
+        profile_picture_url: profilePictureUrl
       };
 
       // Create education record

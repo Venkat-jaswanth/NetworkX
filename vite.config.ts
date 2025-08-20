@@ -16,5 +16,11 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist'
+  },
+  server: {
+    cors: {
+      origin: '*',
+      credentials: true
+    }
   }
 })

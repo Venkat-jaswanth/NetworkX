@@ -193,9 +193,11 @@ export default function Profile() {
                 <div className="info-item">
                   <strong>Role:</strong> {user.role}
                 </div>
-                <div className="info-item">
-                  <strong>Mentor Status:</strong> {user.is_mentor ? 'Available as mentor' : 'Not available'}
-                </div>
+                {user.is_mentor && (
+                  <div className="info-item">
+                    <strong>Mentor Status:</strong> Active
+                  </div>
+                )}
                 <div className="info-item">
                   <strong>Seeking Mentor:</strong> {user.is_seeking_mentor ? 'Yes' : 'No'}
                 </div>

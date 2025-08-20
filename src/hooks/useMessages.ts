@@ -1,13 +1,12 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from './useAuth';
-import { 
+import {
   sendMessage as sendMessageService,
-  getConversation,
-  getAuthUserConversations,
   subscribeToMessages,
-  markConversationAsRead,
   getUnreadMessageCount,
-  processMessagesToConversations,
+  getConversationsWithDetails,
+  getConversation,
+  markConversationAsRead,
 } from '@/services/messagesService';
 import type { Message } from '@/types/app.types';
 
@@ -27,112 +26,96 @@ export const useMessages = () => {
   const [activeConversation, setActiveConversation] = useState<string | null>(null);
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [subscriptionError, setSubscriptionError] = useState<string | null>(null);
 
   // Load initial conversations
   const loadConversations = useCallback(async () => {
     if (!user?.id) return;
-    
+
     try {
-      const allMessages = await getAuthUserConversations();
-      const totalUnreadCount = await getUnreadMessageCount();
-      
-      const processedConversations = await processMessagesToConversations(allMessages, user.id);
-      
-      setConversations(processedConversations as ConversationUser[]);
+      const totalUnreadCount = await getUnreadMessageCount(user);
+      const conversations = await getConversationsWithDetails(user);
+
+      setConversations(conversations);
       setUnreadCount(totalUnreadCount);
       setLoading(false);
     } catch (error) {
       console.error('Failed to load conversations:', error);
       setLoading(false);
     }
-  }, [user?.id]);
+  }, [user]);
 
-  // Load conversation messages
   const loadConversation = useCallback(async (userId: string) => {
     if (!user?.id) return;
-    
+
     try {
-      const conversationMessages = await getConversation(userId);
+      const conversationMessages = await getConversation(user, userId);
       setMessages(conversationMessages);
       setActiveConversation(userId);
       
       // Mark conversation as read
-      await markConversationAsRead(userId);
-      
-      // Update unread count
-      const newUnreadCount = await getUnreadMessageCount();
-      setUnreadCount(newUnreadCount);
-      
-      // Update conversations to reflect read status
-      await loadConversations();
+      await markConversationAsRead(user, userId);
     } catch (error) {
       console.error('Failed to load conversation:', error);
     }
-  }, [user?.id, loadConversations]);
+  }, [user?.id]);
 
   // Send message
   const sendMessage = useCallback(async (receiverId: string, body: string) => {
     if (!user?.id || !body.trim()) return;
     
     try {
-      const newMessage = await sendMessageService(receiverId, body);
-      
-      // Optimistic update for active conversation
-      if (activeConversation && 
-          (receiverId === activeConversation || user.id === activeConversation)) {
-        setMessages(prev => [...prev, newMessage]);
-      }
-      
-      // Update conversations list
-      await loadConversations();
+      await sendMessageService(user, receiverId, body);
+      // Live updates will handle the rest
     } catch (error) {
       console.error('Failed to send message:', error);
       throw error;
     }
-  }, [user?.id, activeConversation, loadConversations]);
+    loadConversation(receiverId);
+  }, [user?.id, activeConversation]);
 
   // Real-time subscription
   useEffect(() => {
     if (!user?.id) return;
 
-    const unsubscribe = subscribeToMessages(user.id, {
-      onNewMessage: (newMessage) => {
-        // Update conversations list
-        loadConversations();
-        
+    setSubscriptionError(null);
+
+    try {
+      const unsubscribe = subscribeToMessages(user.id, {
+        onNewMessage: (newMessage) => {
         // Update active conversation if it matches
-        if (activeConversation && 
-            (newMessage.sender_id === activeConversation || 
+        if (activeConversation &&
+            (newMessage.sender_id === activeConversation ||
              newMessage.receiver_id === activeConversation)) {
-          setMessages(prev => [...prev, newMessage]);
-        }
-        
-        // Update unread count if we're the receiver
-        if (newMessage.receiver_id === user.id) {
-          setUnreadCount(prev => prev + 1);
+            loadConversation(newMessage.sender_id === user.id ? newMessage.receiver_id : newMessage.sender_id);
         }
       },
+      
       onMessageUpdate: (updatedMessage) => {
-        // Handle message updates (e.g., read status)
-        setMessages(prev => 
-          prev.map(msg => 
-            msg.id === updatedMessage.id ? updatedMessage : msg
-          )
-        );
-        
-        // Reload conversations to update read status
-        loadConversations();
+        if (activeConversation &&
+            (updatedMessage.sender_id === activeConversation ||
+             updatedMessage.receiver_id === activeConversation)) {
+            loadConversation(updatedMessage.sender_id === user.id ? updatedMessage.receiver_id : updatedMessage.sender_id);
+        }
       },
       onMessageDelete: (messageId) => {
-        // Remove deleted message from active conversation
-        setMessages(prev => prev.filter(msg => msg.id !== messageId));
-        
-        // Reload conversations
-        loadConversations();
-      }
+        console.log('Delete callback triggered for messageId:', messageId);
+        // Get the conversation info from current messages before filtering
+        const deletedMessage = messages.find(message => message.id === messageId);
+        if (deletedMessage) {
+          const conversationId = deletedMessage.sender_id === user.id ? deletedMessage.receiver_id : deletedMessage.sender_id;
+          console.log('Reloading conversation:', conversationId);
+          loadConversation(conversationId);
+        }
+      },
     });
 
-    return unsubscribe;
+      return unsubscribe;
+    } catch (error) {
+      console.error('Failed to set up real-time subscription:', error);
+      setSubscriptionError(error instanceof Error ? error.message : 'Unknown subscription error');
+      return () => {};
+    }
   }, [user?.id, activeConversation, loadConversations]);
 
   // Load conversations on mount
@@ -148,6 +131,7 @@ export const useMessages = () => {
     activeConversation,
     unreadCount,
     loading,
+    subscriptionError,
     sendMessage,
     loadConversation,
     loadConversations,

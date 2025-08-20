@@ -28,3 +28,8 @@ export type UpdateFollow = Database['public']['Tables']['Follows']['Update']
 export type Message = Database['public']['Tables']['Messages']['Row']
 export type InsertMessage = Database['public']['Tables']['Messages']['Insert']
 export type UpdateMessage = Database['public']['Tables']['Messages']['Update']
+
+export type MessageWithUsers = Message & {
+  sender: DbUser
+  receiver: DbUser
+}
