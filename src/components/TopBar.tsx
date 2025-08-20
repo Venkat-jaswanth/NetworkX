@@ -33,12 +33,9 @@ const TopBar = ({ toggleLogin, isLoginVisible }: TopBarProps) => {
         onClick={isLoginVisible ? toggleLogin : undefined}
       >
         
-        <span style={{
-            fontFamily: "'Blanka', sans-serif"
-          }}>Network</span>
-          <span style={{
-            fontFamily: "'Blanka', sans-serif",
-            color:"var(--c-border-focus"
+        <span className="brand-name-text">Network</span>
+          <span className="brand-name-text" style={{
+            color:"var(--c-border-focus)"
           }}>X</span>
       </div>
       </div>
