@@ -127,6 +127,7 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
         role: role,
         bio: bio,
         skills: skills,
+        profile_picture_url: user.user_metadata.picture
       };
 
       // Create education record
@@ -142,7 +143,11 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
       } : undefined;
 
       // Use the existing function that handles all three records
-      await createDbUser(newUser, newEducation, newWorkExperience);
+      await createDbUser({
+        user: newUser,
+        education: newEducation,
+        workExperience: newWorkExperience
+      });
       onComplete();
     } catch (error) {
       console.error('Failed to create user:', error);

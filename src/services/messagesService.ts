@@ -146,4 +146,107 @@ export async function getRecentConversations(limit: number = 10): Promise<Messag
   
   if (error) throw error;
   return data || [];
+}
+
+// NEW: Real-time subscription helpers
+export function subscribeToMessages(userId: string, callbacks: {
+  onNewMessage: (message: Message) => void;
+  onMessageUpdate?: (message: Message) => void;
+  onMessageDelete?: (messageId: number) => void;
+}) {
+  const channel = supabase
+    .channel(`messages:${userId}`)
+    .on('postgres_changes', 
+      { 
+        event: 'INSERT', 
+        schema: 'public', 
+        table: 'Messages',
+        filter: `sender_id=eq.${userId} OR receiver_id=eq.${userId}`
+      }, 
+      (payload) => {
+        const message = payload.new as Message;
+        callbacks.onNewMessage(message);
+      }
+    )
+    .on('postgres_changes',
+      {
+        event: 'UPDATE',
+        schema: 'public', 
+        table: 'Messages',
+        filter: `sender_id=eq.${userId} OR receiver_id=eq.${userId}`
+      },
+      (payload) => {
+        const message = payload.new as Message;
+        callbacks.onMessageUpdate?.(message);
+      }
+    )
+    .on('postgres_changes',
+      {
+        event: 'DELETE',
+        schema: 'public',
+        table: 'Messages', 
+        filter: `sender_id=eq.${userId} OR receiver_id=eq.${userId}`
+      },
+      (payload) => {
+        callbacks.onMessageDelete?.(payload.old.id);
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}
+
+// Helper to get conversation partner ID
+export function getConversationPartner(message: Message, currentUserId: string): string {
+  return message.sender_id === currentUserId ? message.receiver_id : message.sender_id;
+}
+
+// Process messages into conversations with user details
+export async function processMessagesToConversations(messages: Message[], currentUserId: string) {
+  // Get unique conversation partners
+  const peerIds = new Set<string>();
+  messages.forEach(m => {
+    const other = m.sender_id === currentUserId ? m.receiver_id : m.sender_id;
+    peerIds.add(other);
+  });
+
+  // Import user service here to avoid circular dependency
+  const { getProfileById } = await import('./userService');
+
+  // Fetch user details for each conversation partner
+  const conversationsData = await Promise.all(
+    Array.from(peerIds).map(async (userId) => {
+      try {
+        const userData = await getProfileById(userId);
+        if (!userData) return null;
+
+        // Get messages for this conversation
+        const userMessages = messages.filter(m => 
+          (m.sender_id === userId && m.receiver_id === currentUserId) ||
+          (m.sender_id === currentUserId && m.receiver_id === userId)
+        ).sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+        const lastMessage = userMessages[0];
+        const unreadCount = userMessages.filter(m => 
+          m.receiver_id === currentUserId && !m.read_at
+        ).length;
+
+        return {
+          id: userId,
+          full_name: userData.full_name,
+          profile_picture_url: userData.profile_picture_url,
+          lastMessage: lastMessage?.body || 'No messages yet',
+          lastMessageTime: lastMessage?.created_at || '',
+          unreadCount
+        };
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        return null;
+      }
+    })
+  );
+
+  return conversationsData.filter(Boolean);
 } 

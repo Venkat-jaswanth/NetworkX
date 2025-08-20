@@ -1,13 +1,13 @@
 import { useOnboarding } from '@/hooks/useOnboarding';
 import OnboardingForm from './components/OnboardingForm';
 import Loader from './components/Loader';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Home from '@/pages/Home';
 import Profile from '@/pages/Profile';
-import DMPanel from '@/components/DMPanel';
+import Search from '@/pages/Search';
+import Messages from '@/pages/Messages';
 import { FaHome, FaUser, FaSearch, FaComments, FaSignOutAlt } from 'react-icons/fa';
 import { signOut } from '@/services/authService';
-import { searchUsers, getSearchSuggestions, type UserSearchResult } from '@/services/userService';
 import '@/css/networkx.css';
 
 type Page = 'home' | 'profile' | 'search' | 'messages';
@@ -31,9 +31,9 @@ export default function NetworkX() {
       case 'profile':
         return <Profile />;
       case 'search':
-        return <SearchPage />;
+        return <Search />;
       case 'messages':
-        return <MessagesPage />;
+        return <Messages />;
       default:
         return <Home />;
     }
@@ -92,185 +92,4 @@ export default function NetworkX() {
   );
 }
 
-// Search Page Component
-function SearchPage() {
-  const [search, setSearch] = useState('');
-  const [results, setResults] = useState<UserSearchResult[]>([]);
-  const [suggestions, setSuggestions] = useState<UserSearchResult[]>([]);
-  const [loadingSearch, setLoadingSearch] = useState(false);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [busy, setBusy] = useState<string>('');
-  const [dmOpenFor, setDmOpenFor] = useState<string | undefined>();
-
-  // Debounced search suggestions
-  useEffect(() => {
-    const timeoutId = setTimeout(async () => {
-      if (search.trim().length >= 2) {
-        try {
-          const suggestionsData = await getSearchSuggestions(search.trim());
-          setSuggestions(suggestionsData);
-          setShowSuggestions(true);
-        } catch (error) {
-          console.error('Error fetching suggestions:', error);
-          setSuggestions([]);
-        }
-      } else {
-        setSuggestions([]);
-        setShowSuggestions(false);
-      }
-    }, 300);
-
-    return () => clearTimeout(timeoutId);
-  }, [search]);
-
-  const searchUsersHandler = async () => {
-    setLoadingSearch(true);
-    setShowSuggestions(false);
-    try {
-      const searchResults = await searchUsers(search.trim());
-      setResults(searchResults);
-    } catch (error) {
-      console.error('Error searching users:', error);
-      setResults([]);
-    } finally {
-      setLoadingSearch(false);
-    }
-  };
-
-  const handleFollowToggle = async (userId: string) => {
-    setBusy(userId);
-    try {
-      const { followUser, unfollowUser, isFollowing } = await import('@/services/followsService');
-      const currentlyFollowing = await isFollowing(userId);
-      if (currentlyFollowing) {
-        await unfollowUser(userId);
-      } else {
-        await followUser(userId);
-      }
-    } finally {
-      setBusy('');
-    }
-  };
-
-  const handleSuggestionClick = (suggestion: UserSearchResult) => {
-    setSearch(suggestion.full_name);
-    setShowSuggestions(false);
-    setResults([suggestion]);
-  };
-
-  const handleInputFocus = () => {
-    if (search.trim().length >= 2 && suggestions.length > 0) {
-      setShowSuggestions(true);
-    }
-  };
-
-  const handleInputBlur = () => {
-    // Delay hiding suggestions to allow for clicks
-    setTimeout(() => setShowSuggestions(false), 200);
-  };
-
-  return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>Search Users</h1>
-        <p>Find and connect with other professionals</p>
-      </div>
-
-      <div className="search-section">
-        <div className="search-input-container">
-          <div className="search-input-wrapper">
-            <input
-              className="search-input"
-              placeholder="Search by name or email..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              onFocus={handleInputFocus}
-              onBlur={handleInputBlur}
-              onKeyDown={e => e.key === 'Enter' && searchUsersHandler()}
-            />
-            {showSuggestions && suggestions.length > 0 && (
-              <div className="search-suggestions">
-                {suggestions.map(suggestion => (
-                  <div
-                    key={suggestion.id}
-                    className="suggestion-item"
-                    onClick={() => handleSuggestionClick(suggestion)}
-                  >
-                    <div className="suggestion-avatar">
-                      <div className="avatar-placeholder small">
-                        {suggestion.full_name.charAt(0)}
-                      </div>
-                    </div>
-                    <div className="suggestion-info">
-                      <div className="suggestion-name">{suggestion.full_name}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          <button className="search-btn" onClick={searchUsersHandler} disabled={loadingSearch}>
-            {loadingSearch ? 'Searching...' : 'Search'}
-          </button>
-        </div>
-
-        <div className="search-results">
-          {results.map(user => (
-            <div key={user.id} className="user-card">
-              <div className="user-avatar">
-                <div className="avatar-placeholder">{user.full_name.charAt(0)}</div>
-              </div>
-              <div className="user-info">
-                <h3>{user.full_name}</h3>
-                <p className="user-id">{user.id}</p>
-              </div>
-              <div className="user-actions">
-                <button 
-                  className="action-btn secondary" 
-                  disabled={busy === user.id} 
-                  onClick={() => handleFollowToggle(user.id)}
-                >
-                  {busy === user.id ? '...' : 'Follow'}
-                </button>
-                <button 
-                  className="action-btn primary" 
-                  onClick={() => setDmOpenFor(user.id)}
-                >
-                  Message
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {dmOpenFor && (
-        <div className="dm-overlay">
-          <div className="dm-modal">
-            <div className="dm-modal-header">
-              <h3>Direct Message</h3>
-              <button className="close-btn" onClick={() => setDmOpenFor(undefined)}>×</button>
-            </div>
-            <DMPanel otherUserId={dmOpenFor} onClose={() => setDmOpenFor(undefined)} />
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// Messages Page Component
-function MessagesPage() {
-  return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>Messages</h1>
-        <p>Connect with your network</p>
-      </div>
-      
-      <div className="messages-section">
-        <DMPanel />
-      </div>
-    </div>
-  );
-} 
+ 
