@@ -35,7 +35,9 @@ const TopBar = ({ toggleLogin, isLoginVisible }: TopBarProps) => {
         
         <span className="brand-name-text">Network</span>
           <span className="brand-name-text" style={{
-            color:"var(--c-border-focus)"
+            color:"var(--c-border-focus)",
+            fontSize:"3rem",
+            marginBottom:"0.8rem"
           }}>X</span>
       </div>
       </div>

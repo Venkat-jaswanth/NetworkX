@@ -275,7 +275,9 @@
 }
 
 .login-div .login-title {
-  border-bottom-color: var(--c-border); /* THEME CHANGE */
+  border-bottom-color: white;
+  border-bottom-style: dashed;
+  padding-bottom: 0.25rem;
 }
 
 .login-div-text {

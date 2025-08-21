@@ -23,7 +23,6 @@ export default function Login() {
           <div className="login-title"
           style={{ 
             textAlign: "center" ,
-            borderBottom: "2px solid",
             width: "100%",
           }}>
           <h1>Welcome to <span style={{
@@ -31,7 +30,8 @@ export default function Login() {
           }}>Network</span>
           <span style={{
             fontFamily: "'Blanka', sans-serif",
-            color:"var(--c-border-focus)"
+            color:"var(--c-border-focus)",
+            fontSize:"3rem",
           }}>X</span>!!</h1>
           </div>
           <div className="login-div-text">

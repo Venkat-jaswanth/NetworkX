@@ -1,8 +1,8 @@
 
-const interviewposts = () => {
+const InterviewPosts = () => {
   return (
-    <div>interviewposts</div>
+    <div>Interview Posts</div>
   )
 }
 
-export default interviewposts
+export default InterviewPosts
