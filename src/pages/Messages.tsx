@@ -1,18 +1,18 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuthQuery } from '@/hooks/queries/useAuthQuery';
 import { useMessages } from '@/hooks/useMessages';
 import { FaSearch, FaPaperPlane, FaEllipsisV, FaUser } from 'react-icons/fa';
 import '@/css/messages.css';
 import Loader from '@/components/Loader';
 
 export default function Messages() {
-  const { user } = useAuth();
+  const { data: user } = useAuthQuery();
   const {
     conversations,
     messages,
     activeConversation,
     unreadCount,
-    loading,
+    loading,  
     sendMessage,
     loadConversation,
   } = useMessages();

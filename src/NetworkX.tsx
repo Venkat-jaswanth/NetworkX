@@ -9,12 +9,15 @@ import Messages from '@/pages/Messages';
 import { FaHome, FaUser, FaSearch, FaComments, FaSignOutAlt } from 'react-icons/fa';
 import { signOut } from '@/services/authService';
 import '@/css/networkx.css';
-
+import { useHoverPrefetch } from './hooks/useHoverPrefetch';
 type Page = 'home' | 'profile' | 'search' | 'messages';
 
 export default function NetworkX() {
   const { hasCompletedOnboarding, loading } = useOnboarding();
   const [currentPage, setCurrentPage] = useState<Page>('home');
+  
+  // Prefetching for better UX
+  const { prefetchProfile, prefetchMessages } = useHoverPrefetch();
 
   if (loading) {
     return <Loader />;
@@ -57,6 +60,7 @@ export default function NetworkX() {
           <button 
             className={`nav-item ${currentPage === 'profile' ? 'active' : ''}`}
             onClick={() => setCurrentPage('profile')}
+            onMouseEnter={prefetchProfile}
           >
             <FaUser />
             <span>Profile</span>
@@ -71,6 +75,7 @@ export default function NetworkX() {
           <button 
             className={`nav-item ${currentPage === 'messages' ? 'active' : ''}`}
             onClick={() => setCurrentPage('messages')}
+            onMouseEnter={prefetchMessages}
           >
             <FaComments />
             <span>Messages</span>

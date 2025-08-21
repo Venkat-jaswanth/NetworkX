@@ -1,14 +1,22 @@
-import { useEffect, useState } from 'react';
-import { getAuthUser } from '@/services/authService';
-import { getFollowerCount, getFollowingCount } from '@/services/followsService';
-import { getAppUser, addEducation, updateEducation, deleteEducation, addWorkExperience, updateWorkExperience, deleteWorkExperience } from '@/services/userService';
-import type { AppUser, InsertEducation, InsertWorkExperience, Education, WorkExperience } from '@/types/app.types';
+import { useState, useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useProfileQuery } from './queries/useProfileQuery';
+import { addEducation, updateEducation, deleteEducation, addWorkExperience, updateWorkExperience, deleteWorkExperience } from '@/services/userService';
+import type { InsertEducation, InsertWorkExperience, Education, WorkExperience } from '@/types/app.types';
 
 export function useProfile() {
-  const [user, setUser] = useState<AppUser | null>(null);
-  const [followerCount, setFollowerCount] = useState<number>(0);
-  const [followingCount, setFollowingCount] = useState<number>(0);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
+  
+  // Use React Query for data fetching
+  const profileQuery = useProfileQuery();
+
+  // Extract data from query
+  const user = profileQuery.data?.user ?? null;
+  const followerCount = profileQuery.data?.followerCount ?? 0;
+  const followingCount = profileQuery.data?.followingCount ?? 0;
+  const loading = profileQuery.isLoading;
+
+  // UI State Management (preserved from original)
   const [editingEducation, setEditingEducation] = useState<string | null>(null);
   const [editingWork, setEditingWork] = useState<string | null>(null);
   const [showAddEducation, setShowAddEducation] = useState(false);
@@ -24,26 +32,12 @@ export function useProfile() {
   const [educationForm, setEducationForm] = useState<Partial<InsertEducation>>({});
   const [workForm, setWorkForm] = useState<Partial<InsertWorkExperience>>({});
 
-  const loadProfileData = async () => {
-    try {
-      setLoading(true);
-      const au = await getAuthUser();
-      const appUser = await getAppUser();
-      setUser(appUser);
-      
-      const [flwCnt, flwgCnt] = await Promise.all([
-        getFollowerCount(au.id),
-        getFollowingCount(au.id),
-      ]);
-      setFollowerCount(flwCnt);
-      setFollowingCount(flwgCnt);
-    } catch (error) {
-      console.error('Error loading profile:', error);
-    } finally {
-      setLoading(false);
-    }
+  // Function to refresh profile data
+  const loadProfileData = () => {
+    queryClient.invalidateQueries({ queryKey: ['profile', 'current'] });
   };
 
+  // Explicitly trigger profile loading on mount (optional)
   useEffect(() => {
     loadProfileData();
   }, []);
@@ -60,7 +54,7 @@ export function useProfile() {
         ...educationForm as InsertEducation,
         user_id: user.id
       });
-      await loadProfileData();
+      loadProfileData(); // Use React Query invalidation
       setShowAddEducation(false);
       setEducationForm({});
     } catch (error) {
@@ -77,7 +71,7 @@ export function useProfile() {
 
     try {
       await updateEducation(id, educationForm);
-      await loadProfileData();
+      loadProfileData(); // Use React Query invalidation
       setEditingEducation(null);
       setEducationForm({});
       setShowEditEducation(false);
@@ -97,7 +91,7 @@ export function useProfile() {
 
     try {
       await deleteEducation(deletingEducationId);
-      await loadProfileData();
+      loadProfileData(); // Use React Query invalidation
       setShowDeleteEducation(false);
       setDeletingEducationId(null);
     } catch (error) {
@@ -129,7 +123,7 @@ export function useProfile() {
         ...workForm as InsertWorkExperience,
         user_id: user.id
       });
-      await loadProfileData();
+      loadProfileData(); // Use React Query invalidation
       setShowAddWork(false);
       setWorkForm({});
     } catch (error) {
@@ -146,7 +140,7 @@ export function useProfile() {
 
     try {
       await updateWorkExperience(id, workForm);
-      await loadProfileData();
+      loadProfileData(); // Use React Query invalidation
       setEditingWork(null);
       setWorkForm({});
       setShowEditWork(false);
@@ -166,7 +160,7 @@ export function useProfile() {
 
     try {
       await deleteWorkExperience(deletingWorkId);
-      await loadProfileData();
+      loadProfileData(); // Use React Query invalidation
       setShowDeleteWork(false);
       setDeletingWorkId(null);
     } catch (error) {

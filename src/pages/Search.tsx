@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { searchUsers, getSearchSuggestions, type UserSearchResult, getProfileById } from '@/services/userService';
 import { useFollowStatus } from '@/hooks/useFollowStatus';
 import { sendMessage } from '@/services/messagesService';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuthQuery } from '@/hooks/queries/useAuthQuery';
 import '@/css/search.css';
 import Loader from '@/components/Loader';
 
 export default function Search() {
-  const { user } = useAuth();
+  const { data: user } = useAuthQuery();
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<UserSearchResult[]>([]);
   const [suggestions, setSuggestions] = useState<UserSearchResult[]>([]);

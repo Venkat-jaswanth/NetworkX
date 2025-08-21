@@ -118,9 +118,10 @@ export function subscribeToMessages(userId: string, callbacks: {
   onNewMessage: (message: Message) => void;
   onMessageUpdate?: (message: Message) => void;
   onMessageDelete?: (messageId: number) => void;
+  channelName: string;
 }) {
   const channel = supabase
-    .channel(`messages:${userId}`)
+    .channel(callbacks.channelName)
     .on('postgres_changes',
       {
         event: 'INSERT',
