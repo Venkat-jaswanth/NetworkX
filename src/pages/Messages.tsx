@@ -235,7 +235,7 @@ export default function Messages() {
                 <div className="input-container">
                   <textarea
                     ref={inputRef}
-                    placeholder="Type a message... (Press Enter to send, Shift+Enter for new line)"
+                    placeholder="Type your message..."
                     value={input}
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
