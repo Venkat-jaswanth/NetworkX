@@ -128,7 +128,7 @@ const ResponsiveSidebar: React.FC<LeftSideBarProps> = ({
           margin: 0.25rem 0;
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 5px;
           font-weight: 500;
           border-radius: 10px;
           transition: all 0.2s ease;
@@ -152,10 +152,17 @@ const ResponsiveSidebar: React.FC<LeftSideBarProps> = ({
           opacity: 1;
           max-width: 150px; 
           transition-delay: 0.1s;
+          
         }
         .desktop-sidebar.collapsed .nav-link {
-          justify-content: center;
+          justify-content: flex-end;
         }
+        .desktop-sidebar.expanded .nav-link {
+          justify-content: flex-start;
+          gap: 30px;
+        };
+          
+      
         .desktop-sidebar .nav-link:hover {
           background: rgba(234, 88, 12, 0.15);
           color: #fff;

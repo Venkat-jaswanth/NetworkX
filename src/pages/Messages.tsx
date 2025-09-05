@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useAuthQuery } from '@/hooks/queries/useAuthQuery';
 import { useMessages } from '@/hooks/useMessages';
-import { FaSearch, FaPaperPlane, FaEllipsisV, FaUser } from 'react-icons/fa';
+import { FaSearch, FaPaperPlane, FaEllipsisV, FaUser, FaArrowLeft } from 'react-icons/fa'; // Added FaArrowLeft
 import '@/css/messages.css';
 import Loader from '@/components/Loader';
 
@@ -11,16 +11,28 @@ export default function Messages() {
     conversations,
     messages,
     activeConversation,
-    // unreadCount,
-    loading,  
+    loading,
     sendMessage,
     loadConversation,
   } = useMessages();
   
   const [input, setInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  // New state to manage mobile view: 'list' or 'chat'
+  const [mobileView, setMobileView] = useState<'list' | 'chat'>('list');
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Reset to list view if window is resized to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMobileView('list');
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const filteredConversations = useMemo(() => {
     if (!searchQuery.trim()) return conversations;
@@ -29,6 +41,20 @@ export default function Messages() {
     );
   }, [conversations, searchQuery]);
 
+  // Wrapper function to handle selecting a conversation
+  const handleConversationSelect = (userId: string) => {
+    loadConversation(userId);
+    // On mobile, switch to the chat view
+    if (window.innerWidth < 768) {
+      setMobileView('chat');
+    }
+  };
+
+  // Function to go back to the conversation list on mobile
+  const handleBackToList = () => {
+    setMobileView('list');
+  };
+
   const handleSend = async () => {
     const text = input.trim();
     if (!text || !activeConversation) return;
@@ -36,12 +62,10 @@ export default function Messages() {
     try {
       await sendMessage(activeConversation, text);
       setInput('');
-      // Reset textarea height
       if (inputRef.current) {
         inputRef.current.style.height = 'auto';
       }
       inputRef.current?.focus();
-      // Scroll to bottom after sending
       scrollToBottom();
     } catch (error) {
       console.error('Failed to send message:', error);
@@ -57,8 +81,6 @@ export default function Messages() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
-    
-    // Auto-resize textarea
     const textarea = e.target;
     textarea.style.height = 'auto';
     textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
@@ -72,7 +94,6 @@ export default function Messages() {
     });
   };
 
-  // Scroll to bottom when new messages arrive
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -101,15 +122,8 @@ export default function Messages() {
 
   return (
     <div className="messages-page">
-      {/* <div className="messages-header">
-        {unreadCount > 0 && (
-          <div className="unread-badge">
-            {unreadCount} unread
-          </div>
-        )}
-      </div> */}
-
-      <div className="messages-container">
+      {/* Conditionally apply a class based on the mobile view state */}
+      <div className={`messages-container mobile-${mobileView}`}>
         <div className="conversations-sidebar">
           <div className="search-container">
             <div className="search-input-wrapper">
@@ -136,7 +150,7 @@ export default function Messages() {
                 <div
                   key={user.id}
                   className={`conversation-item ${activeConversation === user.id ? 'active' : ''}`}
-                  onClick={() => loadConversation(user.id)}
+                  onClick={() => handleConversationSelect(user.id)} // Use the new handler
                 >
                   <div className="conversation-avatar">
                     {user.profile_picture_url ? (
@@ -182,6 +196,10 @@ export default function Messages() {
           ) : (
             <>
               <div className="chat-header">
+                {/* Back button for mobile */}
+                <button className="back-btn" onClick={handleBackToList}>
+                  <FaArrowLeft />
+                </button>
                 <div className="chat-user-info">
                   {(() => {
                     const conversationUser = conversations.find(u => u.id === activeConversation);
