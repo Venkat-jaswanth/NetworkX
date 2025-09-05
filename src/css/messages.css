@@ -35,14 +35,16 @@
 
 /* Messages Page Container */
 .messages-page {
-  max-width: 1400px;
+  max-width: 90%;
+  flex: 1;
   margin: 0 auto;
-  padding: 20px;
-  min-height: 100vh;
+  min-height: 90vh;
   background: var(--gradient-page-bg);
   color: var(--c-text-primary);
   display: flex;
   flex-direction: column;
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
 }
 
 /* Messages Header */
@@ -52,6 +54,7 @@
   padding: 2rem 0;
   position: relative;
   flex-shrink: 0;
+
 }
 
 .messages-header h1 {

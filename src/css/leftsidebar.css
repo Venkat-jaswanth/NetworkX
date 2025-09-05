@@ -1,0 +1,299 @@
+@import url("https://fonts.googleapis.com/css2?family=Anta&family=Segoe+UI:wght@400;500;600;700&display=swap");
+
+:root {
+  /* A deep space blue gradient for the main background */
+  --sidebar-bg: linear-gradient(120deg, #0f172a,#0f172a8e, #ea580c);
+
+  /* A fiery orange gradient for the active link, like a glowing star */
+  --link-active: linear-gradient(90deg, #ea580c, rgba(234, 88, 12, 0.1));
+
+  /* A subtle, semi-transparent orange border to match the theme */
+  --sidebar-footer-border: 1px solid rgba(234, 88, 12, 0.3);
+
+  /* A dynamic gradient for hover/focus, creating a cosmic nebula effect */
+  --sidebar-bg-focus: linear-gradient(120deg, #0f172a,#0f172a8e, #ea580c);
+
+  /* --- Sizing (Unchanged) --- */
+  --sidebar-collapsed: 80px;
+  --sidebar-expanded: 250px;
+}
+.sidebar {
+  background: var(--sidebar-bg);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  color: white;
+  height: calc(100vh - 90px);
+  position: fixed;
+  left: 20px;
+  top: 80px;
+  border-radius: 20px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  /* Animate only the width for a cleaner transition */
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.sidebar:hover {
+  background: var(--sidebar-bg-focus);
+  transition: background  2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 12px 40px rgba(153, 41, 234, 0.2);
+}
+.sidebar:not(:hover) {
+  transition: background  2s ease, box-shadow 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed);
+  transition: background 2s ease, box-shadow 0.3s ease, width 0.3s ease;
+}
+
+.sidebar.expanded {
+  width: var(--sidebar-expanded);
+  transition: background 1s ease, box-shadow 0.3s ease, width 0.3s ease;
+}
+
+/* --- No longer needed as we control visibility with opacity and max-width ---
+.sidebar.collapsed .nav-text {
+  display: none;
+}
+.sidebar.expanded .nav-text {
+  display: inline;
+}
+*/
+
+/* --- No longer needed, centering is handled on the nav-link itself ---
+.sidebar.collapsed .nav-icon {
+  justify-content: center;
+  width: 100%;
+}
+*/
+
+.logo {
+  text-align: center;
+  padding: 1.5rem 0;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  min-height: 60px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Added overflow hidden to contain the logo text during transition */
+  overflow: hidden;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.logo-text {
+  font-family: "Anta", sans-serif;
+  font-weight: bold;
+  font-size: 1.5rem;
+  white-space: nowrap;
+  /* opacity: 0; */
+  /* transform: translateX(-10px); */
+  /* Added max-width to the transition for smooth appearance */
+  transition: opacity 0.3s ease, transform 0.3s ease, max-width 0.3s ease;
+  max-width: 0;
+}
+
+.sidebar.expanded .logo-text {
+  opacity: 1;
+  transform: translateX(0);
+  /* Allow the text to take up space */
+  max-width: 150px;
+  transition-delay: 0.8s; /* Delay appearance for a staggered effect */
+}
+
+.sidebar.collapsed .nav-link{
+    /* transform: translateX(-10px); */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    display: flex;
+    justify-content: flex-start;
+}
+
+
+.nav-menu {
+  flex-grow: 1;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-link {
+  color: #ea580c;
+  text-decoration: none;
+  padding: 10px;
+  margin: 0.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  /* border-bottom:2px #ea580c7b solid; */
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  /* CRITICAL: This prevents text from wrapping or overflowing during animation */
+  overflow: hidden;
+}
+.nav-text{
+    color: antiquewhite;
+}
+.sidebar.collapsed .nav-link {
+  justify-content: center;
+}
+
+
+.nav-link:hover {
+  background: rgba(234, 88, 12, 0.15);
+  color: #fff;
+  transform: translateX(4px);
+  box-shadow: 0 4px 15px rgba(153, 41, 234, 0.3);
+  scale: 1.05;
+}
+
+.sidebar.collapsed .nav-link:hover {
+  transform: scale(1.06) translateX(0);
+
+}
+
+.nav-link {
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+
+.nav-link::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: var(--link-active);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+  z-index: -1;
+}
+
+.nav-link.active {
+  color: #fff;
+  box-shadow: 0 0 15px rgba(153, 41, 234, 0.5);
+  border: none;
+  scale: 1.05;
+}
+
+.nav-link.active::before {
+  width: 300%;
+  height: 300%;
+}
+
+.nav-icon {
+  font-size: 1.25rem;
+  min-width: 24px;
+  text-align: center;
+  /* Added transition to smoothly reposition if needed */
+  transition: transform 0.8s ease;
+}
+
+.nav-text {
+  opacity: 0;
+  /*
+    KEY CHANGE #1: Animate max-width instead of using display: none.
+    This allows the space the text occupies to shrink smoothly,
+    preventing the icon from "jumping" to the center prematurely.
+  */
+  max-width: 0;
+  transition: opacity 0.2s ease, max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar.expanded .nav-text {
+  opacity: 1;
+  max-width: 150px; /* A value larger than the text will ever be */
+  /*
+    KEY CHANGE #2: Add a transition-delay on expand.
+    This makes the sidebar grow first, and *then* the text fades in,
+    creating a more professional, staggered animation effect.
+  */
+  transition:opacity 0.2s ease, max-width 0.2s ease;
+}
+
+.sidebar-footer {
+  padding: 1rem;
+  border-top: var(--sidebar-footer-border);
+  margin-top: auto;
+}
+
+.user-profile-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  overflow: hidden;
+}
+
+.sidebar.collapsed .user-profile-section {
+  justify-content: center;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  flex-shrink: 0;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-10px);
+  /* Apply the same smooth max-width transition here */
+  max-width: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease, max-width 0.3s ease;
+}
+
+.sidebar.expanded .user-details {
+  opacity: 1;
+  transform: translateX(0);
+  max-width: 150px;
+  transition-delay: 0.1s; /* Stagger this animation as well */
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.logout-btn {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    left: 16px;
+    top: 16px;
+    height: calc(100vh - 32px);
+    width: var(--sidebar-expanded);
+  }
+}

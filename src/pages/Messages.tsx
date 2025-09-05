@@ -101,15 +101,13 @@ export default function Messages() {
 
   return (
     <div className="messages-page">
-      <div className="messages-header">
-        <h1>Messages</h1>
-        <p>Connect with your network</p>
+      {/* <div className="messages-header">
         {unreadCount > 0 && (
           <div className="unread-badge">
             {unreadCount} unread
           </div>
         )}
-      </div>
+      </div> */}
 
       <div className="messages-container">
         <div className="conversations-sidebar">

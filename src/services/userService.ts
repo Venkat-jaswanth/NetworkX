@@ -1,5 +1,11 @@
 import { supabase } from "@/lib/supabase";
-import type { InsertDbUser, InsertEducation, InsertWorkExperience, AppUser, DbUser } from "@/types/app.types";
+import type {
+  InsertDbUser,
+  InsertEducation,
+  InsertWorkExperience,
+  AppUser,
+  DbUser,
+} from "@/types/app.types";
 import { getAuthUser } from "./authService";
 
 export interface UserSearchResult {
@@ -14,83 +20,121 @@ interface CreateDbUser {
   workExperience?: InsertWorkExperience;
 }
 
+interface UpdateDbUser {
+  user: Partial<InsertDbUser>;
+}
+
 export async function createDbUser(user: CreateDbUser) {
   // Insert user into Users table first
-  const { error } = await supabase.from('Users').insert(user.user);
+  const { error } = await supabase.from("Users").insert(user.user);
   if (error) throw error;
 
   if (user.education) {
-    const { error: educationError } = await supabase.from('Education').insert({
+    const { error: educationError } = await supabase.from("Education").insert({
       ...user.education,
-      user_id: user.user.id
+      user_id: user.user.id,
     });
     if (educationError) throw educationError;
   }
-  
+
   if (user.workExperience) {
-    const { error: workExperienceError } = await supabase.from('WorkExperience').insert({
-      ...user.workExperience,
-      user_id: user.user.id
-    });
+    const { error: workExperienceError } = await supabase
+      .from("WorkExperience")
+      .insert({
+        ...user.workExperience,
+        user_id: user.user.id,
+      });
     if (workExperienceError) throw workExperienceError;
   }
 }
 
+export async function updateDbUser(user: UpdateDbUser) {
+  const authUser = await getAuthUser();
+  const { error } = await supabase
+    .from("Users")
+    .update(user.user)
+    .eq("id", authUser?.id);
+  if (error) throw error;
+}
+
 export async function dbUserExists(): Promise<boolean> {
   const authUser = await getAuthUser();
-  const { data: dbUser, error } = await supabase.from('Users').select('*').eq('id', authUser?.id).single();
+  const { data: dbUser, error } = await supabase
+    .from("Users")
+    .select("*")
+    .eq("id", authUser?.id)
+    .single();
   if (error) {
-    if (error.code === 'PGRST116') {
-      console.log('User not found error');
+    if (error.code === "PGRST116") {
+      console.log("User not found error");
       return false; // User not found
     }
     throw error; // Other errors
   }
-  console.log('User found');
+  console.log("User found");
   return dbUser !== null;
 }
 
 export async function getAppUser(): Promise<AppUser> {
   const authUser = await getAuthUser();
-  const { data, error } = await supabase.from('Users').select('*').eq('id', authUser?.id).single();
-  const { data: education, error: educationError } = await supabase.from('Education').select('*').eq('user_id', authUser?.id).order('graduation_year', { ascending: false });
-  const { data: workExperience, error: workExperienceError } = await supabase.from('WorkExperience').select('*').eq('user_id', authUser?.id).order('start_date', { ascending: false });
-  if (error || educationError || workExperienceError) throw error || educationError || workExperienceError;
+  const { data, error } = await supabase
+    .from("Users")
+    .select("*")
+    .eq("id", authUser?.id)
+    .single();
+  const { data: education, error: educationError } = await supabase
+    .from("Education")
+    .select("*")
+    .eq("user_id", authUser?.id)
+    .order("graduation_year", { ascending: false });
+  const { data: workExperience, error: workExperienceError } = await supabase
+    .from("WorkExperience")
+    .select("*")
+    .eq("user_id", authUser?.id)
+    .order("start_date", { ascending: false });
+  if (error || educationError || workExperienceError)
+    throw error || educationError || workExperienceError;
   const dbUser = data as DbUser;
-  
-  return { 
-    ...authUser, 
-    ...dbUser, 
-    education: education || [], 
-    workExperience: workExperience || [] 
+
+  return {
+    ...authUser,
+    ...dbUser,
+    education: education || [],
+    workExperience: workExperience || [],
   };
 }
 
 // Search users by name only (no email column in Users table)
-export async function searchUsers(query: string, limit: number = 20): Promise<UserSearchResult[]> {
+export async function searchUsers(
+  query: string,
+  limit: number = 20
+): Promise<UserSearchResult[]> {
   if (!query.trim()) return [];
-  
+
   const { data, error } = await supabase
-    .from('Users')
-    .select('id, full_name, profile_picture_url')
-    .ilike('full_name', `%${query}%`)
+    .from("Users")
+    .select("id, full_name, profile_picture_url")
+    .ilike("full_name", `%${query}%`)
     .limit(limit);
-  
+
   console.log(data);
   if (error) throw error;
   return data || [];
 }
 
 // Get search suggestions (for real-time search)
-export async function getSearchSuggestions(query: string, limit: number = 5): Promise<UserSearchResult[]> {
+export async function getSearchSuggestions(
+  query: string,
+  limit: number = 5
+): Promise<UserSearchResult[]> {
   if (!query.trim() || query.length < 2) return [];
-  
+
   const { data, error } = await supabase
-    .from('Users')
-    .select('id, full_name, profile_picture_url')
-    .ilike('full_name', `%${query}%`)
+    .from("Users")
+    .select("id, full_name, profile_picture_url")
+    .ilike("full_name", `%${query}%`)
     .limit(limit);
-  
+
   if (error) throw error;
   return data || [];
 }
@@ -98,13 +142,13 @@ export async function getSearchSuggestions(query: string, limit: number = 5): Pr
 // Get user by ID with complete profile data
 export async function getProfileById(userId: string): Promise<any> {
   const { data: user, error: userError } = await supabase
-    .from('Users')
-    .select('*')
-    .eq('id', userId)
+    .from("Users")
+    .select("*")
+    .eq("id", userId)
     .single();
-  
+
   if (userError) {
-    if (userError.code === 'PGRST116') {
+    if (userError.code === "PGRST116") {
       return null; // User not found
     }
     throw userError;
@@ -112,17 +156,17 @@ export async function getProfileById(userId: string): Promise<any> {
 
   // Fetch education data
   const { data: education, error: educationError } = await supabase
-    .from('Education')
-    .select('*')
-    .eq('user_id', userId)
-    .order('graduation_year', { ascending: false });
+    .from("Education")
+    .select("*")
+    .eq("user_id", userId)
+    .order("graduation_year", { ascending: false });
 
   // Fetch work experience data
   const { data: workExperience, error: workExperienceError } = await supabase
-    .from('WorkExperience')
-    .select('*')
-    .eq('user_id', userId)
-    .order('start_date', { ascending: false });
+    .from("WorkExperience")
+    .select("*")
+    .eq("user_id", userId)
+    .order("start_date", { ascending: false });
 
   if (educationError || workExperienceError) {
     throw educationError || workExperienceError;
@@ -131,38 +175,54 @@ export async function getProfileById(userId: string): Promise<any> {
   return {
     ...user,
     education: education || [],
-    workExperience: workExperience || []
+    workExperience: workExperience || [],
   };
 }
 
 // Helper functions for managing multiple education records
 export async function addEducation(education: InsertEducation): Promise<void> {
-  const { error } = await supabase.from('Education').insert(education);
+  const { error } = await supabase.from("Education").insert(education);
   if (error) throw error;
 }
 
-export async function updateEducation(id: string, updates: Partial<InsertEducation>): Promise<void> {
-  const { error } = await supabase.from('Education').update(updates).eq('id', id);
+export async function updateEducation(
+  id: string,
+  updates: Partial<InsertEducation>
+): Promise<void> {
+  const { error } = await supabase
+    .from("Education")
+    .update(updates)
+    .eq("id", id);
   if (error) throw error;
 }
 
 export async function deleteEducation(id: string): Promise<void> {
-  const { error } = await supabase.from('Education').delete().eq('id', id);
+  const { error } = await supabase.from("Education").delete().eq("id", id);
   if (error) throw error;
 }
 
 // Helper functions for managing multiple work experience records
-export async function addWorkExperience(workExperience: InsertWorkExperience): Promise<void> {
-  const { error } = await supabase.from('WorkExperience').insert(workExperience);
+export async function addWorkExperience(
+  workExperience: InsertWorkExperience
+): Promise<void> {
+  const { error } = await supabase
+    .from("WorkExperience")
+    .insert(workExperience);
   if (error) throw error;
 }
 
-export async function updateWorkExperience(id: string, updates: Partial<InsertWorkExperience>): Promise<void> {
-  const { error } = await supabase.from('WorkExperience').update(updates).eq('id', id);
+export async function updateWorkExperience(
+  id: string,
+  updates: Partial<InsertWorkExperience>
+): Promise<void> {
+  const { error } = await supabase
+    .from("WorkExperience")
+    .update(updates)
+    .eq("id", id);
   if (error) throw error;
 }
 
 export async function deleteWorkExperience(id: string): Promise<void> {
-  const { error } = await supabase.from('WorkExperience').delete().eq('id', id);
+  const { error } = await supabase.from("WorkExperience").delete().eq("id", id);
   if (error) throw error;
 }

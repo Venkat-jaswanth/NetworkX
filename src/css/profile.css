@@ -2,7 +2,7 @@
 :root {
   /* --- GRADIENTS --- */
   --gradient-page-bg: linear-gradient(
-    135deg,
+    15deg,
     #1f005c,
     #3d1e6d,
     #5c2a9d,
@@ -35,12 +35,14 @@
 
 /* Profile Page Styles */
 .page-container {
-  max-width: 1200px;
+  max-width: 90%;
+  flex: 1;
   margin: 0 auto;
-  padding: 20px;
   min-height: 100vh;
   background: var(--gradient-page-bg); /* THEME CHANGE */
   color: var(--c-text-primary); /* THEME CHANGE */
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
 }
 
 /* Loading and Error States */
@@ -66,7 +68,7 @@
 .profile-hero {
   position: relative;
   background: var(--c-bg-content-glass); /* THEME CHANGE */
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
   border-radius: 20px;
   padding: 40px;
   margin-bottom: 30px;
@@ -91,6 +93,7 @@
   z-index: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 30px;
 }
 

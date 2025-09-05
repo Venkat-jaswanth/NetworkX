@@ -1,23 +1,38 @@
-import { useOnboarding } from '@/hooks/useOnboarding';
-import OnboardingForm from './components/OnboardingForm';
-import Loader from './components/Loader';
-import { useState } from 'react';
-import Home from '@/pages/Home';
-import Profile from '@/pages/Profile';
-import Search from '@/pages/Search';
-import Messages from '@/pages/Messages';
-import { FaHome, FaUser, FaSearch, FaComments, FaSignOutAlt } from 'react-icons/fa';
-import { signOut } from '@/services/authService';
-import '@/css/networkx.css';
-import { useHoverPrefetch } from './hooks/useHoverPrefetch';
-type Page = 'home' | 'profile' | 'search' | 'messages';
+import { useOnboarding } from "@/hooks/useOnboarding";
+import OnboardingForm from "./components/OnboardingForm";
+import Loader from "./components/Loader";
+import { useState } from "react";
+import Home from "@/pages/Home";
+import Profile from "@/pages/Profile";
+import Search from "@/pages/Search";
+import Messages from "@/pages/Messages";
+import Feed from "@/main-layout/Feed";
+import InterviewPosts from "@/main-layout/interviewposts";
+import Resources from "@/main-layout/Resources";
+import Opportunities from "@/main-layout/Opportunities";
+import Roadmap from "@/main-layout/Roadmap";
+
+import "@/css/networkx.css";
+
+import NavBar from "./main-layout/NavBar";
+import LeftSideBar from "./main-layout/LeftSideBar";
+
+export type Page =
+  | "home"
+  | "profile"
+  | "search"
+  | "messages"
+  | "feed"
+  | "interviews"
+  | "resources"
+  | "opportunities"
+  | "roadmaps"
+  | "find-mentor";
 
 export default function NetworkX() {
   const { hasCompletedOnboarding, loading } = useOnboarding();
-  const [currentPage, setCurrentPage] = useState<Page>('home');
-  
-  // Prefetching for better UX
-  const { prefetchProfile, prefetchMessages } = useHoverPrefetch();
+  const [currentPage, setCurrentPage] = useState<Page>("home");
+  const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(false);
 
   if (loading) {
     return <Loader />;
@@ -27,16 +42,28 @@ export default function NetworkX() {
     return <OnboardingForm onComplete={() => window.location.reload()} />;
   }
 
-  const renderPage = () => {
+  const renderMainContent = () => {
     switch (currentPage) {
-      case 'home':
+      case "home":
         return <Home />;
-      case 'profile':
+      case "profile":
         return <Profile />;
-      case 'search':
+      case "search":
         return <Search />;
-      case 'messages':
+      case "messages":
         return <Messages />;
+      case "feed":
+        return <Feed />;
+      case "interviews":
+        return <InterviewPosts />;
+      case "resources":
+        return <Resources />;
+      case "opportunities":
+        return <Opportunities />;
+      case "roadmaps":
+        return <Roadmap />;
+      case "find-mentor":
+        return <div>Find a Mentor Feature Coming Soon</div>;
       default:
         return <Home />;
     }
@@ -44,57 +71,20 @@ export default function NetworkX() {
 
   return (
     <div className="networkx-container">
-      {/* Navbar */}
-      <nav className="navbar">
-        <div className="navbar-brand">
-          <h1>NetworkX</h1>
-        </div>
-        <div className="navbar-nav">
-          <button 
-            className={`nav-item ${currentPage === 'home' ? 'active' : ''}`}
-            onClick={() => setCurrentPage('home')}
-          >
-            <FaHome />
-            <span>Home</span>
-          </button>
-          <button 
-            className={`nav-item ${currentPage === 'profile' ? 'active' : ''}`}
-            onClick={() => setCurrentPage('profile')}
-            onMouseEnter={prefetchProfile}
-          >
-            <FaUser />
-            <span>Profile</span>
-          </button>
-          <button 
-            className={`nav-item ${currentPage === 'search' ? 'active' : ''}`}
-            onClick={() => setCurrentPage('search')}
-          >
-            <FaSearch />
-            <span>Search</span>
-          </button>
-          <button 
-            className={`nav-item ${currentPage === 'messages' ? 'active' : ''}`}
-            onClick={() => setCurrentPage('messages')}
-            onMouseEnter={prefetchMessages}
-          >
-            <FaComments />
-            <span>Messages</span>
-          </button>
-        </div>
-        <div className="navbar-actions">
-          <button className="nav-item sign-out" onClick={signOut}>
-            <FaSignOutAlt />
-            <span>Sign Out</span>
-          </button>
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <main className="main-content">
-        {renderPage()}
-      </main>
+      <NavBar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <div
+        className={`content-wrapper ${
+          sidebarExpanded ? "shift-expanded" : "shift-collapsed"
+        }`}
+      >
+        <LeftSideBar
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          onExpandChange={setSidebarExpanded}
+        />
+        {/* Main Content */}
+        <main className="main-content">{renderMainContent()}</main>
+      </div>
     </div>
   );
 }
-
- 

@@ -35,12 +35,14 @@
 
 /* Search Page Container */
 .search-page-container {
-  max-width: 1200px;
+  width: 90%;
   margin: 0 auto;
   padding: 20px;
   min-height: 100vh;
   background: var(--gradient-page-bg);
   color: var(--c-text-primary);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
 }
 
 /* Search Page Header */
@@ -542,47 +544,45 @@
   transform: none;
 }
 
-
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .search-page-container {
     padding: 15px;
   }
-  
+
   .search-page-header h1 {
     font-size: 2rem;
   }
-  
+
   .search-input-container {
     flex-direction: column;
   }
-  
+
   .search-results {
     grid-template-columns: 1fr;
   }
-  
+
   .user-actions {
     flex-direction: column;
   }
-  
+
   .dm-modal {
     width: 95%;
     max-height: 90vh;
   }
-  
+
   .dm-modal-content {
     padding: 1.5rem;
   }
-  
+
   .dm-actions {
     flex-direction: column;
   }
-  
+
   .dm-send-btn {
     width: 100%;
   }
-  
+
   .search-suggestions {
     max-height: 250px;
   }
@@ -592,16 +592,16 @@
   .search-section {
     padding: 1.5rem;
   }
-  
+
   .search-page-header {
     margin-bottom: 2rem;
     padding: 1.5rem 0;
   }
-  
+
   .search-page-header h1 {
     font-size: 1.8rem;
   }
-  
+
   .user-card {
     padding: 1rem;
   }
@@ -677,7 +677,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 81, 47, 0.1), rgba(221, 36, 118, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 81, 47, 0.1),
+    rgba(221, 36, 118, 0.1)
+  );
   z-index: 0;
 }
 
@@ -686,11 +690,16 @@
   z-index: 1;
   display: flex;
   align-items: center;
+  justify-content: space-around;
   gap: 2rem;
 }
 
 .profile-avatar-large {
   flex-shrink: 0;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .profile-avatar-large img {
@@ -862,28 +871,28 @@
     gap: 1rem;
     align-items: stretch;
   }
-  
+
   .profile-actions {
     justify-content: center;
   }
-  
+
   .hero-content {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .profile-name {
     font-size: 2rem;
   }
-  
+
   .content-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .profile-hero {
     padding: 2rem 1rem;
   }
-  
+
   .profile-content {
     padding: 1.5rem;
   }
@@ -893,17 +902,17 @@
   .user-profile-view {
     padding: 15px;
   }
-  
+
   .profile-name {
     font-size: 1.8rem;
   }
-  
+
   .avatar-placeholder-large {
     width: 100px;
     height: 100px;
     font-size: 2.5rem;
   }
-  
+
   .profile-avatar-large img {
     width: 100px;
     height: 100px;
