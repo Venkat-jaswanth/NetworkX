@@ -866,6 +866,12 @@
 
 /* Responsive Design for Profile View */
 @media (max-width: 768px) {
+  .search-page-container{
+    padding: 0px;
+    margin: 0px;
+    max-width: 100%;
+    width: 100%;
+  }
   .profile-header {
     flex-direction: column;
     gap: 1rem;

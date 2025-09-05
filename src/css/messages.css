@@ -503,11 +503,14 @@ html, body, #root {
   }
 }
 
-.message-item.sent {
+.message-item.sent  {
   justify-content: flex-end;
 }
 
 .message-item.received {
+  justify-content: flex-start;
+}
+.message-item.received,.message-item.received{
   justify-content: flex-start;
 }
 
@@ -520,6 +523,9 @@ html, body, #root {
   word-wrap: break-word;
   position: relative;
   transition: all 0.3s ease;
+  overflow-wrap: break-word;   /* modern replacement */
+  word-break: break-word;      /* fallback */
+  white-space: pre-wrap;
 }
 
 .message-item.sent .message-bubble {
@@ -672,27 +678,35 @@ html, body, #root {
 @media (max-width: 1024px) {
   .messages-container {
     grid-template-columns: 300px 1fr;
+    grid-template-columns: 1fr;
+    grid-template-rows: 250px 1fr;
+    min-height: 60vh;
     gap: 1rem;
+  }
+  
+  
+  .conversation-item {
+    padding: 0.5rem;
   }
 }
 
 @media (max-width: 768px) {
-  .messages-page {
-    padding: 15px;
-  }
-  
+
   .messages-header h1 {
     font-size: 2rem;
   }
-  
-  .messages-container {
+  .messages-page{
+    margin: 0px;
+    height: 100%;
+    max-width: 100%;
+  }
+  /* .messages-container {
     grid-template-columns: 1fr;
     grid-template-rows: 200px 1fr;
-    min-height: 70vh;
+    min-height: 60vh;
   }
-  
+   */
   .conversations-sidebar {
-    border-right: none;
     border-bottom: 1px solid var(--c-border);
   }
   
@@ -751,7 +765,7 @@ html, body, #root {
   }
   
   .message-bubble {
-    max-width: 85%;
+    max-width: 95%;
     padding: 0.75rem 1rem;
   }
 }

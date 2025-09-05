@@ -574,7 +574,9 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .page-container {
-    padding: 15px;
+    /* padding: 15px; */
+    margin: 0px;
+    max-width: 100%;
   }
   
   .profile-hero {
