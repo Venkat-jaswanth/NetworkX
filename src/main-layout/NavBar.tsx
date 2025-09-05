@@ -14,8 +14,19 @@ const NavBar: React.FC<NavBarProps> = ({ currentPage, setCurrentPage }) => {
   const { prefetchProfile, prefetchMessages } = useHoverPrefetch();
   return (
     <nav className="navbar">
-      <div className="navbar-brand">
+            
+            {/* <div className="navbar-brand">
         <h1>NetworkX</h1>
+      </div> */}
+
+<div className="brand-name-container">
+      <div
+        className="brand-name">
+        <span className="brand-name-text">Network</span>
+          <span className="brand-name-text" style={{
+            color:"var(--c-border-focus)"
+          }}>X</span>
+      </div>
       </div>
       <div className="navbar-nav">
         <button

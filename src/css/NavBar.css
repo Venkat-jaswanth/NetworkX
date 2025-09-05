@@ -16,16 +16,34 @@
   right: 0;
   z-index: 1000;
 }
-
 .navbar-brand h1 {
   margin: 0;
   font-size: 1.8rem;
   font-weight: 700;
-  background: var(--gradient-accent); /* THEME CHANGE */
+  background: var(--gradient-accent);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+} 
+
+
+.brand-name {
+  color: var(--c-text-primary); /* THEME CHANGE */
+  font-family: 'Blanka', serif;
+  cursor: pointer; /* Add pointer cursor */
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
 }
+
+.brand-name .brand-name-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1; /* avoids baseline issues */
+  margin: 0px 0px 10px 0px;
+}
+
 
 .navbar-nav {
   display: flex;

@@ -117,16 +117,17 @@
   white-space: nowrap;
   transition: all 0.3s ease;
 }
-.navbar-brand h1{
-  display: none;
-}
+
 
 .nav-item:hover span,
 .nav-item.active span {
   opacity: 1;
   max-width: 200px; /* or whatever width fits your text */
 }
-
+.brand-name-text {
+    transform: translateX(-10000px);
+    transition: transform 3s ease;
+  }
   .content-wrapper {
     padding-top: 0;
     padding-left: var(--sidebar-offset-x);
