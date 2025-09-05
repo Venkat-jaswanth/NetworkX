@@ -32,18 +32,25 @@
   --shadow-glow-hover: 0 0 20px rgba(221, 36, 118, 0.8);
   --shadow-card: 0px 10px 25px rgba(0, 0, 0, 0.2);
 }
+/* Ensure percent heights resolve */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
 
 /* Messages Page Container */
 .messages-page {
   max-width: 90%;
   flex: 1;
   margin: 0 auto;
-  min-height: 90vh;
+  height: 100%;
   background: var(--gradient-page-bg);
   color: var(--c-text-primary);
   display: flex;
   flex-direction: column;
   backdrop-filter: blur(10px);
+  /* min-height: 100vh; */
   border-radius: 20px;
 }
 
@@ -96,9 +103,13 @@
 .messages-container {
   display: grid;
   grid-template-columns: 350px 1fr;
+  grid-template-rows: minmax(0, 1fr);
   gap: 2rem;
   flex: 1;
   min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  max-height: calc(100vh - 90px);
   background: var(--c-bg-content-glass);
   backdrop-filter: blur(10px);
   border-radius: 20px;
@@ -334,6 +345,7 @@
   background: var(--c-bg-content-glass-light);
   backdrop-filter: blur(10px);
   min-height: 0;
+  height: 100%;
 }
 
 .chat-placeholder {
