@@ -11,7 +11,7 @@ export default function Messages() {
     conversations,
     messages,
     activeConversation,
-    unreadCount,
+    // unreadCount,
     loading,  
     sendMessage,
     loadConversation,

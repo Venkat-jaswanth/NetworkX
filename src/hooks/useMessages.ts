@@ -52,7 +52,7 @@ export const useMessages = () => {
     conversations,
     messages,
     activeConversation,
-    unreadCount,
+    // unreadCount,
     loading,
     sendMessage,
     loadConversation,
