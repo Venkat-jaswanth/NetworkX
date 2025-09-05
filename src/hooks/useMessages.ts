@@ -19,7 +19,7 @@ export const useMessages = () => {
   // Extract data from queries
   const conversations = conversationsQuery.data?.conversations ?? [];
   const messages = messagesQuery.data ?? [];
-  const unreadCount = conversationsQuery.data?.totalUnreadCount ?? 0;
+  // const unreadCount = conversationsQuery.data?.totalUnreadCount ?? 0;
   const loading = conversationsQuery.isLoading;
 
   // Function to refresh specific conversation
