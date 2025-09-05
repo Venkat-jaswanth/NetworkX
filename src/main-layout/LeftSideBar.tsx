@@ -160,16 +160,14 @@ const ResponsiveSidebar: React.FC<LeftSideBarProps> = ({
         .desktop-sidebar.expanded .nav-link {
           justify-content: flex-start;
           gap: 30px;
-        };
-          
-      
+        }
         .desktop-sidebar .nav-link:hover {
           background: rgba(234, 88, 12, 0.15);
           color: #fff;
           transform: translateX(4px);
         }
         .desktop-sidebar.collapsed .nav-link:hover {
-           transform: scale(1.06) translateX(0);
+          transform: scale(1.06) translateX(0);
         }
         .desktop-sidebar .nav-link::before {
           content: "";
