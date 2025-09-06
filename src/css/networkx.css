@@ -111,7 +111,7 @@
   }
 
   .nav-item span {
-  opacity: 0;
+  display: none;
   max-width: 0;
   overflow: hidden;
   white-space: nowrap;
@@ -121,12 +121,14 @@
 
 .nav-item:hover span,
 .nav-item.active span {
-  opacity: 1;
+  display: block;
   max-width: 200px; /* or whatever width fits your text */
 }
-.brand-name-text {
-    transform: translateX(-10000px);
-    transition: transform 3s ease;
+.nav-brand-name-text , .nav-brand-name-container{
+    display: none;
+  }
+  .navbar {
+    justify-content: flex-end !important;
   }
   .content-wrapper {
     padding-top: 0;

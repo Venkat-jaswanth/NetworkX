@@ -27,7 +27,7 @@
 } 
 
 
-.brand-name {
+.nav-brand-name {
   color: var(--c-text-primary); /* THEME CHANGE */
   font-family: 'Blanka', serif;
   cursor: pointer; /* Add pointer cursor */
@@ -36,7 +36,7 @@
   font-size: 2rem;
 }
 
-.brand-name .brand-name-text {
+.nav-brand-name .nav-brand-name-text {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,11 +66,11 @@
   color: var(--c-text-secondary); /* THEME CHANGE */
   text-decoration: none;
 }
+.nav-item
 
 .nav-item:hover {
   background: var(--c-bg-content-glass-light); /* THEME CHANGE */
   color: var(--c-text-primary); /* THEME CHANGE */
-  transform: translateY(-1px);
 }
 
 .nav-item.active {
@@ -83,12 +83,47 @@
   color: #ff512f; /* THEME CHANGE */
 }
 
-.nav-item.sign-out:hover {
-  background: rgba(255, 81, 47, 0.1); /* THEME CHANGE */
-  color: #ff795e; /* THEME CHANGE */
-}
-
 .navbar-actions {
   display: flex;
   align-items: center;
+}
+
+
+/* Container aligns popup to top-right relative to navbar */
+.settings-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Popup styles */
+.settings-popup {
+  position: absolute;
+  top: -5px; /* adjust depending on navbar height */
+  right: -10px;
+  /* transform: translateY(100%); */
+  background: var(--c-bg, #fff);
+  border: 1px solid var(--c-border, #ddd);
+  border-radius: 8px;
+  padding: 8px 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  min-width: 160px;
+}
+
+/* Each option */
+.settings-option {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--c-text, #333);
+  transition: background 0.2s;
+}
+
+.settings-option:hover {
+  background: var(--c-border-focus, #f0f0f0);
 }
