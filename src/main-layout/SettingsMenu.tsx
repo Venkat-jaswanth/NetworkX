@@ -7,18 +7,20 @@ import {
   FaQuestionCircle,
   FaSignOutAlt,
 } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { signOut } from "@/services/authService";
-import type { Page } from "../NetworkX";
 import { useHoverPrefetch } from "../hooks/useHoverPrefetch";
 
 interface SettingsProps {
-setCurrentPage: React.Dispatch<React.SetStateAction<Page>>;
+onHoverProfile?: () => void;
 }
 
-const SettingsMenu: React.FC<SettingsProps> = ({ setCurrentPage }) => {
+const SettingsMenu: React.FC<SettingsProps> = ({ onHoverProfile }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-    const { prefetchProfile } = useHoverPrefetch();
+  const navigate = useNavigate();
+  const { prefetchProfile } = useHoverPrefetch();
+  const handleProfileHover = onHoverProfile || prefetchProfile;
   // Close popup when clicking outside - This logic remains unchanged.
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -35,8 +37,8 @@ const SettingsMenu: React.FC<SettingsProps> = ({ setCurrentPage }) => {
     {
       icon: <FaUserCircle />,
       label: "Profile",
-      onClick: () => setCurrentPage("profile"),
-      onHover: prefetchProfile,
+      onClick: () => navigate("/profile"),
+      onHover: handleProfileHover,
     },
     {
       icon: <FaShieldAlt />,

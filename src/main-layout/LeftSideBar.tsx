@@ -9,19 +9,30 @@ import {
   FaBars,
   FaTimes,
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import type {Page} from "../NetworkX";
+import { useHoverPrefetch } from "@/hooks/useHoverPrefetch";
+import { ROUTE_PATHS } from "@/routes";
 
 interface LeftSideBarProps {
   currentPage: Page;
-  setCurrentPage: React.Dispatch<React.SetStateAction<Page>>;
   onExpandChange?: (expanded: boolean) => void;
 }
 
 const ResponsiveSidebar: React.FC<LeftSideBarProps> = ({
   currentPage,
-  setCurrentPage,
   onExpandChange,
 }) => {
+  // --- Hover prefetch hook ---
+  const {
+    prefetchFeed,
+    prefetchInterviews,
+    prefetchResources,
+    prefetchOpportunities,
+    prefetchRoadmaps,
+    prefetchFindMentor,
+  } = useHoverPrefetch();
+
   // --- State for tracking screen size ---
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
@@ -58,19 +69,15 @@ const ResponsiveSidebar: React.FC<LeftSideBarProps> = ({
     // This prevents the main content from being pushed on mobile.
   }, []);
 
-  const handleMobileNavigation = (page: Page) => {
-    setCurrentPage(page);
-    toggleMobileMenu(); // Close menu after selection
-  };
 
   // --- Common Navigation Items ---
   const navItems = [
-    { icon: <FaNewspaper />, label: "Feed", path: "feed" },
-    { icon: <FaBook />, label: "Experiences", path: "interviews" },
-    { icon: <FaLightbulb />, label: "Resources", path: "resources" },
-    { icon: <FaBriefcase />, label: "Opportunities", path: "opportunities" },
-    { icon: <FaRoad />, label: "Roadmaps", path: "roadmaps" },
-    { icon: <FaUserFriends />, label: "Find a Mentor", path: "find-mentor" },
+    { icon: <FaNewspaper />, label: "Feed", page: "feed" as Page, routePath: ROUTE_PATHS.feed, onHover: prefetchFeed },
+    { icon: <FaBook />, label: "Experiences", page: "interviews" as Page, routePath: ROUTE_PATHS.interviews, onHover: prefetchInterviews },
+    { icon: <FaLightbulb />, label: "Resources", page: "resources" as Page, routePath: ROUTE_PATHS.resources, onHover: prefetchResources },
+    { icon: <FaBriefcase />, label: "Opportunities", page: "opportunities" as Page, routePath: ROUTE_PATHS.opportunities, onHover: prefetchOpportunities },
+    { icon: <FaRoad />, label: "Roadmaps", page: "roadmaps" as Page, routePath: ROUTE_PATHS.roadmaps, onHover: prefetchRoadmaps },
+    { icon: <FaUserFriends />, label: "Find a Mentor", page: "find-mentor" as Page, routePath: ROUTE_PATHS['find-mentor'], onHover: prefetchFindMentor },
   ];
 
   return (
@@ -330,14 +337,17 @@ const ResponsiveSidebar: React.FC<LeftSideBarProps> = ({
             </div>
             <nav className="nav-menu">
               {navItems.map((item) => (
-                <button
-                  key={item.path}
-                  onClick={() => handleMobileNavigation(item.path as Page)}
-                  className={`nav-link ${currentPage === item.path ? "active" : ""}`}
+                <Link
+                  key={item.page}
+                  to={item.routePath}
+                  onMouseEnter={item.onHover}
+                  onClick={() => setIsMobileOpen(false)}
+                  className={`nav-link ${currentPage === item.page ? "active" : ""}`}
+                  style={{ textDecoration: "none" }}
                 >
                   <span className="nav-icon">{item.icon}</span>
                   <span className="nav-text">{item.label}</span>
-                </button>
+                </Link>
               ))}
             </nav>
           </div>
@@ -351,14 +361,16 @@ const ResponsiveSidebar: React.FC<LeftSideBarProps> = ({
         >
           <nav className="nav-menu">
             {navItems.map((item) => (
-              <button
-                key={item.path}
-                onClick={() => setCurrentPage(item.path as Page)}
-                className={`nav-link ${currentPage === item.path ? "active" : ""}`}
+              <Link
+                key={item.page}
+                to={item.routePath}
+                onMouseEnter={item.onHover}
+                className={`nav-link ${currentPage === item.page ? "active" : ""}`}
+                style={{ textDecoration: "none" }}
               >
                 <span className="nav-icon">{item.icon}</span>
                 <span className="nav-text">{item.label}</span>
-              </button>
+              </Link>
             ))}
           </nav>
         </div>

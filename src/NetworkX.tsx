@@ -2,15 +2,8 @@ import { useOnboarding } from "@/hooks/useOnboarding";
 import OnboardingForm from "./components/OnboardingForm";
 import Loader from "./components/Loader";
 import { useState } from "react";
-import Home from "@/pages/Home";
-import Profile from "@/pages/Profile";
-import Search from "@/pages/Search";
-import Messages from "@/pages/Messages";
-import Feed from "@/main-layout/Feed";
-import InterviewPosts from "@/main-layout/interviewposts";
-import Resources from "@/main-layout/Resources";
-import Opportunities from "@/main-layout/Opportunities";
-import Roadmap from "@/main-layout/Roadmap";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { getPageFromPath } from "@/routes";
 
 import "@/css/networkx.css";
 
@@ -18,7 +11,6 @@ import NavBar from "./main-layout/NavBar";
 import LeftSideBar from "./main-layout/LeftSideBar";
 
 export type Page =
-  | "home"
   | "profile"
   | "search"
   | "messages"
@@ -31,47 +23,24 @@ export type Page =
 
 export default function NetworkX() {
   const { hasCompletedOnboarding, loading } = useOnboarding();
-  const [currentPage, setCurrentPage] = useState<Page>("home");
+  const location = useLocation();
+  const navigate = useNavigate();
   const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(false);
+  
+  // Get current page from URL path
+  const currentPage = getPageFromPath(location.pathname);
 
   if (loading) {
     return <Loader />;
   }
 
   if (!hasCompletedOnboarding) {
-    return <OnboardingForm onComplete={() => window.location.reload()} />;
+    return <OnboardingForm onComplete={() => navigate('/', { replace: true })} />;
   }
-
-  const renderMainContent = () => {
-    switch (currentPage) {
-      case "home":
-        return <Home />;
-      case "profile":
-        return <Profile />;
-      case "search":
-        return <Search />;
-      case "messages":
-        return <Messages />;
-      case "feed":
-        return <Feed />;
-      case "interviews":
-        return <InterviewPosts />;
-      case "resources":
-        return <Resources />;
-      case "opportunities":
-        return <Opportunities />;
-      case "roadmaps":
-        return <Roadmap />;
-      case "find-mentor":
-        return <div>Find a Mentor Feature Coming Soon</div>;
-      default:
-        return <Home />;
-    }
-  };
 
   return (
     <div className="networkx-container">
-      <NavBar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <NavBar currentPage={currentPage} />
       <div
         className={`content-wrapper ${
           sidebarExpanded ? "shift-expanded" : "shift-collapsed"
@@ -79,11 +48,12 @@ export default function NetworkX() {
       >
         <LeftSideBar
           currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
           onExpandChange={setSidebarExpanded}
         />
         {/* Main Content */}
-        <main className="main-content">{renderMainContent()}</main>
+        <main className="main-content">
+          <Outlet />
+        </main>
       </div>
     </div>
   );

@@ -1,21 +1,12 @@
-import {  QueryClientProvider } from '@tanstack/react-query';
-import { useAuthQuery } from '@/hooks/queries/useAuthQuery';
-import Loader from '@/components/Loader';
-import Login from '@/Login';
-import NetworkX from '@/NetworkX';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { RouterProvider } from 'react-router-dom';
 import { queryClient } from '@/lib/queryClient';
-
-function AppContent() {
-  const { data: user, isLoading } = useAuthQuery();
-
-  if (isLoading) return <Loader />;
-  return user ? <NetworkX /> : <Login />;
-}
+import { router } from '@/routes';
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AppContent />
+      <RouterProvider router={router} />
     </QueryClientProvider>
   );
 }

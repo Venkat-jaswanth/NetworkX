@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase';
+import { getAuthUser } from './authService';
 
 /**
  * Download and store Google profile picture in Supabase Storage
@@ -93,4 +94,61 @@ export async function deleteProfilePicture(userId: string): Promise<void> {
   if (error) {
     throw error;
   }
-} 
+}
+
+// Generic image upload for posts, resources, etc.
+export async function uploadImage(file: File, bucket: 'profile-pictures' | 'posts' | 'resources' = 'posts'): Promise<string> {
+  const user = await getAuthUser();
+  if (!user) throw new Error('Not authenticated');
+
+  // Generate unique filename
+  const fileExt = file.name.split('.').pop();
+  const fileName = `${user.id}/${Date.now()}.${fileExt}`;
+
+  const { data, error } = await supabase.storage
+    .from(bucket)
+    .upload(fileName, file, {
+      cacheControl: '3600',
+      upsert: false
+    });
+
+  if (error) throw error;
+
+  // Get public URL
+  const { data: { publicUrl } } = supabase.storage
+    .from(bucket)
+    .getPublicUrl(data.path);
+
+  return publicUrl;
+}
+
+export async function deleteImage(url: string, bucket: 'profile-pictures' | 'posts' | 'resources' = 'posts'): Promise<void> {
+  const user = await getAuthUser();
+  if (!user) throw new Error('Not authenticated');
+
+  // Extract path from URL
+  const urlParts = url.split('/');
+  const path = urlParts.slice(-2).join('/'); // user_id/filename
+
+  const { error } = await supabase.storage
+    .from(bucket)
+    .remove([path]);
+
+  if (error) throw error;
+}
+
+// Helper to validate image files
+export function validateImageFile(file: File): { valid: boolean; error?: string } {
+  const maxSize = 5 * 1024 * 1024; // 5MB
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+  if (!allowedTypes.includes(file.type)) {
+    return { valid: false, error: 'Only JPEG, PNG, GIF, and WebP images are allowed' };
+  }
+
+  if (file.size > maxSize) {
+    return { valid: false, error: 'Image must be less than 5MB' };
+  }
+
+  return { valid: true };
+}

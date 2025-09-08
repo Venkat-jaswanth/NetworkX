@@ -1,8 +1,16 @@
 import { useProfile } from '@/hooks/useProfile';
 import '@/css/profile.css';
 import Loader from '@/components/Loader';
+import { useRef, useState } from 'react';
+import { uploadProfilePicture } from '@/services/storageService';
+import { updateDbUser } from '@/services/userService';
+import { useQueryClient } from '@tanstack/react-query';
+import { FaCamera } from 'react-icons/fa';
 
 export default function Profile() {
+  const queryClient = useQueryClient();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [uploading, setUploading] = useState(false);
   const {
     user,
     followerCount,
@@ -40,6 +48,25 @@ export default function Profile() {
     closeDeleteWorkModal,
   } = useProfile();
 
+  const onClickChangePhoto = () => fileInputRef.current?.click();
+
+  const onFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user?.id) return;
+    try {
+      setUploading(true);
+      const publicUrl = await uploadProfilePicture(file, user.id);
+      await updateDbUser({ user: { profile_picture_url: publicUrl } });
+      queryClient.invalidateQueries({ queryKey: ['profile', 'current', user.id] });
+    } catch (err) {
+      console.error('Failed to upload profile picture:', err);
+      alert('Failed to upload profile picture');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
   if (loading) {
     return (
       <div className="page-container">
@@ -63,13 +90,40 @@ export default function Profile() {
         <div className="hero-background"></div>
         <div className="hero-content">
           <div className="profile-avatar-large">
-            {user.profile_picture_url ? (
-              <img src={user.profile_picture_url} alt={user.full_name} />
-            ) : (
-              <div className="avatar-placeholder-large">
-                {user.full_name?.charAt(0)?.toUpperCase()}
+            <div className={`avatar-wrapper${uploading ? ' show' : ''}`}>
+              <div className="avatar-inner">
+                {user.profile_picture_url ? (
+                  <img src={user.profile_picture_url} alt={user.full_name} />
+                ) : (
+                  <div className="avatar-placeholder-large">
+                    {user.full_name?.charAt(0)?.toUpperCase()}
+                  </div>
+                )}
+                <div className="avatar-overlay">
+                  {uploading ? (
+                    <button className="change-photo-btn" disabled>
+                      <span className="spinner"></span>
+                      Uploading…
+                    </button>
+                  ) : (
+                    <button
+                      onClick={onClickChangePhoto}
+                      disabled={uploading}
+                      className="change-photo-btn"
+                    >
+                      <FaCamera /> Change Photo
+                    </button>
+                  )}
+                </div>
               </div>
-            )}
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={onFileSelected}
+              style={{ display: 'none' }}
+            />
           </div>
           <div className="hero-info">
             <h1 className="profile-name">{user.full_name}</h1>

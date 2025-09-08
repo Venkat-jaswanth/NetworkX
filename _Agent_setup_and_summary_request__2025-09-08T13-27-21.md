@@ -1,0 +1,16 @@
+[ ] NAME:Current Task List DESCRIPTION:Root task for conversation __NEW_AGENT__
+-[/] NAME:NetworkX Platform Implementation DESCRIPTION:Complete implementation of all 6 sidebar features: Feed, Interview Experiences, Resources, Opportunities, Roadmaps, and Find a Mentor
+--[/] NAME:Phase 0: Foundation Setup DESCRIPTION:Database migration, service layer scaffolding, and type definitions
+---[/] NAME:Database Migration DESCRIPTION:Create all new tables (FeedPosts, InterviewPosts, Resources, Opportunities, Roadmaps, MentorProfiles, etc.) with proper indices and RLS policies
+---[ ] NAME:Service Layer Scaffolding DESCRIPTION:Create service files for all features with basic CRUD operations and error handling
+---[ ] NAME:Type Definitions Update DESCRIPTION:Update app.types.ts with new entity types and generate TypeScript types from database
+--[ ] NAME:Phase 1: Read-Only Features DESCRIPTION:Implement list views and basic data display for all features
+---[ ] NAME:Resources Page Implementation DESCRIPTION:List resources with category filtering, new badges, search and tag filtering, resource card component
+---[ ] NAME:Opportunities Page Implementation DESCRIPTION:List job opportunities with filters, new badges, opportunity card component, responsive design
+---[ ] NAME:Roadmaps Page Implementation DESCRIPTION:List roadmaps, detail view with steps, progress tracking, step-by-step navigation
+---[ ] NAME:Interview Experiences Implementation DESCRIPTION:List interview posts with filters, detail view, company/role filtering, responsive cards
+---[ ] NAME:Feed Page (Read-Only) DESCRIPTION:Display posts from followed users and public posts, post cards, pagination, like/comment counts
+---[ ] NAME:React Query Integration DESCRIPTION:Create query hooks for each feature, implement caching strategies, loading/error states
+--[ ] NAME:Phase 2: Interactive Features DESCRIPTION:Add creation, editing, and interaction capabilities
+--[ ] NAME:Phase 3: Mentor System DESCRIPTION:Complete mentor discovery and request management
+--[ ] NAME:Phase 4: Polish & Real-time DESCRIPTION:Add final polish, optimize performance, and enhance real-time features

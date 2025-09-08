@@ -3,6 +3,8 @@ import { searchUsers, getSearchSuggestions, type UserSearchResult, getProfileByI
 import { useFollowStatus } from '@/hooks/useFollowStatus';
 import { sendMessage } from '@/services/messagesService';
 import { useAuthQuery } from '@/hooks/queries/useAuthQuery';
+import UserProfileCard from '@/components/UserProfileCard';
+import UserAvatar from '@/components/UserAvatar';
 import '@/css/search.css';
 import Loader from '@/components/Loader';
 
@@ -217,19 +219,10 @@ export default function Search() {
                         className="suggestion-item"
                         onClick={() => handleSuggestionClick(suggestion)}
                       >
-                        <div className="suggestion-avatar">
-                          {suggestion.profile_picture_url ? (
-                            <img 
-                              src={suggestion.profile_picture_url} 
-                              alt={suggestion.full_name}
-                              className="suggestion-avatar-img"
-                            />
-                          ) : (
-                            <div className="avatar-placeholder small">
-                              {suggestion.full_name.charAt(0)}
-                            </div>
-                          )}
-                        </div>
+                        <UserAvatar
+                          user={suggestion}
+                          size="small"
+                        />
                         <div className="suggestion-info">
                           <div className="suggestion-name">{suggestion.full_name}</div>
                         </div>
@@ -276,27 +269,19 @@ export default function Search() {
               <div className="dm-user-info">
                 {(() => {
                   const user = results.find(u => u.id === dmOpenFor) || selectedUser;
-                  return (
+                  return user ? (
                     <>
-                      <div className="dm-avatar">
-                        {user?.profile_picture_url ? (
-                          <img 
-                            src={user.profile_picture_url} 
-                            alt={user.full_name}
-                            className="dm-avatar-img"
-                          />
-                        ) : (
-                          <div className="avatar-placeholder">
-                            {user?.full_name.charAt(0)}
-                          </div>
-                        )}
-                      </div>
+                      <UserAvatar
+                        user={user}
+                        size="medium"
+                        className="dm-avatar"
+                      />
                       <div className="dm-user-details">
-                        <h4>{user?.full_name}</h4>
+                        <h4>{user.full_name}</h4>
                         <p>Send a direct message</p>
                       </div>
                     </>
-                  );
+                  ) : null;
                 })()}
               </div>
               <div className="dm-input-container">
@@ -356,39 +341,34 @@ function UserCard({
     onUserSelect(user);
   };
 
+  const actions = (
+    <>
+      <button
+        className={`action-btn ${following ? 'primary' : 'secondary'}`}
+        disabled={busy === user.id || loading}
+        onClick={handleFollowClick}
+      >
+        {busy === user.id ? '...' : loading ? 'Loading...' : following ? 'Following' : 'Follow'}
+      </button>
+      <button
+        className="action-btn secondary"
+        onClick={onMessageClick}
+      >
+        Message
+      </button>
+    </>
+  );
+
   return (
-    <div className="user-card" onClick={handleCardClick}>
-      <div className="user-avatar">
-        {user.profile_picture_url ? (
-          <img 
-            src={user.profile_picture_url} 
-            alt={user.full_name}
-            className="user-avatar-img"
-          />
-        ) : (
-          <div className="avatar-placeholder">{user.full_name.charAt(0)}</div>
-        )}
-      </div>
-      <div className="user-info">
-        <h3>{user.full_name}</h3>
-        <p className="user-id">{user.id}</p>
-      </div>
-      <div className="user-actions" onClick={(e) => e.stopPropagation()}>
-        <button 
-          className={`action-btn ${following ? 'primary' : 'secondary'}`}
-          disabled={busy === user.id || loading} 
-          onClick={handleFollowClick}
-        >
-          {busy === user.id ? '...' : loading ? 'Loading...' : following ? 'Following' : 'Follow'}
-        </button>
-        <button 
-          className="action-btn secondary" 
-          onClick={onMessageClick}
-        >
-          Message
-        </button>
-      </div>
-    </div>
+    <UserProfileCard
+      user={user}
+      variant="full"
+      showBio={false}
+      showRole={false}
+      onClick={handleCardClick}
+      actions={actions}
+      className="search-user-card"
+    />
   );
 }
 

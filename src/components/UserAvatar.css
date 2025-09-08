@@ -1,0 +1,118 @@
+/* UserAvatar Component Styles */
+.user-avatar {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.user-avatar--clickable {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-avatar--clickable:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.user-avatar__image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--c-bg-secondary);
+  border: 2px solid var(--c-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.user-avatar__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.user-avatar__placeholder {
+  font-weight: 600;
+  color: var(--c-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--c-primary), var(--c-accent));
+  color: white;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+/* Size variants */
+.user-avatar--small {
+  width: 32px;
+  height: 32px;
+}
+
+.user-avatar--small .user-avatar__placeholder {
+  font-size: 12px;
+}
+
+.user-avatar--medium {
+  width: 40px;
+  height: 40px;
+}
+
+.user-avatar--medium .user-avatar__placeholder {
+  font-size: 14px;
+}
+
+.user-avatar--large {
+  width: 56px;
+  height: 56px;
+}
+
+.user-avatar--large .user-avatar__placeholder {
+  font-size: 18px;
+}
+
+/* Online status indicator */
+.user-avatar__status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--c-bg-primary);
+}
+
+.user-avatar__status--online {
+  background: #10b981;
+}
+
+.user-avatar--small .user-avatar__status {
+  width: 8px;
+  height: 8px;
+  border-width: 1px;
+}
+
+.user-avatar--large .user-avatar__status {
+  width: 16px;
+  height: 16px;
+  border-width: 3px;
+}
+
+/* Hover effects for clickable avatars */
+.user-avatar--clickable .user-avatar__image {
+  transition: all 0.2s ease;
+}
+
+.user-avatar--clickable:hover .user-avatar__image {
+  border-color: var(--c-primary);
+}
+
+.user-avatar--clickable:active {
+  transform: scale(0.95);
+}

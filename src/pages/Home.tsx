@@ -1,44 +1,29 @@
-import { useEffect, useState } from 'react';
-import { getAuthUser } from '@/services/authService';
-import { getAppUser } from '@/services/userService';
-import { getFollowerCount, getFollowingCount } from '@/services/followsService';
+import { useHomeQuery } from '@/hooks/queries/useHomeQuery';
 import '@/css/home.css';
 import Loader from '@/components/Loader';
 
 export default function Home() {
-  const [user, setUser] = useState<any>(null);
-  const [stats, setStats] = useState({ followers: 0, following: 0 });
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading, error } = useHomeQuery();
 
-  useEffect(() => {
-    const loadUserData = async () => {
-      try {
-        const authUser = await getAuthUser();
-        const appUser = await getAppUser();
-        const [followers, following] = await Promise.all([
-          getFollowerCount(authUser.id),
-          getFollowingCount(authUser.id)
-        ]);
-        
-        setUser(appUser);
-        setStats({ followers, following });
-      } catch (error) {
-        console.error('Error loading user data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadUserData();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="page-container">
         <Loader />
       </div>
     );
   }
+
+  if (error) {
+    return (
+      <div className="page-container">
+        <div className="error-message">
+          Error loading dashboard data. Please try again.
+        </div>
+      </div>
+    );
+  }
+
+  const { user, stats } = data || { user: null, stats: { followers: 0, following: 0 } };
 
   return (
     <div className="page-container">
