@@ -1,37 +1,5 @@
 /* === Cosmic Fusion Theming Variables === */
-:root {
-  /* --- GRADIENTS --- */
-  --gradient-page-bg: linear-gradient(
-    15deg,
-    #1f005c,
-    #3d1e6d,
-    #5c2a9d,
-    #9c1de7
-  );
-  --gradient-accent: linear-gradient(90deg, #ff512f, #dd2476);
-  --gradient-accent-hover: linear-gradient(90deg, #ff795e, #e84c90);
 
-  /* --- SURFACES & BACKGROUNDS --- */
-  --c-bg-content-glass: rgba(0, 0, 0, 0.25);
-  --c-bg-content-glass-light: rgba(255, 255, 255, 0.1);
-  --c-bg-dark-solid: #161a25;
-  --c-bg-input: rgba(0, 0, 0, 0.2);
-
-  /* --- TEXT COLORS --- */
-  --c-text-primary: #ffffff;
-  --c-text-secondary: #e0e0e0;
-  --c-text-subtle: #bebebe;
-  --c-text-on-accent: #ffffff;
-
-  /* --- BORDERS & SEPARATORS --- */
-  --c-border: rgba(255, 255, 255, 0.2);
-  --c-border-focus: #ff512f;
-
-  /* --- SHADOWS (FOR GLOW EFFECTS) --- */
-  --shadow-glow: 0 0 12px rgba(221, 36, 118, 0.6);
-  --shadow-glow-hover: 0 0 20px rgba(221, 36, 118, 0.8);
-  --shadow-card: 0px 10px 25px rgba(0, 0, 0, 0.2);
-}
 
 /* Profile Page Styles */
 .page-container {
