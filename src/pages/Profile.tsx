@@ -1,7 +1,7 @@
-import { useProfile } from '@/hooks/useProfile';
-import '@/css/profile.css';
-import Loader from '@/components/Loader';
-
+import { useProfile } from "@/hooks/useProfile";
+import "@/css/profile.css";
+import Loader from "@/components/Loader";
+import ProfileCard from "@/components/ProfileCard";
 export default function Profile() {
   const {
     user,
@@ -43,7 +43,7 @@ export default function Profile() {
   if (loading) {
     return (
       <div className="page-container">
-       <Loader />
+        <Loader />
       </div>
     );
   }
@@ -98,16 +98,20 @@ export default function Profile() {
               </div>
               <div className="section-content">
                 <p>{user.bio}</p>
-                {user.skills && Array.isArray(user.skills) && user.skills.length > 0 && (
-                  <div className="skills-section">
-                    <h3>Skills</h3>
-                    <div className="skills-list">
-                      {user.skills.map((skill: any, index: number) => (
-                        <span key={index} className="skill-tag">{skill}</span>
-                      ))}
+                {user.skills &&
+                  Array.isArray(user.skills) &&
+                  user.skills.length > 0 && (
+                    <div className="skills-section">
+                      <h3>Skills</h3>
+                      <div className="skills-list">
+                        {user.skills.map((skill: any, index: number) => (
+                          <span key={index} className="skill-tag">
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
             </div>
 
@@ -115,7 +119,7 @@ export default function Profile() {
             <div className="profile-section">
               <div className="section-header">
                 <h2>Work Experience</h2>
-                <button 
+                <button
                   className="add-btn"
                   onClick={() => setShowAddWork(true)}
                 >
@@ -130,14 +134,31 @@ export default function Profile() {
                         <div className="experience-header">
                           <h3>{work.job_title}</h3>
                           <div className="experience-actions">
-                            <button onClick={() => startEditWork(work)}>Edit</button>
-                            <button onClick={() => handleDeleteWorkExperience(work.id)}>Delete</button>
+                            <button onClick={() => startEditWork(work)}>
+                              Edit
+                            </button>
+                            <button
+                              onClick={() =>
+                                handleDeleteWorkExperience(work.id)
+                              }
+                            >
+                              Delete
+                            </button>
                           </div>
                         </div>
                         <p className="company-name">{work.company_name}</p>
                         <p className="experience-dates">
-                          {new Date(work.start_date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })} - 
-                          {work.end_date ? new Date(work.end_date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Present'}
+                          {new Date(work.start_date).toLocaleDateString(
+                            "en-US",
+                            { month: "short", year: "numeric" }
+                          )}{" "}
+                          -
+                          {work.end_date
+                            ? new Date(work.end_date).toLocaleDateString(
+                                "en-US",
+                                { month: "short", year: "numeric" }
+                              )
+                            : "Present"}
                         </p>
                       </div>
                     ))}
@@ -152,7 +173,7 @@ export default function Profile() {
             <div className="profile-section">
               <div className="section-header">
                 <h2>Education</h2>
-                <button 
+                <button
                   className="add-btn"
                   onClick={() => setShowAddEducation(true)}
                 >
@@ -167,11 +188,19 @@ export default function Profile() {
                         <div className="education-header">
                           <h3>{edu.institution_name}</h3>
                           <div className="education-actions">
-                            <button onClick={() => startEditEducation(edu)}>Edit</button>
-                            <button onClick={() => handleDeleteEducation(edu.id)}>Delete</button>
+                            <button onClick={() => startEditEducation(edu)}>
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => handleDeleteEducation(edu.id)}
+                            >
+                              Delete
+                            </button>
                           </div>
                         </div>
-                        <p className="degree-info">{edu.degree} in {edu.field_of_study}</p>
+                        <p className="degree-info">
+                          {edu.degree} in {edu.field_of_study}
+                        </p>
                         <p className="graduation-year">{edu.graduation_year}</p>
                       </div>
                     ))}
@@ -185,6 +214,26 @@ export default function Profile() {
 
           {/* Right Column */}
           <div className="content-right">
+            <ProfileCard
+              name={
+                user.full_name
+                  ? user.full_name.split(" ").slice(-2).join(" ")
+                  : ""
+              }
+              title={user.role}
+              handle={user.full_name
+                .split(" ")
+                .map((w: string) => w.charAt(0).toUpperCase())
+                .join("")
+                .toLowerCase()}
+              status="Online"
+              contactText="Contact Me"
+              avatarUrl={user.profile_picture_url ?? ""}
+              showUserInfo={true}
+              enableTilt={true}
+              enableMobileTilt={false}
+              onContactClick={() => console.log("Contact clicked")}
+            />
             <div className="profile-section">
               <div className="section-header">
                 <h2>Profile Info</h2>
@@ -199,13 +248,16 @@ export default function Profile() {
                   </div>
                 )}
                 <div className="info-item">
-                  <strong>Seeking Mentor:</strong> {user.is_seeking_mentor ? 'Yes' : 'No'}
+                  <strong>Seeking Mentor:</strong>{" "}
+                  {user.is_seeking_mentor ? "Yes" : "No"}
                 </div>
                 <div className="info-item">
-                  <strong>Member since:</strong> {new Date(user.created_at).toLocaleDateString()}
+                  <strong>Member since:</strong>{" "}
+                  {new Date(user.created_at).toLocaleDateString()}
                 </div>
               </div>
             </div>
+            
           </div>
         </div>
       </div>
@@ -222,26 +274,43 @@ export default function Profile() {
               <input
                 type="text"
                 placeholder="Institution Name *"
-                value={educationForm.institution_name || ''}
-                onChange={(e) => setEducationForm({...educationForm, institution_name: e.target.value})}
+                value={educationForm.institution_name || ""}
+                onChange={(e) =>
+                  setEducationForm({
+                    ...educationForm,
+                    institution_name: e.target.value,
+                  })
+                }
               />
               <input
                 type="text"
                 placeholder="Degree *"
-                value={educationForm.degree || ''}
-                onChange={(e) => setEducationForm({...educationForm, degree: e.target.value})}
+                value={educationForm.degree || ""}
+                onChange={(e) =>
+                  setEducationForm({ ...educationForm, degree: e.target.value })
+                }
               />
               <input
                 type="text"
                 placeholder="Field of Study *"
-                value={educationForm.field_of_study || ''}
-                onChange={(e) => setEducationForm({...educationForm, field_of_study: e.target.value})}
+                value={educationForm.field_of_study || ""}
+                onChange={(e) =>
+                  setEducationForm({
+                    ...educationForm,
+                    field_of_study: e.target.value,
+                  })
+                }
               />
               <input
                 type="number"
                 placeholder="Graduation Year *"
-                value={educationForm.graduation_year || ''}
-                onChange={(e) => setEducationForm({...educationForm, graduation_year: parseInt(e.target.value)})}
+                value={educationForm.graduation_year || ""}
+                onChange={(e) =>
+                  setEducationForm({
+                    ...educationForm,
+                    graduation_year: parseInt(e.target.value),
+                  })
+                }
               />
             </div>
             <div className="modal-actions">
@@ -264,26 +333,34 @@ export default function Profile() {
               <input
                 type="text"
                 placeholder="Company Name *"
-                value={workForm.company_name || ''}
-                onChange={(e) => setWorkForm({...workForm, company_name: e.target.value})}
+                value={workForm.company_name || ""}
+                onChange={(e) =>
+                  setWorkForm({ ...workForm, company_name: e.target.value })
+                }
               />
               <input
                 type="text"
                 placeholder="Job Title *"
-                value={workForm.job_title || ''}
-                onChange={(e) => setWorkForm({...workForm, job_title: e.target.value})}
+                value={workForm.job_title || ""}
+                onChange={(e) =>
+                  setWorkForm({ ...workForm, job_title: e.target.value })
+                }
               />
               <input
                 type="date"
                 placeholder="Start Date *"
-                value={workForm.start_date || ''}
-                onChange={(e) => setWorkForm({...workForm, start_date: e.target.value})}
+                value={workForm.start_date || ""}
+                onChange={(e) =>
+                  setWorkForm({ ...workForm, start_date: e.target.value })
+                }
               />
               <input
                 type="date"
                 placeholder="End Date (optional)"
-                value={workForm.end_date || ''}
-                onChange={(e) => setWorkForm({...workForm, end_date: e.target.value})}
+                value={workForm.end_date || ""}
+                onChange={(e) =>
+                  setWorkForm({ ...workForm, end_date: e.target.value })
+                }
               />
             </div>
             <div className="modal-actions">
@@ -306,30 +383,53 @@ export default function Profile() {
               <input
                 type="text"
                 placeholder="Institution Name *"
-                value={educationForm.institution_name || ''}
-                onChange={(e) => setEducationForm({...educationForm, institution_name: e.target.value})}
+                value={educationForm.institution_name || ""}
+                onChange={(e) =>
+                  setEducationForm({
+                    ...educationForm,
+                    institution_name: e.target.value,
+                  })
+                }
               />
               <input
                 type="text"
                 placeholder="Degree *"
-                value={educationForm.degree || ''}
-                onChange={(e) => setEducationForm({...educationForm, degree: e.target.value})}
+                value={educationForm.degree || ""}
+                onChange={(e) =>
+                  setEducationForm({ ...educationForm, degree: e.target.value })
+                }
               />
               <input
                 type="text"
                 placeholder="Field of Study *"
-                value={educationForm.field_of_study || ''}
-                onChange={(e) => setEducationForm({...educationForm, field_of_study: e.target.value})}
+                value={educationForm.field_of_study || ""}
+                onChange={(e) =>
+                  setEducationForm({
+                    ...educationForm,
+                    field_of_study: e.target.value,
+                  })
+                }
               />
               <input
                 type="number"
                 placeholder="Graduation Year *"
-                value={educationForm.graduation_year || ''}
-                onChange={(e) => setEducationForm({...educationForm, graduation_year: parseInt(e.target.value)})}
+                value={educationForm.graduation_year || ""}
+                onChange={(e) =>
+                  setEducationForm({
+                    ...educationForm,
+                    graduation_year: parseInt(e.target.value),
+                  })
+                }
               />
             </div>
             <div className="modal-actions">
-              <button onClick={() => editingEducation && handleUpdateEducation(editingEducation)}>Update Education</button>
+              <button
+                onClick={() =>
+                  editingEducation && handleUpdateEducation(editingEducation)
+                }
+              >
+                Update Education
+              </button>
               <button onClick={closeEditEducationModal}>Cancel</button>
             </div>
           </div>
@@ -348,30 +448,44 @@ export default function Profile() {
               <input
                 type="text"
                 placeholder="Company Name *"
-                value={workForm.company_name || ''}
-                onChange={(e) => setWorkForm({...workForm, company_name: e.target.value})}
+                value={workForm.company_name || ""}
+                onChange={(e) =>
+                  setWorkForm({ ...workForm, company_name: e.target.value })
+                }
               />
               <input
                 type="text"
                 placeholder="Job Title *"
-                value={workForm.job_title || ''}
-                onChange={(e) => setWorkForm({...workForm, job_title: e.target.value})}
+                value={workForm.job_title || ""}
+                onChange={(e) =>
+                  setWorkForm({ ...workForm, job_title: e.target.value })
+                }
               />
               <input
                 type="date"
                 placeholder="Start Date *"
-                value={workForm.start_date || ''}
-                onChange={(e) => setWorkForm({...workForm, start_date: e.target.value})}
+                value={workForm.start_date || ""}
+                onChange={(e) =>
+                  setWorkForm({ ...workForm, start_date: e.target.value })
+                }
               />
               <input
                 type="date"
                 placeholder="End Date (optional)"
-                value={workForm.end_date || ''}
-                onChange={(e) => setWorkForm({...workForm, end_date: e.target.value})}
+                value={workForm.end_date || ""}
+                onChange={(e) =>
+                  setWorkForm({ ...workForm, end_date: e.target.value })
+                }
               />
             </div>
             <div className="modal-actions">
-              <button onClick={() => editingWork && handleUpdateWorkExperience(editingWork)}>Update Experience</button>
+              <button
+                onClick={() =>
+                  editingWork && handleUpdateWorkExperience(editingWork)
+                }
+              >
+                Update Experience
+              </button>
               <button onClick={closeEditWorkModal}>Cancel</button>
             </div>
           </div>
@@ -387,10 +501,15 @@ export default function Profile() {
               <button onClick={closeDeleteEducationModal}>×</button>
             </div>
             <div className="modal-content">
-              <p>Are you sure you want to delete this education record? This action cannot be undone.</p>
+              <p>
+                Are you sure you want to delete this education record? This
+                action cannot be undone.
+              </p>
             </div>
             <div className="modal-actions">
-              <button className="delete-btn" onClick={confirmDeleteEducation}>Delete</button>
+              <button className="delete-btn" onClick={confirmDeleteEducation}>
+                Delete
+              </button>
               <button onClick={closeDeleteEducationModal}>Cancel</button>
             </div>
           </div>
@@ -406,10 +525,18 @@ export default function Profile() {
               <button onClick={closeDeleteWorkModal}>×</button>
             </div>
             <div className="modal-content">
-              <p>Are you sure you want to delete this work experience? This action cannot be undone.</p>
+              <p>
+                Are you sure you want to delete this work experience? This
+                action cannot be undone.
+              </p>
             </div>
             <div className="modal-actions">
-              <button className="delete-btn" onClick={confirmDeleteWorkExperience}>Delete</button>
+              <button
+                className="delete-btn"
+                onClick={confirmDeleteWorkExperience}
+              >
+                Delete
+              </button>
               <button onClick={closeDeleteWorkModal}>Cancel</button>
             </div>
           </div>
