@@ -628,7 +628,12 @@
   transform: translateY(-1px);
   box-shadow: var(--shadow-glow); /* THEME CHANGE */
 }
-
+@media (max-width: 992px) {
+  .content-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+}
 /* Responsive Design */
 @media (max-width: 768px) {
   .page-container {
@@ -654,11 +659,6 @@
   .profile-avatar-large img,
   .avatar-placeholder-large {
     font-size: 2.5rem;
-  }
-  
-  .content-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
   }
   
   .profile-stats {
