@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Loader from '@/components/Loader';
+import MarkdownRenderer from '@/components/MarkdownRenderer';
 import { useResourcesQuery, useMarkResourcesSeen } from '@/hooks/queries/useResourcesQuery';
 import type { ResourceFilters } from '@/types/app.types';
 import '@/css/resources.css';
@@ -48,7 +49,11 @@ const Resources = () => {
               <h3 className="resource-title">{r.title}</h3>
               <span className="resource-category">{r.category}</span>
             </div>
-            {r.description && <p className="resource-description">{r.description}</p>}
+            {r.description && (
+              <div className="resource-description">
+                <MarkdownRenderer content={r.description} />
+              </div>
+            )}
             <div className="resource-footer">
               <a href={r.url ?? '#'} target="_blank" rel="noreferrer" className="resource-link">Open</a>
               {Array.isArray(r.tags) && r.tags.length > 0 && (

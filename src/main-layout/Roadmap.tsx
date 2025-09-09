@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Loader from '@/components/Loader';
+import MarkdownRenderer from '@/components/MarkdownRenderer';
 import { useRoadmapsQuery, useRoadmapDetailQuery } from '@/hooks/queries/useRoadmapsQuery';
 import '@/css/roadmaps.css';
 
@@ -40,14 +41,22 @@ const Roadmap = () => {
           <div>
             <div className="roadmap-detail-header">
               <h2 className="roadmap-detail-title">{detail.roadmap.title}</h2>
-              {detail.roadmap.description && <p className="roadmap-detail-description">{detail.roadmap.description}</p>}
+              {detail.roadmap.description && (
+                <div className="roadmap-detail-description">
+                  <MarkdownRenderer content={detail.roadmap.description} />
+                </div>
+              )}
             </div>
             <div className="roadmap-steps">
               <ol>
                 {detail.steps.map(s => (
                   <li key={s.id} className="roadmap-step">
                     <div className="roadmap-step-title">{s.title}</div>
-                    {s.description && <div className="roadmap-step-description">{s.description}</div>}
+                    {s.description && (
+                      <div className="roadmap-step-description">
+                        <MarkdownRenderer content={s.description} />
+                      </div>
+                    )}
                   </li>
                 ))}
               </ol>

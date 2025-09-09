@@ -1,8 +1,9 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter, Navigate, useLocation } from 'react-router-dom';
 import { useAuthQuery } from '@/hooks/queries/useAuthQuery';
 import Loader from '@/components/Loader';
 import Login from '@/Login';
 import NetworkX from '@/NetworkX';
+import OnboardingForm from '@/components/OnboardingForm';
 import Profile from '@/pages/Profile';
 import Search from '@/pages/Search';
 import Messages from '@/pages/Messages';
@@ -12,6 +13,7 @@ import Resources from '@/main-layout/Resources';
 import Opportunities from '@/main-layout/Opportunities';
 import Roadmap from '@/main-layout/Roadmap';
 import FindMentor from '@/main-layout/FindMentor';
+import { useOnboarding } from '@/hooks/useOnboarding';
 
 import type { Page } from '@/NetworkX';
 
@@ -42,11 +44,18 @@ export const getPageFromPath = (path: string): Page => {
 // Protected route wrapper component
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { data: user, isLoading } = useAuthQuery();
+  const { hasCompletedOnboarding, loading } = useOnboarding();
+  const location = useLocation();
 
-  if (isLoading) return <Loader />;
+  if (isLoading || loading) return <Loader />;
   
   if (!user) {
     return <Login />;
+  }
+
+  // If onboarding not complete, force to /onboarding except when already there
+  if (!hasCompletedOnboarding && location.pathname !== '/onboarding') {
+    return <Navigate to="/onboarding" replace />;
   }
 
   return <>{children}</>;
@@ -61,6 +70,14 @@ export const router = createBrowserRouter([
   {
     path: '/login',
     element: <Login />,
+  },
+  {
+    path: '/onboarding',
+    element: (
+      <ProtectedRoute>
+        <OnboardingForm onComplete={() => { window.location.replace('/'); }} />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '/',

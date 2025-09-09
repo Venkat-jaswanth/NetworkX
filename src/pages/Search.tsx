@@ -5,8 +5,8 @@ import { sendMessage } from '@/services/messagesService';
 import { useAuthQuery } from '@/hooks/queries/useAuthQuery';
 import UserProfileCard from '@/components/UserProfileCard';
 import UserAvatar from '@/components/UserAvatar';
+import UserProfileView from '@/components/UserProfileView';
 import '@/css/search.css';
-import Loader from '@/components/Loader';
 
 export default function Search() {
   const { data: user } = useAuthQuery();
@@ -178,10 +178,12 @@ export default function Search() {
           user={selectedUser}
           userDetails={selectedUserDetails}
           loading={loadingUserDetails}
+          isOwnProfile={false}
           onBack={handleBackToSearch}
           onFollowToggle={handleFollowToggle}
           onMessageClick={() => handleMessageClick(selectedUser.id)}
           busy={busy}
+          backButtonText="Back to Search"
         />
       ) : (
         <>
@@ -372,173 +374,3 @@ function UserCard({
   );
 }
 
-// UserProfileView Component - Detailed profile view
-function UserProfileView({ 
-  user, 
-  userDetails, 
-  loading, 
-  onBack, 
-  onFollowToggle, 
-  onMessageClick, 
-  busy 
-}: { 
-  user: UserSearchResult; 
-  userDetails: any; 
-  loading: boolean; 
-  onBack: () => void; 
-  onFollowToggle: (userId: string) => Promise<void>; 
-  onMessageClick: () => void; 
-  busy: string; 
-}) {
-  const { following, loading: followLoading, updateFollowStatus } = useFollowStatus(user.id);
-
-  const handleFollowClick = async () => {
-    try {
-      await onFollowToggle(user.id);
-      updateFollowStatus(!following);
-    } catch (error) {
-      console.error('Error toggling follow:', error);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="user-profile-view">
-        <div className="profile-header">
-          <button className="back-btn" onClick={onBack}>
-            ← Back to Search
-          </button>
-        </div>
-        <div className="page-container">
-          <Loader />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="user-profile-view">
-      <div className="profile-header">
-        <button className="back-btn" onClick={onBack}>
-          ← Back to Search
-        </button>
-        <div className="profile-actions">
-          <button 
-            className={`action-btn ${following ? 'primary' : 'secondary'}`}
-            disabled={busy === user.id || followLoading} 
-            onClick={handleFollowClick}
-          >
-            {busy === user.id ? '...' : followLoading ? 'Loading...' : following ? 'Following' : 'Follow'}
-          </button>
-          <button 
-            className="action-btn secondary" 
-            onClick={onMessageClick}
-          >
-            Message
-          </button>
-        </div>
-      </div>
-
-      <div className="profile-hero">
-        <div className="hero-background"></div>
-        <div className="hero-content">
-          <div className="profile-avatar-large">
-            {user.profile_picture_url ? (
-              <img src={user.profile_picture_url} alt={user.full_name} />
-            ) : (
-              <div className="avatar-placeholder-large">
-                {user.full_name.charAt(0)}
-              </div>
-            )}
-          </div>
-          <div className="hero-info">
-            <h1 className="profile-name">{user.full_name}</h1>
-            <p className="profile-role">{userDetails?.role || 'Member'}</p>
-            <p className="profile-bio">{userDetails?.bio || 'No bio available'}</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="profile-content">
-        <div className="content-grid">
-          <div className="content-left">
-            <div className="profile-section">
-              <h2 className="section-header">About</h2>
-              <div className="section-content">
-                <p>{userDetails?.bio || 'No information available'}</p>
-              </div>
-            </div>
-
-            {userDetails?.education && userDetails.education.length > 0 && (
-              <div className="profile-section">
-                <h2 className="section-header">Education</h2>
-                <div className="section-content">
-                  <div className="education-list">
-                    {userDetails.education.map((edu: any, index: number) => (
-                      <div key={index} className="education-item">
-                        <div className="education-header">
-                          <h3>{edu.degree}</h3>
-                        </div>
-                        <p className="degree-info">{edu.institution}</p>
-                        <p className="graduation-year">{edu.graduation_year}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {userDetails?.workExperience && userDetails.workExperience.length > 0 && (
-              <div className="profile-section">
-                <h2 className="section-header">Work Experience</h2>
-                <div className="section-content">
-                  <div className="experience-list">
-                    {userDetails.workExperience.map((exp: any, index: number) => (
-                      <div key={index} className="experience-item">
-                        <div className="experience-header">
-                          <h3>{exp.job_title}</h3>
-                        </div>
-                        <p className="company-name">{exp.company_name}</p>
-                        <p className="experience-dates">
-                          {exp.start_date} - {exp.end_date || 'Present'}
-                        </p>
-                        <p>{exp.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="content-right">
-            <div className="profile-section">
-              <h2 className="section-header">Profile Info</h2>
-              <div className="section-content">
-                <div className="info-item">
-                  <strong>User ID:</strong> {user.id}
-                </div>
-                <div className="info-item">
-                  <strong>Role:</strong> {userDetails?.role || 'Member'}
-                </div>
-                {userDetails?.location && (
-                  <div className="info-item">
-                    <strong>Location:</strong> {userDetails.location}
-                  </div>
-                )}
-                {userDetails?.website && (
-                  <div className="info-item">
-                    <strong>Website:</strong> 
-                    <a href={userDetails.website} target="_blank" rel="noopener noreferrer">
-                      {userDetails.website}
-                    </a>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}

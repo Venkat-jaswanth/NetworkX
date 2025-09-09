@@ -3,6 +3,7 @@ import Loader from '@/components/Loader';
 import MarkdownEditor from '@/components/MarkdownEditor';
 import PostCard from '@/components/PostCard';
 import Comment from '@/components/Comment';
+import UserProfileView from '@/components/UserProfileView';
 import { useFeedQuery, useCreatePost, useToggleLike, useCommentsQuery, useAddComment } from '@/hooks/queries/useFeedQuery';
 import { useProfileNavigation } from '@/hooks/useProfileNavigation';
 import '@/css/feed.css';
@@ -13,7 +14,7 @@ const Feed = () => {
   const createPost = useCreatePost();
   const toggleLike = useToggleLike();
   const addComment = useAddComment();
-  const { navigateToProfile, selectedUserId, selectedUserDetails, isLoading: profileLoading, clearProfile, isViewingProfile } = useProfileNavigation();
+  const { navigateToProfile, selectedUserDetails, isLoading: profileLoading, clearProfile, isViewingProfile } = useProfileNavigation();
 
   const [body, setBody] = useState('');
   const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
@@ -49,10 +50,11 @@ const Feed = () => {
     return (
       <div className="feed-container">
         <UserProfileView
-          selectedUserId={selectedUserId}
-          selectedUserDetails={selectedUserDetails}
-          profileLoading={profileLoading}
+          user={selectedUserDetails}
+          loading={profileLoading}
+          isOwnProfile={false}
           onBack={clearProfile}
+          backButtonText="Back to Feed"
         />
       </div>
     );
@@ -193,110 +195,5 @@ function CommentsSection({
   );
 }
 
-// UserProfileView Component for viewing user profiles from feed
-interface UserProfileViewProps {
-  selectedUserId: string | null;
-  selectedUserDetails: any;
-  profileLoading: boolean;
-  onBack: () => void;
-}
-
-function UserProfileView({
-  selectedUserDetails,
-  profileLoading,
-  onBack
-}: UserProfileViewProps) {
-  if (profileLoading) {
-    return (
-      <div className="profile-view">
-        <div className="profile-header">
-          <button className="back-btn" onClick={onBack}>
-            ← Back to Feed
-          </button>
-        </div>
-        <div className="profile-loading">
-          <Loader />
-        </div>
-      </div>
-    );
-  }
-
-  if (!selectedUserDetails) {
-    return (
-      <div className="profile-view">
-        <div className="profile-header">
-          <button className="back-btn" onClick={onBack}>
-            ← Back to Feed
-          </button>
-        </div>
-        <div className="profile-error">
-          <h3>Profile not found</h3>
-          <p>Unable to load user profile.</p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="profile-view">
-      <div className="profile-header">
-        <button className="back-btn" onClick={onBack}>
-          ← Back to Feed
-        </button>
-      </div>
-
-      <div className="profile-hero">
-        <div className="hero-background"></div>
-        <div className="hero-content">
-          <div className="feed-profile-avatar">
-            {selectedUserDetails.profile_picture_url ? (
-              <img
-                src={selectedUserDetails.profile_picture_url}
-                alt={selectedUserDetails.full_name}
-                className="feed-profile-img"
-              />
-            ) : (
-              <div className="feed-avatar-placeholder">
-                {selectedUserDetails.full_name?.charAt(0)?.toUpperCase()}
-              </div>
-            )}
-          </div>
-          <div className="hero-info">
-            <h1 className="profile-name">{selectedUserDetails.full_name}</h1>
-            <p className="profile-role">{selectedUserDetails.role || 'Member'}</p>
-            <p className="profile-bio">{selectedUserDetails.bio || 'No bio available'}</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="profile-content">
-        <div className="content-grid">
-          <div className="content-left">
-            <div className="profile-section">
-              <h2 className="section-header">About</h2>
-              <div className="section-content">
-                <p>{selectedUserDetails.bio || 'No information available'}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="content-right">
-            <div className="profile-section">
-              <h2 className="section-header">Profile Info</h2>
-              <div className="section-content">
-                <div className="info-item">
-                  <strong>Role:</strong> {selectedUserDetails.role || 'Member'}
-                </div>
-                <div className="info-item">
-                  <strong>Member since:</strong> {new Date(selectedUserDetails.created_at).toLocaleDateString()}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default Feed;

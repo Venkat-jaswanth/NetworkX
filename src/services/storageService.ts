@@ -1,6 +1,8 @@
 import { supabase } from '@/lib/supabase';
 import { getAuthUser } from './authService';
 
+export type Bucket = 'profile-pictures' | 'posts' | 'resources';
+
 /**
  * Download and store Google profile picture in Supabase Storage
  * @param googleUrl - The Google profile picture URL
@@ -97,7 +99,7 @@ export async function deleteProfilePicture(userId: string): Promise<void> {
 }
 
 // Generic image upload for posts, resources, etc.
-export async function uploadImage(file: File, bucket: 'profile-pictures' | 'posts' | 'resources' = 'posts'): Promise<string> {
+export async function uploadImage(file: File, bucket: Bucket = 'posts'): Promise<string> {
   const user = await getAuthUser();
   if (!user) throw new Error('Not authenticated');
 
@@ -122,7 +124,7 @@ export async function uploadImage(file: File, bucket: 'profile-pictures' | 'post
   return publicUrl;
 }
 
-export async function deleteImage(url: string, bucket: 'profile-pictures' | 'posts' | 'resources' = 'posts'): Promise<void> {
+export async function deleteImage(url: string, bucket: Bucket = 'posts'): Promise<void> {
   const user = await getAuthUser();
   if (!user) throw new Error('Not authenticated');
 

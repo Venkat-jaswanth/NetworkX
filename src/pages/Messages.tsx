@@ -4,6 +4,7 @@ import { useMessages } from '@/hooks/useMessages';
 import { FaSearch, FaPaperPlane, FaEllipsisV, FaUser, FaArrowLeft } from 'react-icons/fa'; // Added FaArrowLeft
 import '@/css/messages.css';
 import Loader from '@/components/Loader';
+import MarkdownRenderer from '@/components/MarkdownRenderer';
 
 export default function Messages() {
   const { data: user } = useAuthQuery();
@@ -239,7 +240,9 @@ export default function Messages() {
                   messages.map(m => (
                     <div key={m.id} className={`message-item ${m.sender_id === user?.id ? 'sent' : 'received'}`}>
                       <div className="message-bubble">
-                        <p>{m.body}</p>
+                        <div className="message-content">
+                          <MarkdownRenderer content={m.body} />
+                        </div>
                         <span className="message-time">
                           {formatTime(m.created_at)}
                         </span>
