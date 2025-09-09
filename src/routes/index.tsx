@@ -44,10 +44,10 @@ export const getPageFromPath = (path: string): Page => {
 // Protected route wrapper component
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { data: user, isLoading } = useAuthQuery();
-  const { hasCompletedOnboarding, loading } = useOnboarding();
+  const { hasCompletedOnboarding } = useOnboarding();
   const location = useLocation();
 
-  if (isLoading || loading) return <Loader />;
+  if (isLoading) return <Loader />;
   
   if (!user) {
     return <Login />;
