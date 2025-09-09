@@ -44,7 +44,7 @@ export const getPageFromPath = (path: string): Page => {
 // Protected route wrapper component
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { data: user, isLoading } = useAuthQuery();
-  const { hasCompletedOnboarding } = useOnboarding();
+  const { hasCompletedOnboarding, loading: onboardingLoading } = useOnboarding();
   const location = useLocation();
 
   if (isLoading) return <Loader />;
@@ -52,6 +52,8 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   if (!user) {
     return <Login />;
   }
+
+  if(onboardingLoading) return <Loader />;
 
   // If onboarding not complete, force to /onboarding except when already there
   if (!hasCompletedOnboarding && location.pathname !== '/onboarding') {
