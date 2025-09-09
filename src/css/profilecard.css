@@ -43,6 +43,9 @@
   transform: translate3d(0, 0, 0.1px);
   position: relative;
   touch-action: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pc-card-wrapper::before {
@@ -156,9 +159,9 @@
     repeating-linear-gradient(
       var(--angle),
       #0e152e 0%,
-      hsl(240, 10%, 60%) 3.8%,
-      hsl(240, 29%, 66%) 4.5%,
-      hsl(240, 10%, 60%) 5.2%,
+      hsla(240, 10%, 60%, 0.308) 3.8%,
+      hsla(240, 29%, 66%, 0.377) 4.5%,
+      hsla(240, 10%, 60%, 0.5) 5.2%,
       #0e152e 10%,
       #0e152e 12%
     ),
@@ -172,7 +175,7 @@
     0 var(--background-y),
     var(--background-x) var(--background-y),
     center;
-  background-blend-mode: color-dodge, hard-light;
+  background-blend-mode: screen;
   background-size:
     500% 500%,
     300% 300%,
@@ -191,7 +194,6 @@
 
 .pc-card:hover .pc-shine,
 .pc-card.active .pc-shine {
-  filter: brightness(0.85) contrast(1.5) saturate(0.5);
   animation: none;
 }
 
@@ -344,7 +346,7 @@
 .pc-status {
   font-size: 14px;
   /* THEME CHANGE: Using our theme's text color */
-  color: #94a3b8;
+  color: #ffffff;
   line-height: 1;
 }
 

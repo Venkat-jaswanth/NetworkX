@@ -7,6 +7,8 @@ import { updateDbUser } from "@/services/userService";
 import { useQueryClient } from "@tanstack/react-query";
 import { FaCamera } from "react-icons/fa";
 import ProfileCard from "@/components/ProfileCard";
+
+import avatarImg from "@/assets/imgs/avatar.jpeg";
 export default function Profile() {
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -282,7 +284,7 @@ export default function Profile() {
                 .toLowerCase()}
               status="Online"
               contactText="Contact Me"
-              avatarUrl={user.profile_picture_url ?? ""}
+              avatarUrl={user.profile_picture_url || avatarImg}
               showUserInfo={true}
               enableTilt={true}
               enableMobileTilt={false}

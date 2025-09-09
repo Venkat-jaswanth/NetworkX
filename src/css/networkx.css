@@ -20,6 +20,13 @@
   --c-bg-content-glass-light: rgba(234, 88, 12, 0.1);
   /* The darkest color from our background for solid surfaces */
   --c-bg-dark-solid: #020617;
+  --c-bg-input: rgba(0, 0, 0, 0.2);
+  --c-bg-content-glass: rgba(0, 0, 0, 0.25);
+  --c-bg-input: rgba(0, 0, 0, 0.2);
+  --c-bg-light-gray: rgba(0, 0, 0, 0.15); /* Replaced original for dark theme */
+  --c-bg-secondary-hover: rgba(255, 255, 255, 0.1);
+  --c-bg-danger-hover: rgba(253, 104, 74, 0.507);
+
 
   /* --- TEXT COLORS --- */
   --c-text-primary: #e2e8f0; /* Soft white for readability */
@@ -32,7 +39,7 @@
   --c-border: rgba(234, 88, 12, 0.3);
   /* A solid, vibrant orange for focused elements */
   --c-border-focus: #ea580c;
-
+  --c-border-secondary: rgba(255, 255, 255, 0.3);
   /* --- SHADOWS (FOR GLOW EFFECTS) --- */
   /* A vibrant orange glow for accented elements */
   --shadow-glow: 0 0 12px rgba(234, 88, 12, 0.6);
@@ -40,12 +47,29 @@
   /* A standard, clean shadow for floating cards */
   --shadow-card: 0px 10px 25px rgba(0, 0, 0, 0.2);
 
+
+  --c-success: #00ff7f;
+  --c-danger: #ff512f;
+
   /* --- SIDEBAR SIZES (Unchanged) --- */
   --sidebar-collapsed: 80px;
   --sidebar-expanded: 250px;
   --sidebar-offset-x: 20px;
   --sidebar-offset-y: 20px;
+  --sidebar-bg: linear-gradient(120deg, #0f172a,#0f172a8e, #ea580c);
+
+  /* A fiery orange gradient for the active link, like a glowing star */
+  --link-active: linear-gradient(90deg, #ea580c, rgba(234, 88, 12, 0.1));
+
+  /* A subtle, semi-transparent orange border to match the theme */
+  --sidebar-footer-border: 1px solid rgba(234, 88, 12, 0.3);
+
+
+    --shadow-glow: 0 0 12px rgba(221, 36, 118, 0.6);
+  --shadow-glow-hover: 0 0 20px rgba(221, 36, 118, 0.8);
+  --shadow-content-card: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
+
 
 /* NetworkX Main Layout */
 .networkx-container {

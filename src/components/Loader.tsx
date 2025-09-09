@@ -106,13 +106,13 @@ const Loader = () => {
 
 const StyledWrapper = styled.div`
   /* === COSMIC FUSION THEME VARIABLES === */
-  --gradient-accent: linear-gradient(90deg, #ff512f, #dd2476);
+  --gradient-accent: linear-gradient(90deg, #f97316, #ea580c);
   --c-border: rgba(255, 255, 255, 0.2);
-  --c-glow: rgba(221, 36, 118, 0.8);
+  --c-glow: rgba(234, 88, 12, 0.6);
 
   /* -- COSMIC HAMSTER PALETTE (New) -- */
-  --c-hamster-main:   #e0e6f1; /* Cool, starlight white for the body */
-  --c-hamster-shadow: #b3bcdc; /* A slightly deeper, shadowy stardust */
+  --c-hamster-main:   #800020; /* Cool, starlight white for the body */
+  --c-hamster-shadow: #f97316; /* A slightly deeper, shadowy stardust */
   --c-hamster-ear:    #a48bff; /* A vibrant, nebula-purple for the ears */
   --c-hamster-eye:    #ff512f; /* A glowing, alien-green for a high-contrast eye */
   --c-hamster-nose:   #ff512f; /* The fiery orange accent to tie into the wheel */
@@ -123,7 +123,12 @@ const StyledWrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #18122B 0%, #2D1B4A 60%, #3A295C 100%);
+  background: linear-gradient(
+    135deg,
+    #1f005c,
+    #110038,
+    #020617
+  );
   overflow: hidden; /* Hide overflow for star animations */
   position: relative;
 
