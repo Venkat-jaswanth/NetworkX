@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import { getAuthUser } from './authService';
-import type { Resource, ResourceView, ResourceFilters } from '@/types/app.types';
+import type { Resource, ResourceFilters } from '@/types/app.types';
 
 export async function listResources(filters: ResourceFilters = {}): Promise<Resource[]> {
   let query = supabase
@@ -30,7 +30,7 @@ export async function markResourcesSeen(): Promise<void> {
   if (!user) return;
   const { error } = await supabase
     .from('ResourceViews')
-    .upsert({ user_id: user.id, last_seen_at: new Date().toISOString() } as Partial<ResourceView>)
+    .upsert({ user_id: user.id, last_seen_at: new Date().toISOString()})
     .eq('user_id', user.id);
   if (error) throw error;
 }

@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import { getAuthUser } from './authService';
-import type { Opportunity, OpportunityView, OpportunityFilters } from '@/types/app.types';
+import type { Opportunity, OpportunityFilters } from '@/types/app.types';
 
 export async function listOpportunities(filters: OpportunityFilters = {}): Promise<Opportunity[]> {
   let query = supabase
@@ -27,7 +27,7 @@ export async function markOpportunitiesSeen(): Promise<void> {
   if (!user) return;
   const { error } = await supabase
     .from('OpportunityViews')
-    .upsert({ user_id: user.id, last_seen_at: new Date().toISOString() } as Partial<OpportunityView>)
+    .upsert({ user_id: user.id, last_seen_at: new Date().toISOString() })
     .eq('user_id', user.id);
   if (error) throw error;
 }

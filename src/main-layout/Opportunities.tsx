@@ -66,7 +66,7 @@ const Opportunities = () => {
               {o.location} <span className="meta-separator"></span> {o.seniority}
             </div>
             <div className="opportunity-footer">
-              {o.apply_url && <a href={o.apply_url} target="_blank" rel="noreferrer" className="apply-link">Apply</a>}
+              {o.url && <a href={o.url} target="_blank" rel="noreferrer" className="apply-link">Apply</a>}
               {Array.isArray(o.tags) && o.tags.length > 0 && (
                 <div className="opportunity-tags">
                   {o.tags.slice(0, 3).map((t, i) => (

@@ -22,7 +22,11 @@ export async function getUnreadNotifications(): Promise<Notification[]> {
     .order('created_at', { ascending: false });
 
   if (error) throw error;
-  return data || [];
+  
+  // Filter out notifications where user_id is null and ensure type safety
+  return (data || []).filter((notification): notification is Notification => 
+    notification.user_id !== null
+  );
 }
 
 export async function getUnreadCount(): Promise<number> {

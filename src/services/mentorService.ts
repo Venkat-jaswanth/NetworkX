@@ -62,7 +62,11 @@ export async function listIncomingRequests(): Promise<MentorRequestWithUser[]> {
     .eq('mentor_id', user.id)
     .order('created_at', { ascending: false });
   if (error) throw error;
-  return data || [];
+  
+  // Filter out requests where requester is null
+  return (data || []).filter((request): request is MentorRequestWithUser => 
+    request.requester !== null
+  );
 }
 
 export async function respondMentorRequest(requestId: string, status: 'accepted' | 'rejected'): Promise<void> {

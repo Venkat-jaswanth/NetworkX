@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase';
-import type { InterviewPost, InterviewFilters } from '@/types/app.types';
+import type { InterviewPost, InsertInterviewPost, InterviewFilters } from '@/types/app.types';
 
 export async function listInterviewPosts(filters: InterviewFilters = {}): Promise<InterviewPost[]> {
   let query = supabase
@@ -27,9 +27,14 @@ export async function getInterviewPost(id: string): Promise<InterviewPost> {
 }
 
 export async function createInterviewPost(payload: Partial<InterviewPost>): Promise<InterviewPost> {
+  // Ensure required fields are present
+  if (!payload.body || !payload.company || !payload.role) {
+    throw new Error('Missing required fields: body, company, and role are required');
+  }
+  
   const { data, error } = await supabase
     .from('InterviewPosts')
-    .insert(payload)
+    .insert(payload as InsertInterviewPost)
     .select('*')
     .single();
   if (error) throw error;

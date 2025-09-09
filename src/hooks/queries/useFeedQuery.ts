@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getFeed, getFeedWithLikeStatus, createFeedPost, toggleLike, getComments, addComment } from '@/services/feedService';
-import type { FeedComment } from '@/types/app.types';
+import { getFeedWithLikeStatus, createFeedPost, toggleLike, getComments, addComment } from '@/services/feedService';
 
 export const useFeedQuery = (scope: 'public' | 'following' = 'public') => {
   return useQuery({
