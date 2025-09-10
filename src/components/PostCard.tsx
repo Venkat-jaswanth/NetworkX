@@ -124,14 +124,8 @@ export const PostCard: React.FC<PostCardProps> = ({
             disabled={isLiking}
           >
             <span className="post-card__action-icon">
-              {post.isLikedByUser ? '❤️' : '🤍'}
+              {post.isLikedByUser ? `❤️ ${post.like_count} ${post.like_count === 1 ? 'like' : 'likes'}` : `🤍 ${post.like_count} ${post.like_count === 1 ? 'like' : 'likes'}`}
             </span>
-            <span className="post-card__action-text">
-              {isLiking ? 'Loading...' : 'Like'}
-            </span>
-            {post.like_count > 0 && (
-              <span className="post-card__action-count">{post.like_count}</span>
-            )}
           </button>
 
           <button 
@@ -139,10 +133,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             onClick={onComment}
           >
             <span className="post-card__action-icon">💬</span>
-            <span className="post-card__action-text">Comment</span>
-            {post.comment_count > 0 && (
-              <span className="post-card__action-count">{post.comment_count}</span>
-            )}
+            <span className="post-card__action-text">{post.comment_count} {post.comment_count === 1 ? 'Comment' : 'Comments'}</span>
           </button>
 
           <button className="post-card__action post-card__action--secondary">
@@ -154,14 +145,9 @@ export const PostCard: React.FC<PostCardProps> = ({
         {/* Engagement Summary */}
         {(post.like_count > 0 || post.comment_count > 0) && (
           <div className="post-card__engagement">
-            {post.like_count > 0 && (
-              <span className="post-card__engagement-item">
-                ❤️ {post.like_count} {post.like_count === 1 ? 'like' : 'likes'}
-              </span>
-            )}
             {post.comment_count > 0 && (
               <span className="post-card__engagement-item">
-                💬 {post.comment_count} {post.comment_count === 1 ? 'comment' : 'comments'}
+                {/* 💬 {post.comment_count} {post.comment_count === 1 ? 'comment' : 'comments'} */}
               </span>
             )}
           </div>
