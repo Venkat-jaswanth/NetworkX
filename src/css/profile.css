@@ -593,6 +593,34 @@
   box-shadow: var(--shadow-glow); /* THEME CHANGE */
 }
 
+/* Date input specific styling */
+.modal-content input[type="date"] {
+  position: relative;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.modal-content input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  color: transparent;
+  background: transparent;
+  cursor: pointer;
+}
+
+.modal-content input[type="date"]::-webkit-inner-spin-button,
+.modal-content input[type="date"]::-webkit-clear-button {
+  display: none;
+  -webkit-appearance: none;
+}
+
 .modal-actions {
   display: flex;
   gap: 12px;
@@ -625,6 +653,18 @@
 }
 
 .modal-actions button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow); /* THEME CHANGE */
+}
+
+.modal-actions .delete-btn {
+  background: #ff512f !important; /* THEME CHANGE */
+  color: white !important;
+  border: none !important;
+}
+
+.modal-actions .delete-btn:hover {
+  background: #e0451f !important; /* THEME CHANGE */
   transform: translateY(-1px);
   box-shadow: var(--shadow-glow); /* THEME CHANGE */
 }

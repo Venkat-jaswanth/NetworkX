@@ -20,6 +20,13 @@ export interface UserProfileViewProps {
   busy?: string;
   showUploadOption?: boolean;
   backButtonText?: string;
+  // Edit/Add handlers for own profile
+  onAddEducation?: () => void;
+  onAddWorkExperience?: () => void;
+  onEditEducation?: (education: any) => void;
+  onEditWorkExperience?: (work: any) => void;
+  onDeleteEducation?: (educationId: string) => void;
+  onDeleteWorkExperience?: (workId: string) => void;
 }
 
 export const UserProfileView: React.FC<UserProfileViewProps> = ({
@@ -32,7 +39,13 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
   onMessageClick,
   busy = '',
   showUploadOption = false,
-  backButtonText = 'Back'
+  backButtonText = 'Back',
+  onAddEducation,
+  onAddWorkExperience,
+  onEditEducation,
+  onEditWorkExperience,
+  onDeleteEducation,
+  onDeleteWorkExperience
 }) => {
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -213,6 +226,14 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
             <div className="profile-section">
               <div className="section-header">
                 <h2>Work Experience</h2>
+                {isOwnProfile && onAddWorkExperience && (
+                  <button
+                    className="add-btn"
+                    onClick={onAddWorkExperience}
+                  >
+                    + Add Experience
+                  </button>
+                )}
               </div>
               <div className="section-content">
                 {profileData.workExperience && profileData.workExperience.length > 0 ? (
@@ -221,6 +242,22 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                       <div key={work.id} className="experience-item">
                         <div className="experience-header">
                           <h3>{work.job_title}</h3>
+                          {isOwnProfile && (onEditWorkExperience || onDeleteWorkExperience) && (
+                            <div className="experience-actions">
+                              {onEditWorkExperience && (
+                                <button onClick={() => onEditWorkExperience(work)}>
+                                  Edit
+                                </button>
+                              )}
+                              {onDeleteWorkExperience && (
+                                <button
+                                  onClick={() => onDeleteWorkExperience(work.id)}
+                                >
+                                  Delete
+                                </button>
+                              )}
+                            </div>
+                          )}
                         </div>
                         <p className="company-name">{work.company_name}</p>
                         <p className="experience-dates">
@@ -249,6 +286,14 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
             <div className="profile-section">
               <div className="section-header">
                 <h2>Education</h2>
+                {isOwnProfile && onAddEducation && (
+                  <button
+                    className="add-btn"
+                    onClick={onAddEducation}
+                  >
+                    + Add Education
+                  </button>
+                )}
               </div>
               <div className="section-content">
                 {profileData.education && profileData.education.length > 0 ? (
@@ -257,6 +302,22 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                       <div key={edu.id} className="education-item">
                         <div className="education-header">
                           <h3>{edu.institution_name}</h3>
+                          {isOwnProfile && (onEditEducation || onDeleteEducation) && (
+                            <div className="education-actions">
+                              {onEditEducation && (
+                                <button onClick={() => onEditEducation(edu)}>
+                                  Edit
+                                </button>
+                              )}
+                              {onDeleteEducation && (
+                                <button
+                                  onClick={() => onDeleteEducation(edu.id)}
+                                >
+                                  Delete
+                                </button>
+                              )}
+                            </div>
+                          )}
                         </div>
                         <p className="degree-info">
                           {edu.degree} in {edu.field_of_study}
