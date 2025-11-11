@@ -15,8 +15,6 @@ export async function storeGoogleProfilePicture(googleUrl: string, userId: strin
     const response = await fetch(googleUrl);
     
     if (!response.ok) {
-      console.error('Failed to fetch image:', response.status);
-      alert("Failed to fetch image: " + response.status);
       throw new Error(`Failed to fetch image: ${response.status}`);
     }
     
@@ -37,8 +35,6 @@ export async function storeGoogleProfilePicture(googleUrl: string, userId: strin
       });
 
     if (error) {
-      console.error('Failed to upload profile picture:', error);
-      alert("Failed to upload profile picture: " + error.message);
       throw error;
     }
 
@@ -49,7 +45,6 @@ export async function storeGoogleProfilePicture(googleUrl: string, userId: strin
 
     return publicUrl;
   } catch (error) {
-    alert("Failed to store Google profile picture: " + error);
     return null;
   }
 }
@@ -72,8 +67,6 @@ export async function uploadProfilePicture(file: File, userId: string): Promise<
     });
 
   if (error) {
-    console.error('Failed to upload profile picture:', error);
-    alert("Failed to upload profile picture: " + error.message);
     throw error;
   }
 
